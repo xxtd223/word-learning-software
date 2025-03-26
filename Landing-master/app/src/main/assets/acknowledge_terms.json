@@ -1,0 +1,93 @@
+{
+  "type": "ACKNOWLEDGE",
+  "data": [
+    {
+      "type": "TITLE",
+      "text": "开源软件致谢\nOpen Source Software Acknowledgements"
+    },
+    {
+      "type": "TEXT",
+      "text": "Jetbrains Kotlin Coroutines / Apache-2.0 License\nhttps://github.com/Kotlin/kotlinx.coroutines"
+    },
+    {
+      "type": "TEXT",
+      "text": "Jetbrains Kotlin Serialization / Apache-2.0 License\nhttps://github.com/Kotlin/kotlinx.serialization"
+    },
+    {
+      "type": "TEXT",
+      "text": "Android Jetpack Core / Apache-2.0 License\nhttps://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-main/core/"
+    },
+    {
+      "type": "TEXT",
+      "text": "Android Jetpack Activity Compose / Apache-2.0 License\nhttps://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-main/activity/activity-compose/"
+    },
+    {
+      "type": "TEXT",
+      "text": "Google Material Components for Android / Apache-2.0 License\nhttps://github.com/material-components/material-components-android"
+    },
+    {
+      "type": "TEXT",
+      "text": "Google Material Design Icons / Apache-2.0 License\nhttps://github.com/google/material-design-icons"
+    },
+    {
+      "type": "TEXT",
+      "text": "Android Jetpack Compose Runtime / Apache-2.0 License\nhttps://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-main/compose/runtime/"
+    },
+    {
+      "type": "TEXT",
+      "text": "Android Jetpack Compose UI / Apache-2.0 License\nhttps://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-main/compose/ui/"
+    },
+    {
+      "type": "TEXT",
+      "text": "Android Jetpack Compose Material3 / Apache-2.0 License\nhttps://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-main/compose/material3/"
+    },
+    {
+      "type": "TEXT",
+      "text": "Android Jetpack Compose Animation / Apache-2.0 License\nhttps://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-main/compose/animation/"
+    },
+    {
+      "type": "TEXT",
+      "text": "Android Jetpack Compose Paging 3 / Apache-2.0 License\nhttps://android.googlesource.com/platform/frameworks/support/+/androidx-paging-release/paging/paging-compose/"
+    },
+    {
+      "type": "TEXT",
+      "text": "Android ConstraintLayout Compose / Apache-2.0 License\nhttps://github.com/androidx/constraintlayout"
+    },
+    {
+      "type": "TEXT",
+      "text": "Android System UI Controller for Jetpack Compose / Apache-2.0 License\nhttps://google.github.io/accompanist/systemuicontroller/"
+    },
+    {
+      "type": "TEXT",
+      "text": "Android Jetpack Lifecycle / Apache-2.0 License\nhttps://android.googlesource.com/platform/frameworks/support/+/HEAD/lifecycle"
+    },
+    {
+      "type": "TEXT",
+      "text": "Android Jetpack DataStore / Apache-2.0 License\nhttps://android.googlesource.com/platform/frameworks/support/+/HEAD/datastore"
+    },
+    {
+      "type": "TEXT",
+      "text": "Android Jetpack Navigation Compose / Apache-2.0 License\nhttps://android.googlesource.com/platform/frameworks/support/+/HEAD/navigation/navigation-compose/"
+    },
+    {
+      "type": "TEXT",
+      "text": "Android Jetpack Room / Apache-2.0 License\nhttps://android.googlesource.com/platform/frameworks/support/+/HEAD/room"
+    },
+    {
+      "type": "TEXT",
+      "text": "Google Dagger Hilt / Apache-2.0 License\nhttps://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-hilt-release"
+    },
+    {
+      "type": "TEXT",
+      "text": "Google ExoPlayer / Apache-2.0 License\nhttps://github.com/google/ExoPlayer"
+    },
+    {
+      "type": "TEXT",
+      "text": "Google Accompanist / Apache-2.0 License\nhttps://github.com/google/accompanist"
+    },
+    {
+      "type": "SIGNATURE",
+      "text": "Landing For Android\nCopyright © 2022 - 2023 洪振健，保留所有权利。"
+    }
+  ]
+}

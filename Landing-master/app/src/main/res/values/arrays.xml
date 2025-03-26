@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <integer-array name="word_list_num_entry_values">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+    </integer-array>
+
+</resources>

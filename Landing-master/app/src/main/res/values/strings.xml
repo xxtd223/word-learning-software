@@ -1,0 +1,84 @@
+<resources>
+    <string name="app_en_name">Landing</string>
+    <string name="app_cn_name" translatable="false">上岸单词</string>
+    <string name="app_version" translatable="false">2.0.3</string>
+    <string name="app_last_update" translatable="false">2023年 3月 25号</string>
+
+    <string name="screen_home" translatable="false">首页</string>
+    <string name="screen_plan" translatable="false">学习计划</string>
+    <string name="screen_ipa" translatable="false">音标列表</string>
+    <string name="screen_search" translatable="false">单词查询</string>
+    <string name="screen_note" translatable="false">单词笔记</string>
+    <string name="screen_affix" translatable="false">词缀表格</string>
+    <string name="screen_help" translatable="false">帮助</string>
+    <string name="screen_about" translatable="false">关于</string>
+    <string name="screen_greeting" translatable="false">欢迎</string>
+    <string name="screen_terms" translatable="false">条款</string>
+    <string name="screen_definition" translatable="false">单词释义</string>
+    <string name="screen_word_list" translatable="false">单词列表</string>
+    <string name="screen_learn" translatable="false">单词学习</string>
+    <string name="screen_choice" translatable="false">单选练习</string>
+    <string name="screen_spelling" translatable="false">默写练习</string>
+
+    <!--    Plan-->
+    <string name="plan_delete" translatable="false">删除计划</string>
+    <string name="plan_delete_msg" translatable="false">确定要删除当前的学习计划吗？</string>
+    <string name="plan_empty_msg" translatable="false">目前还没有\n点击 \'+\' 按钮即可制定</string>
+
+    <!--    New Plan-->
+    <string name="new_plan_title" translatable="false">制定计划</string>
+    <string name="new_plan_start_date_title" translatable="false">开始日期</string>
+    <string name="new_plan_vocabulary_title" translatable="false">英语词库</string>
+    <string name="new_plan_word_list_size_title" translatable="false">每日词量</string>
+    <string name="new_plan_current_title" translatable="false">当前设定</string>
+    <string name="new_plan_today_btn" translatable="false">今天</string>
+    <string name="new_plan_tomorrow_btn" translatable="false">明天</string>
+
+    <!--    About-->
+    <string name="about_app_name" translatable="false">上岸单词 Landing</string>
+    <string name="about_version_title" translatable="false">软件版本</string>
+    <string name="about_date_title" translatable="false">更新日期</string>
+    <string name="about_terms" translatable="false">条款</string>
+    <string name="about_service_terms" translatable="false">服务协议</string>
+    <string name="about_service_text" translatable="false">
+        查看软件的服务协议
+    </string>
+    <string name="about_privacy_policy_terms" translatable="false">隐私政策</string>
+    <string name="about_privacy_policy_text" translatable="false">
+        查看软件的隐私政策
+    </string>
+    <string name="about_acknowledge_terms" translatable="false">软件声明</string>
+    <string name="about_acknowledge_text" translatable="false">
+        查看软件的软件声明
+    </string>
+    <string name="about_contact" translatable="false">https://github.com/peterdevacc/Landing</string>
+    <string name="about_advisement" translatable="false">教育应该跟健康的空气一样，自由、免费、必要</string>
+
+    <!--    Greeting-->
+    <string name="greeting_accept" translatable="false">接受且开始使用</string>
+    <string name="greeting_reject" translatable="false">不接受，退出</string>
+    <string name="greeting_slogan" translatable="false">表达准确，沟通流畅，相互理解</string>
+
+    <string name="search_not_exist_hint" translatable="false">单词 %1$s 不在词库范围内</string>
+
+    <!--    Note-->
+    <string name="note_empty_msg" translatable="false">标记为生词的单词\n会出现在这里</string>
+
+    <string name="ic_content_description" translatable="false">图标</string>
+
+    <string name="start_learning" translatable="false">进行单词学习</string>
+
+    <string name="wrong_list_empty_msg" translatable="false">练习中答错的单词\n会出现在这里</string>
+
+    <string name="confirm" translatable="false">确定</string>
+    <string name="complete" translatable="false">完成</string>
+    <string name="cancel" translatable="false">取消</string>
+
+    <string name="error_io" translatable="false">
+        读写错误发生，\n请重试一次。
+    </string>
+    <string name="error_unknown" translatable="false">
+        未知错误发生，\n请重试一次。
+    </string>
+
+</resources>
