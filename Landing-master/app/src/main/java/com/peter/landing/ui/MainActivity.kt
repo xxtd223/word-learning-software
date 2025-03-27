@@ -51,18 +51,9 @@ class MainActivity : ComponentActivity() {
 
             when (val uiState = mainViewModel.uiState.value) {
                 is MainUiState.Success -> {
-                    val isDarkMode = when (uiState.themeMode) {
-                        ThemeMode.LIGHT -> false
-                        ThemeMode.DARK -> true
-                        ThemeMode.DEFAULT -> isSystemInDarkTheme()
-                        ThemeMode.EYE_CARE -> false  // 假设护眼模式使用浅色背景
-                    }
-
-                    val useEyeCareMode = uiState.themeMode == ThemeMode.EYE_CARE
-
-                    LandingAppTheme(isDarkMode = isDarkMode, useEyeCareMode = useEyeCareMode) {
+                    LandingAppTheme(themeMode = uiState.themeMode) {
                         LandingNavGraphMain(
-                            isDarkMode = isDarkMode,
+                            isDarkMode = uiState.themeMode == ThemeMode.DARK,
                             playPron = sound::playAudio,
                             navHostController = navHostController,
                             exitApp = this@MainActivity::finish,
@@ -99,6 +90,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+
         }
     }
 

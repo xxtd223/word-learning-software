@@ -6,6 +6,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.peter.landing.data.util.ThemeMode
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
@@ -82,32 +83,53 @@ private val EyeCareColors = lightColorScheme(
     onSurface = Color.Black,          // 表面上的文字颜色
     // 可以为其他颜色元素也设置类似的温暖色调
 )
+// **彩色模式（活力模式 Vibrant）**
+private val VibrantColors = lightColorScheme(
+    primary = Color(0xFF2196F3),  // 亮蓝色
+    onPrimary = Color.White,
+    background = Color(0xFFE3F2FD),  // 浅蓝色背景
+    onBackground = Color.Black,
+    surface = Color.White,
+    onSurface = Color.Black,
+    secondary = Color(0xFFFF9800),  // 橙色
+    onSecondary = Color.White
+)
+private val DefaultColors = lightColorScheme(
+    primary = Color(0xFF9E9E9E),  // 中性灰
+    onPrimary = Color.Black,
+    background = Color(0xFFF5F5F5),
+    onBackground = Color.Black,
+    surface = Color(0xFFE0E0E0),
+    onSurface = Color.Black
+)
 
 
 @Composable
 fun LandingAppTheme(
-    isDarkMode: Boolean = isSystemInDarkTheme(),
-    useEyeCareMode: Boolean = false,  // 新增护眼模式参数
+    themeMode: ThemeMode = ThemeMode.DEFAULT,  // 使用 ThemeMode 枚举
     content: @Composable () -> Unit
 ) {
     // 选择颜色方案
-    val colors = when {
-        useEyeCareMode -> EyeCareColors    // 如果启用护眼模式，使用 EyeCareColors
-        !isDarkMode -> LightColors        // 浅色主题
-        else -> DarkColors                // 深色主题
+    val colors = when (themeMode) {
+        ThemeMode.LIGHT -> LightColors
+        ThemeMode.DARK -> DarkColors
+        ThemeMode.EYE_CARE -> EyeCareColors
+        ThemeMode.VIBRANT -> VibrantColors
+        ThemeMode.DEFAULT -> if (isSystemInDarkTheme()) DarkColors else DefaultColors
     }
 
-    // 设置系统UI的颜色
+    // 设置系统 UI 颜色
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
         color = Color.Transparent,
-        darkIcons = !isDarkMode && !useEyeCareMode  // 如果是浅色或护眼模式，则设置深色图标
+        darkIcons = themeMode == ThemeMode.LIGHT || themeMode == ThemeMode.DEFAULT || themeMode == ThemeMode.VIBRANT
     )
 
-    // 使用 MaterialTheme 应用选择的颜色方案
+    // 应用 MaterialTheme
     MaterialTheme(
         colorScheme = colors,
         content = content
     )
 }
+
 
