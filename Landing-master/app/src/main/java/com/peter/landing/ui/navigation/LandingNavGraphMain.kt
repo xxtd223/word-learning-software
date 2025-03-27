@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import com.peter.landing.ui.about.AboutScreen
 import com.peter.landing.ui.affix.AffixScreen
 import com.peter.landing.ui.affix.AffixViewModel
+import com.peter.landing.ui.ai.AiScreen
 import com.peter.landing.ui.definition.DefinitionScreen
 import com.peter.landing.ui.definition.DefinitionViewModel
 import com.peter.landing.ui.greeting.GreetingScreen
@@ -169,6 +170,26 @@ fun LandingNavGraphMain(
                 navigateToTerms = {
                     navHostController.navigate(
                         LandingDestination.Main.About.getNavTermsRoute(it)
+                    ) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateTo = {
+                    navHostController.navigate(it) {
+                        popUpTo(LandingDestination.Main.Home.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+        composable(LandingDestination.Main.Ai.route) {
+            AiScreen(
+                navigateToTerms = {
+                    navHostController.navigate(
+                        LandingDestination.Main.Ai.getNavTermsRoute(it)
                     ) {
                         launchSingleTop = true
                     }

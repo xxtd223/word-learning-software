@@ -80,9 +80,20 @@ sealed interface LandingDestination {
             }
         }
 
+        object Ai: Main {
+            override val route = "ai"
+            override val textId = R.string.screen_ai
+            override val iconId = R.drawable.ic_ai
+            override val iconCd = R.string.ic_content_description
+
+            fun getNavTermsRoute(termsType: Terms.Type): String {
+                return "${General.Terms.route}/${termsType.name}"
+            }
+        }
+
         companion object {
             private val mainList = listOf(
-                Home, Plan, Search, Note, Ipa, Affix, Help, About
+                Home, Plan, Search, Note, Ipa, Affix, Help, About , Ai
             )
 
             fun getNavigationList(): List<Main> {

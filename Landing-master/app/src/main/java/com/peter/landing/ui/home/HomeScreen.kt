@@ -120,6 +120,13 @@ private fun HomeContent(
                                 modifier = Modifier.fillMaxSize()
                             )
                         }
+
+                        // 使用封装好的组件
+                        HomeActionButtons(
+                            navigateTo = navigateTo,
+                            modifier = Modifier.padding(vertical = 16.dp)
+                        )
+
                         Row(
                             verticalAlignment = Alignment.Bottom,
                             modifier = Modifier
