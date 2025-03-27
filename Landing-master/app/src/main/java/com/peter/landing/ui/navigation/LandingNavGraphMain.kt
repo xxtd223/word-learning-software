@@ -10,6 +10,10 @@ import com.peter.landing.ui.about.AboutScreen
 import com.peter.landing.ui.affix.AffixScreen
 import com.peter.landing.ui.affix.AffixViewModel
 import com.peter.landing.ui.ai.AiScreen
+import com.peter.landing.ui.ai.CartoonScreen
+import com.peter.landing.ui.ai.ExamScreen
+import com.peter.landing.ui.ai.HomophonyScreen
+import com.peter.landing.ui.ai.StoryScreen
 import com.peter.landing.ui.definition.DefinitionScreen
 import com.peter.landing.ui.definition.DefinitionViewModel
 import com.peter.landing.ui.greeting.GreetingScreen
@@ -18,6 +22,7 @@ import com.peter.landing.ui.help.HelpScreen
 import com.peter.landing.ui.help.HelpViewModel
 import com.peter.landing.ui.home.HomeScreen
 import com.peter.landing.ui.home.HomeViewModel
+import com.peter.landing.ui.imageRec.ImageRecScreen
 import com.peter.landing.ui.ipa.IpaScreen
 import com.peter.landing.ui.ipa.IpaViewModel
 import com.peter.landing.ui.note.NoteScreen
@@ -205,6 +210,111 @@ fun LandingNavGraphMain(
                 }
             )
         }
+        composable(LandingDestination.Main.Homophony.route) {
+            HomophonyScreen(
+                navigateToTerms = {
+                    navHostController.navigate(
+                        LandingDestination.Main.Homophony.getNavTermsRoute(it)
+                    ) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateTo = {
+                    navHostController.navigate(it) {
+                        popUpTo(LandingDestination.Main.Home.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+
+        composable(LandingDestination.Main.Story.route) {
+            StoryScreen(
+                navigateToTerms = {
+                    navHostController.navigate(
+                        LandingDestination.Main.Story.getNavTermsRoute(it)
+                    ) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateTo = {
+                    navHostController.navigate(it) {
+                        popUpTo(LandingDestination.Main.Home.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+
+        composable(LandingDestination.Main.Cartoon.route) {
+            CartoonScreen(
+                navigateToTerms = {
+                    navHostController.navigate(
+                        LandingDestination.Main.Cartoon.getNavTermsRoute(it)
+                    ) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateTo = {
+                    navHostController.navigate(it) {
+                        popUpTo(LandingDestination.Main.Home.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+
+        composable(LandingDestination.Main.Exam.route) {
+            ExamScreen(
+                navigateToTerms = {
+                    navHostController.navigate(
+                        LandingDestination.Main.Exam.getNavTermsRoute(it)
+                    ) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateTo = {
+                    navHostController.navigate(it) {
+                        popUpTo(LandingDestination.Main.Home.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+
+        composable(LandingDestination.Main.ImageRec.route) {
+            ImageRecScreen(
+                navigateToTerms = {
+                    navHostController.navigate(
+                        LandingDestination.Main.ImageRec.getNavTermsRoute(it)
+                    ) {
+                        launchSingleTop = true
+                    }
+                },
+                navigateTo = {
+                    navHostController.navigate(it) {
+                        popUpTo(LandingDestination.Main.Home.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+
         landingNavGraphStudy(
             isDarkMode = isDarkMode,
             playPron = playPron,

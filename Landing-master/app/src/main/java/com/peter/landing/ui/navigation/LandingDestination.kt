@@ -91,9 +91,66 @@ sealed interface LandingDestination {
             }
         }
 
+        object Homophony: Main {
+            override val route = "homophony"
+            override val textId = R.string.screen_homophony
+            override val iconId = R.drawable.ic_homophony
+            override val iconCd = R.string.ic_content_description
+
+            fun getNavTermsRoute(termsType: Terms.Type): String {
+                return "${General.Terms.route}/${termsType.name}"
+            }
+        }
+
+        object Story: Main {
+            override val route = "story"
+            override val textId = R.string.screen_story
+            override val iconId = R.drawable.ic_story
+            override val iconCd = R.string.ic_content_description
+
+            fun getNavTermsRoute(termsType: Terms.Type): String {
+                return "${General.Terms.route}/${termsType.name}"
+            }
+        }
+
+        object Cartoon: Main {
+            override val route = "cartoon"
+            override val textId = R.string.screen_cartoon
+            override val iconId = R.drawable.ic_cartoon
+            override val iconCd = R.string.ic_content_description
+
+            fun getNavTermsRoute(termsType: Terms.Type): String {
+                return "${General.Terms.route}/${termsType.name}"
+            }
+        }
+
+        object Exam: Main {
+            override val route = "exam"
+            override val textId = R.string.screen_exam
+            override val iconId = R.drawable.ic_exam
+            override val iconCd = R.string.ic_content_description
+
+            fun getNavTermsRoute(termsType: Terms.Type): String {
+                return "${General.Terms.route}/${termsType.name}"
+            }
+        }
+
+        object ImageRec: Main {
+            override val route = "imageRec"
+            override val textId = R.string.screen_imageRec
+            override val iconId = R.drawable.ic_image_rec
+            override val iconCd = R.string.ic_content_description
+
+            fun getNavTermsRoute(termsType: Terms.Type): String {
+                return "${General.Terms.route}/${termsType.name}"
+            }
+        }
+
         companion object {
             private val mainList = listOf(
-                Home, Plan, Search, Note, Ipa, Affix, Help, About , Ai
+                Home, Plan, Search, Note, Ipa,
+                Affix, Help, About , Ai ,
+                Homophony, Story, Cartoon,Exam, ImageRec
             )
 
             fun getNavigationList(): List<Main> {

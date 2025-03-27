@@ -12,6 +12,13 @@
     <string name="screen_affix" translatable="false">词缀表格</string>
     <string name="screen_help" translatable="false">帮助</string>
     <string name="screen_about" translatable="false">关于</string>
+
+    <string name="screen_homophony" translatable="false">谐音梗</string>
+    <string name="screen_story" translatable="false">故事</string>
+    <string name="screen_cartoon" translatable="false">漫画</string>
+    <string name="screen_exam" translatable="false">真题</string>
+    <string name="screen_imageRec" translatable="false">图片识别</string>
+
     <string name="screen_ai" translatable="false">ai</string>
     <string name="screen_greeting" translatable="false">欢迎</string>
     <string name="screen_terms" translatable="false">条款</string>

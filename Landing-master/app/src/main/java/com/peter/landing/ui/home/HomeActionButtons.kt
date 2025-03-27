@@ -15,30 +15,86 @@ fun HomeActionButtons(
     navigateTo: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceEvenly,
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier.fillMaxWidth()
-    ) {
-        // 1. 学习按钮
-        ActionButton(
-            iconRes = R.drawable.ic_help_24dp,
-            label = "帮助",
-            onClick = { navigateTo(LandingDestination.Main.Help.route) }
-        )
+    ){
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = modifier.fillMaxWidth()
+        ) {
 
-        // 2. 选择题按钮
-        ActionButton(
-            iconRes = R.drawable.ic_about_24dp,
-            label = "关于",
-            onClick = { navigateTo(LandingDestination.Main.About.route) }
-        )
+            ActionButton(
+                iconRes = R.drawable.ic_plan_24dp,
+                label = "学习计划",
+                onClick = { navigateTo(LandingDestination.Main.Plan.route) }
+            )
 
-        // 3. 拼写按钮
-        ActionButton(
-            iconRes = R.drawable.ic_ai,
-            label = "AI",
-            onClick = { navigateTo(LandingDestination.Main.Ai.route) }
-        )
+            ActionButton(
+                iconRes = R.drawable.ic_search_24dp,
+                label = "搜索",
+                onClick = { navigateTo(LandingDestination.Main.Search.route) }
+            )
+
+            ActionButton(
+                iconRes = R.drawable.ic_note_24dp,
+                label = "笔记",
+                onClick = { navigateTo(LandingDestination.Main.Note.route) }
+            )
+
+            ActionButton(
+                iconRes = R.drawable.ic_ipa_24dp,
+                label = "音标",
+                onClick = { navigateTo(LandingDestination.Main.Ipa.route) }
+            )
+
+            ActionButton(
+                iconRes = R.drawable.ic_affix_24dp,
+                label = "词缀",
+                onClick = { navigateTo(LandingDestination.Main.Affix.route) }
+            )
+
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
+        ){
+            //
+            ActionButton(
+                iconRes = R.drawable.ic_homophony,
+                label = "谐音",
+                onClick = { navigateTo(LandingDestination.Main.Homophony.route) }
+            )
+
+            //
+            ActionButton(
+                iconRes = R.drawable.ic_story,
+                label = "故事",
+                onClick = { navigateTo(LandingDestination.Main.Story.route) }
+            )
+
+            //
+            ActionButton(
+                iconRes = R.drawable.ic_cartoon,
+                label = "漫画",
+                onClick = { navigateTo(LandingDestination.Main.Cartoon.route) }
+            )
+
+            //
+            ActionButton(
+                iconRes = R.drawable.ic_exam,
+                label = "真题",
+                onClick = { navigateTo(LandingDestination.Main.Exam.route) }
+            )
+
+            //
+            ActionButton(
+                iconRes = R.drawable.ic_image_rec,
+                label = "图片识别翻译",
+                onClick = { navigateTo(LandingDestination.Main.ImageRec.route) }
+            )
+        }
     }
 }
 
