@@ -69,17 +69,6 @@ sealed interface LandingDestination {
             override val iconCd = R.string.ic_content_description
         }
 
-        object About: Main {
-            override val route = "about"
-            override val textId = R.string.screen_about
-            override val iconId = R.drawable.ic_about_24dp
-            override val iconCd = R.string.ic_content_description
-
-            fun getNavTermsRoute(termsType: Terms.Type): String {
-                return "${General.Terms.route}/${termsType.name}"
-            }
-        }
-
         object Ai: Main {
             override val route = "ai"
             override val textId = R.string.screen_ai
@@ -149,7 +138,7 @@ sealed interface LandingDestination {
         companion object {
             private val mainList = listOf(
                 Home, Plan, Search, Note, Ipa,
-                Affix, Help, About , Ai ,
+                Affix, Help, Ai ,
                 Homophony, Story, Cartoon,Exam, ImageRec
             )
 
