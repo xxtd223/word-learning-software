@@ -55,8 +55,12 @@ class MainActivity : ComponentActivity() {
                         ThemeMode.LIGHT -> false
                         ThemeMode.DARK -> true
                         ThemeMode.DEFAULT -> isSystemInDarkTheme()
+                        ThemeMode.EYE_CARE -> false  // 假设护眼模式使用浅色背景
                     }
-                    LandingAppTheme(isDarkMode) {
+
+                    val useEyeCareMode = uiState.themeMode == ThemeMode.EYE_CARE
+
+                    LandingAppTheme(isDarkMode = isDarkMode, useEyeCareMode = useEyeCareMode) {
                         LandingNavGraphMain(
                             isDarkMode = isDarkMode,
                             playPron = sound::playAudio,
