@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -23,6 +24,7 @@ import com.peter.landing.util.calculateDate
 import com.peter.landing.util.getTodayDateTime
 import com.peter.landing.util.getTomorrowDateTime
 import java.util.*
+
 
 @Composable
 fun NewPlanDialog(
@@ -264,8 +266,8 @@ private fun NewPlanSectionTitle(
     ) {
         Icon(
             painter = painterResource(iconId),
-            contentDescription = "",
-            tint = MaterialTheme.colorScheme.onBackground,
+            contentDescription = "", 
+                tint = Color.Unspecified,
             modifier = Modifier.padding(end = 6.dp)
         )
         Text(

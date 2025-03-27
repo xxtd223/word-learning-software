@@ -63,7 +63,7 @@ private fun LandingNavigationItem(
         contentColor = MaterialTheme.colorScheme.onPrimary
         containerColor = MaterialTheme.colorScheme.primary
     } else {
-        contentColor = MaterialTheme.colorScheme.onSurface
+        contentColor = MaterialTheme.colorScheme.error
         containerColor = MaterialTheme.colorScheme.surface
     }
 
@@ -86,7 +86,7 @@ private fun LandingNavigationItem(
             Icon(
                 painter = painterResource(mainDestination.iconId),
                 contentDescription = stringResource(mainDestination.iconCd),
-                tint = contentColor,
+                tint = Color.Unspecified,
                 modifier = Modifier.size(48.dp)
             )
             Text(

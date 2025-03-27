@@ -1,6 +1,7 @@
 package com.peter.landing.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -40,6 +41,9 @@ private val LightColors = lightColorScheme(
     surfaceTint = md_theme_light_surfaceTint,
     outlineVariant = md_theme_light_outlineVariant,
     scrim = md_theme_light_scrim,
+
+
+
 )
 
 
@@ -102,6 +106,9 @@ private val DefaultColors = lightColorScheme(
     surface = Color(0xFFE0E0E0),
     onSurface = Color.Black
 )
+
+
+
 
 
 @Composable

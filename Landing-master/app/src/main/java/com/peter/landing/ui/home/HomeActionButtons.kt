@@ -9,7 +9,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.peter.landing.R
 import com.peter.landing.ui.navigation.LandingDestination
-
+import androidx.compose.ui.graphics.Color
 @Composable
 fun HomeActionButtons(
     navigateTo: (String) -> Unit,
@@ -116,7 +116,7 @@ private fun ActionButton(
             Icon(
                 painter = painterResource(iconRes),
                 contentDescription = label,
-                tint = MaterialTheme.colorScheme.onBackground,
+                tint = Color.Unspecified,
                 modifier = Modifier.size(32.dp)
             )
         }
