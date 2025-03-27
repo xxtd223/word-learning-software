@@ -73,26 +73,41 @@ private val DarkColors = darkColorScheme(
     outlineVariant = md_theme_dark_outlineVariant,
     scrim = md_theme_dark_scrim,
 )
+private val EyeCareColors = lightColorScheme(
+    primary = Color(0xFFFFC107),  // 温暖的黄色
+    onPrimary = Color.Black,      // 文字颜色
+    background = Color(0xFFFFF8E1),  // 浅黄色背景
+    onBackground = Color.Black,       // 背景上的文字颜色
+    surface = Color(0xFFFFF8E1),      // 表面颜色
+    onSurface = Color.Black,          // 表面上的文字颜色
+    // 可以为其他颜色元素也设置类似的温暖色调
+)
+
 
 @Composable
 fun LandingAppTheme(
-    useDarkTheme: Boolean = isSystemInDarkTheme(),
+    isDarkMode: Boolean = isSystemInDarkTheme(),
+    useEyeCareMode: Boolean = false,  // 新增护眼模式参数
     content: @Composable () -> Unit
 ) {
-    val colors = if (!useDarkTheme) {
-        LightColors
-    } else {
-        DarkColors
+    // 选择颜色方案
+    val colors = when {
+        useEyeCareMode -> EyeCareColors    // 如果启用护眼模式，使用 EyeCareColors
+        !isDarkMode -> LightColors        // 浅色主题
+        else -> DarkColors                // 深色主题
     }
 
+    // 设置系统UI的颜色
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
         color = Color.Transparent,
-        darkIcons = !useDarkTheme
+        darkIcons = !isDarkMode && !useEyeCareMode  // 如果是浅色或护眼模式，则设置深色图标
     )
 
+    // 使用 MaterialTheme 应用选择的颜色方案
     MaterialTheme(
         colorScheme = colors,
         content = content
     )
 }
+

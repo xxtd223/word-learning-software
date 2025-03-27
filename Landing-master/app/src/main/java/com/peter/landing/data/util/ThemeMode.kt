@@ -5,6 +5,6 @@ enum class ThemeMode(val cnValue: String) {
     LIGHT("浅色"),
     DARK("深色"),
     DEFAULT("按系统设定"),
-    QITA("护眼模式")
+    EYE_CARE("护眼模式")
 
 }
