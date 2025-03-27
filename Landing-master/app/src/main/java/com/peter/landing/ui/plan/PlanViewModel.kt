@@ -39,6 +39,7 @@ class PlanViewModel @Inject constructor(
         if (plan == null) {
             PlanUiState.Empty
         } else {
+            val simulatedHistory = generateSimulatedHistory()
             PlanUiState.Existed(
                 studyPlan = plan,
                 progressReport = progressRepository.getLatestLessonReport(
@@ -46,7 +47,8 @@ class PlanViewModel @Inject constructor(
                 ),
                 totalReport = progressRepository.getTotalReport(
                     vocabularySize = plan.vocabularySize
-                )
+                ),
+                studyHistory = simulatedHistory
             )
         }
     }.stateIn(
@@ -54,6 +56,16 @@ class PlanViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(2_000),
         initialValue = PlanUiState.Loading
     )
+
+    // 模拟历史学习数据
+    private fun generateSimulatedHistory(): List<Float> {
+        return (0..6).map { daysAgo ->
+            val calendar = Calendar.getInstance().apply {
+                add(Calendar.DATE, -daysAgo)
+            }
+            listOf(10, 20, 30, 40, 50).random().toFloat() //还没接数据库，此为模拟数据
+        }
+    }
 
     fun updateNewPlanVocabulary(vocabulary: Vocabulary) {
         val state = planDialogUiState.value

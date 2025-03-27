@@ -10,6 +10,7 @@ sealed interface PlanUiState {
         val studyPlan: StudyPlan,
         val progressReport: List<Float> = emptyList(),
         val totalReport: List<Float> = emptyList(),
+        val studyHistory: List<Float> = emptyList(),
     ) : PlanUiState
 
     object Empty : PlanUiState

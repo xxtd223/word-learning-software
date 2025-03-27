@@ -18,6 +18,7 @@ import com.peter.landing.R
 import com.peter.landing.data.local.vocabulary.Vocabulary
 import com.peter.landing.ui.navigation.LandingDestination
 import com.peter.landing.ui.plan.chart.ProgressReportChart
+import com.peter.landing.ui.plan.chart.StudyHistoryChart
 import com.peter.landing.ui.plan.chart.TotalReportChart
 import com.peter.landing.ui.util.ImageNotice
 import com.peter.landing.ui.util.LandingTopBar
@@ -196,6 +197,26 @@ private fun PlanContent(
                                 )
                             }
                         }
+
+                        if (planUiState.studyHistory.isNotEmpty()) {
+                            Box(
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                StudyHistoryChart(
+                                    historyData = planUiState.studyHistory.mapIndexed { index, value ->
+                                        val calendar = Calendar.getInstance().apply {
+                                            add(Calendar.DATE, index - 6) // 从一周前到今天
+                                        }
+                                        val date = String.format("%02d-%02d",
+                                            calendar.get(Calendar.MONTH) + 1,
+                                            calendar.get(Calendar.DAY_OF_MONTH)
+                                        )
+                                        date to value.toInt()
+                                    }
+                                )
+                            }
+                        }
+
                     }
 
                 }

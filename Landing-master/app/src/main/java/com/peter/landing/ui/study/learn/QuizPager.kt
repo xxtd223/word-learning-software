@@ -158,12 +158,15 @@ fun QuizPager(
                 .padding(8.dp)
                 .verticalScroll(scrollState)
         ) {
-            quiz.forEach { alphabet ->
+            val alphabetList = ('a'..'z').toList()
+            alphabetList.forEach { alphabet ->
                 OutlinedButton(
                     onClick = { write(alphabet) },
                     contentPadding = PaddingValues(4.dp),
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary),
                     modifier = Modifier.padding(4.dp)
+                        .size(42.dp)
+                        .padding(2.dp)
                 ) {
                     Text(text = "$alphabet")
                 }

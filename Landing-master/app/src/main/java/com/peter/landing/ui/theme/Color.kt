@@ -2,6 +2,7 @@ package com.peter.landing.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+
 val md_theme_light_primary = Color(0xFF006493)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFCAE6FF)
@@ -32,6 +33,7 @@ val md_theme_light_shadow = Color(0xFF000000)
 val md_theme_light_surfaceTint = Color(0xFF006493)
 val md_theme_light_outlineVariant = Color(0xFFC1C7CE)
 val md_theme_light_scrim = Color(0xFF000000)
+
 
 val md_theme_dark_primary = Color(0xFF8DCDFF)
 val md_theme_dark_onPrimary = Color(0xFF00344F)
