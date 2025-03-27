@@ -6,7 +6,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.peter.landing.ui.about.AboutScreen
 import com.peter.landing.ui.affix.AffixScreen
 import com.peter.landing.ui.affix.AffixViewModel
 import com.peter.landing.ui.ai.AiScreen
@@ -159,26 +158,6 @@ fun LandingNavGraphMain(
             val viewModel = hiltViewModel<HelpViewModel>()
             HelpScreen(
                 viewModel = viewModel,
-                navigateTo = {
-                    navHostController.navigate(it) {
-                        popUpTo(LandingDestination.Main.Home.route) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            )
-        }
-        composable(LandingDestination.Main.About.route) {
-            AboutScreen(
-                navigateToTerms = {
-                    navHostController.navigate(
-                        LandingDestination.Main.About.getNavTermsRoute(it)
-                    ) {
-                        launchSingleTop = true
-                    }
-                },
                 navigateTo = {
                     navHostController.navigate(it) {
                         popUpTo(LandingDestination.Main.Home.route) {
