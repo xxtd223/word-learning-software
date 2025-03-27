@@ -48,39 +48,40 @@ fun HomeActionButtons(
                 onClick = { navigateTo(LandingDestination.Main.Ipa.route) }
             )
 
-            ActionButton(
-                iconRes = R.drawable.ic_affix_24dp,
-                label = "词缀",
-                onClick = { navigateTo(LandingDestination.Main.Affix.route) }
-            )
-
         }
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxWidth()
         ){
-            //
+            ActionButton(
+                iconRes = R.drawable.ic_affix_24dp,
+                label = "词缀",
+                onClick = { navigateTo(LandingDestination.Main.Affix.route) }
+            )
+
             ActionButton(
                 iconRes = R.drawable.ic_homophony,
                 label = "谐音",
                 onClick = { navigateTo(LandingDestination.Main.Homophony.route) }
             )
 
-            //
             ActionButton(
                 iconRes = R.drawable.ic_story,
                 label = "故事",
                 onClick = { navigateTo(LandingDestination.Main.Story.route) }
             )
 
-            //
             ActionButton(
                 iconRes = R.drawable.ic_cartoon,
                 label = "漫画",
                 onClick = { navigateTo(LandingDestination.Main.Cartoon.route) }
             )
-
+        }
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
+        ){
             //
             ActionButton(
                 iconRes = R.drawable.ic_exam,
@@ -117,7 +118,7 @@ private fun ActionButton(
                 painter = painterResource(iconRes),
                 contentDescription = label,
                 tint = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(45.dp)
             )
         }
         Text(
