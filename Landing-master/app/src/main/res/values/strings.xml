@@ -41,31 +41,10 @@
     <string name="new_plan_current_title" translatable="false">当前设定</string>
     <string name="new_plan_today_btn" translatable="false">今天</string>
     <string name="new_plan_tomorrow_btn" translatable="false">明天</string>
-
-    <!--    About-->
-    <string name="about_app_name" translatable="false">上岸单词 Landing</string>
-    <string name="about_version_title" translatable="false">软件版本</string>
-    <string name="about_date_title" translatable="false">更新日期</string>
-    <string name="about_terms" translatable="false">条款</string>
-    <string name="about_service_terms" translatable="false">服务协议</string>
-    <string name="about_service_text" translatable="false">
-        查看软件的服务协议
-    </string>
-    <string name="about_privacy_policy_terms" translatable="false">隐私政策</string>
-    <string name="about_privacy_policy_text" translatable="false">
-        查看软件的隐私政策
-    </string>
-    <string name="about_acknowledge_terms" translatable="false">软件声明</string>
-    <string name="about_acknowledge_text" translatable="false">
-        查看软件的软件声明
-    </string>
-    <string name="about_contact" translatable="false">https://github.com/peterdevacc/Landing</string>
-    <string name="about_advisement" translatable="false">教育应该跟健康的空气一样，自由、免费、必要</string>
-
     <!--    Greeting-->
     <string name="greeting_accept" translatable="false">接受且开始使用</string>
     <string name="greeting_reject" translatable="false">不接受，退出</string>
-    <string name="greeting_slogan" translatable="false">表达准确，沟通流畅，相互理解</string>
+    <string name="greeting_slogan" translatable="false">fighting!</string>
 
     <string name="search_not_exist_hint" translatable="false">单词 %1$s 不在词库范围内</string>
 
