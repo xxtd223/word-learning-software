@@ -3,10 +3,12 @@ package com.peter.landing.ui.plan.chart
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -71,17 +73,18 @@ fun StudyHistoryChart(
             .height(height)
     ) {
         // 边框
-        drawRect(
+        drawRoundRect(
             brush = Brush.linearGradient(
                 colors = listOf(
-                    Color(0xFFFFC2E9FB).copy(alpha = 0.5f), // 50%透明度
-                    Color(0xFFFAA1C4FD).copy(alpha = 0.5f)  // 50%透明度
+                    Color(0xFFFFC2E9FB).copy(alpha = 0.5f),
+                    Color(0xFFFAA1C4FD).copy(alpha = 0.5f)
                 ),
                 start = Offset(0f, 0f),
                 end = Offset(size.width, size.height)
             ),
             topLeft = Offset.Zero,
-            size = Size(size.width, heightPx)
+            size = Size(size.width, heightPx),
+            cornerRadius = CornerRadius(8.dp.toPx())
         )
 
         // 标题

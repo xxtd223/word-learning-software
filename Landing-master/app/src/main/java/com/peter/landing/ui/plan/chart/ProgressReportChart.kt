@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -102,17 +103,18 @@ private fun ProgressChart(todayProgress: List<Float>) {
     ) {
         val fullProgressWidth = this.size.width - dp48Px * 2.4f
 
-        drawRect(
+        drawRoundRect(
             brush = Brush.linearGradient(
                 colors = listOf(
-                    Color(0xFFFFC2E9FB).copy(alpha = 0.5f), // 50%透明度
-                    Color(0xFFFAA1C4FD).copy(alpha = 0.5f)  // 50%透明度
+                    Color(0xFFFFC2E9FB).copy(alpha = 0.5f),
+                    Color(0xFFFAA1C4FD).copy(alpha = 0.5f)
                 ),
                 start = Offset(0f, 0f),
                 end = Offset(size.width, size.height)
             ),
             topLeft = Offset.Zero,
-            size = Size(size.width, heightPx)
+            size = Size(size.width, heightPx),
+            cornerRadius = CornerRadius(8.dp.toPx())
         )
 
         drawText(

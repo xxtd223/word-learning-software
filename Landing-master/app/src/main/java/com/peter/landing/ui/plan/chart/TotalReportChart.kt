@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -119,7 +120,7 @@ private fun TotalChart(
             y = heightPx / 2f + dp16Px * 0.4f
         )
 
-        drawRect(
+        drawRoundRect(
             brush = Brush.linearGradient(
                 colors = listOf(
                     Color(0xFFFFC2E9FB).copy(alpha = 0.5f),
@@ -129,7 +130,8 @@ private fun TotalChart(
                 end = Offset(size.width, size.height)
             ),
             topLeft = Offset.Zero,
-            size = Size(size.width, heightPx)
+            size = Size(size.width, heightPx),
+            cornerRadius = CornerRadius(8.dp.toPx())
         )
 
         drawText(
