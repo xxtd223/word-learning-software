@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.peter.landing.ui.theme.LandingAppTheme
 import java.util.*
+import kotlin.random.Random
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -38,7 +40,6 @@ fun StudyHistoryChart(
 
     // 颜色
     val frameColor = MaterialTheme.colorScheme.onBackground
-    val barColor = Color(0xFF6cb66f)
     val textColor = MaterialTheme.colorScheme.onBackground
     val strokeWidth = 4f
 
@@ -55,7 +56,6 @@ fun StudyHistoryChart(
 
     // 文本布局
     val titleLayout = textMeasurer.measure("学习历史", titleStyle)
-    //val mottoLayout = textMeasurer.measure("Stay Consistent", labelStyle.copy(color = Color(0xFFEC5C5C)))
 
     // 尺寸参数
     val dp16 = with(density) { 16.dp.toPx() }
@@ -72,10 +72,16 @@ fun StudyHistoryChart(
     ) {
         // 边框
         drawRect(
-            color = frameColor,
+            brush = Brush.linearGradient(
+                colors = listOf(
+                    Color(0xFFFFC2E9FB).copy(alpha = 0.5f), // 50%透明度
+                    Color(0xFFFAA1C4FD).copy(alpha = 0.5f)  // 50%透明度
+                ),
+                start = Offset(0f, 0f),
+                end = Offset(size.width, size.height)
+            ),
             topLeft = Offset.Zero,
-            size = Size(size.width, heightPx),
-            style = Stroke(width = strokeWidth)
+            size = Size(size.width, heightPx)
         )
 
         // 标题
@@ -103,7 +109,14 @@ fun StudyHistoryChart(
             val xPos = chartPadding + (barWidth + barSpacing) * index
             val yPos = heightPx - dp36 - barHeight
 
-            // 柱子
+            // 判断颜色，整十数为绿色，否则为黄色
+            val barColor = if (value % 10 == 0) {
+                Color(0xFF96E6A1)
+            } else {
+                Color(0xFFFCC687)
+            }
+
+            // 绘制柱状图
             drawRoundRect(
                 color = barColor,
                 topLeft = Offset(xPos, yPos),
@@ -111,7 +124,7 @@ fun StudyHistoryChart(
                 cornerRadius = CornerRadius(4.dp.toPx())
             )
 
-            // 日期
+            // 绘制日期
             val dateLayout = textMeasurer.measure(date, labelStyle)
             drawText(
                 textLayoutResult = dateLayout,
@@ -121,7 +134,7 @@ fun StudyHistoryChart(
                 )
             )
 
-            // 数值
+            // 绘制数值
             val valueLayout = textMeasurer.measure("$value", labelStyle)
             drawText(
                 textLayoutResult = valueLayout,
@@ -131,15 +144,6 @@ fun StudyHistoryChart(
                 )
             )
         }
-
-        // 底部标语
-        //drawText(
-        //    textLayoutResult = mottoLayout,
-        //    topLeft = Offset(
-        //        (size.width / 2) - (mottoLayout.size.width / 2),
-        //        heightPx - dp24 - mottoLayout.size.height
-        //    )
-        //)
     }
 }
 
@@ -157,7 +161,11 @@ fun StudyHistoryChartPreview() {
                 calendar.timeInMillis = System.currentTimeMillis()
                 calendar.add(Calendar.DATE, -index)
                 val date = "${calendar.get(Calendar.MONTH) + 1}-${calendar.get(Calendar.DAY_OF_MONTH)}"
-                date to listOf(10, 20, 30, 40, 50).random() //还没接数据库，此为模拟数据
+                date to if (Random.nextFloat() < 0.5) {
+                    listOf(30).random()
+                } else {
+                    Random.nextInt(30)
+                } //还没接数据库，此为模拟数据
             }.reversed()
 
             StudyHistoryChart(

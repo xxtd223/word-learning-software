@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.Layout
@@ -90,7 +91,7 @@ private fun TotalChart(
     val totalTextSize = totalTextLayout.size
 
     val mottoTextLayout = textMeasurer.measure(
-        text = AnnotatedString("Carry On"),
+        text = AnnotatedString("Constant Effort Bring Success"),
         style = MaterialTheme.typography.headlineLarge.copy(
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
@@ -102,8 +103,8 @@ private fun TotalChart(
     val radius = heightPx / 3.2f
 
     val dictionaryColor = MaterialTheme.colorScheme.secondary
-    val learnedColor = Color(0xFFF0C867)
-    val totalColor = Color(0xFF9a9ef6)
+    val learnedColor = Color(0xFFFCC687)
+    val totalColor = Color(0xFF09BDFE)
 
     val dp16Px = with(density) { 16.dp.toPx() }
     val dp48Px = with(density) { 48.dp.toPx() }
@@ -119,10 +120,16 @@ private fun TotalChart(
         )
 
         drawRect(
-            color = frameColor,
+            brush = Brush.linearGradient(
+                colors = listOf(
+                    Color(0xFFFFC2E9FB).copy(alpha = 0.5f),
+                    Color(0xFFFAA1C4FD).copy(alpha = 0.5f)
+                ),
+                start = Offset(0f, 0f),
+                end = Offset(size.width, size.height)
+            ),
             topLeft = Offset.Zero,
-            size = Size(this.size.width, heightPx),
-            style = Stroke(width = strokeWidth)
+            size = Size(size.width, heightPx)
         )
 
         drawText(

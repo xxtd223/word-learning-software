@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class PlanViewModel @Inject constructor(
@@ -63,7 +64,15 @@ class PlanViewModel @Inject constructor(
             val calendar = Calendar.getInstance().apply {
                 add(Calendar.DATE, -daysAgo)
             }
-            listOf(10, 20, 30, 40, 50).random().toFloat() //还没接数据库，此为模拟数据
+            getRandomValue().toFloat() //还没接数据库，此为模拟数据
+        }
+    }
+
+    fun getRandomValue(): Int {
+        return if (Random.nextFloat() < 0.5) {
+            listOf(30).random()
+        } else {
+            Random.nextInt(30)
         }
     }
 

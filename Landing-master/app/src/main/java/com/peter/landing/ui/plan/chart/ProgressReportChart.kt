@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.Layout
@@ -73,7 +74,7 @@ private fun ProgressChart(todayProgress: List<Float>) {
     val titleTextSize = titleTextLayoutResult.size
 
     val mottoTextLayout = textMeasurer.measure(
-        text = AnnotatedString("Work Smart"),
+        text = AnnotatedString("Where there is a will ,there is a way!"),
         style = MaterialTheme.typography.headlineLarge.copy(
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
@@ -83,9 +84,9 @@ private fun ProgressChart(todayProgress: List<Float>) {
     val mottoTextSize = mottoTextLayout.size
 
     val chartDataList = listOf(
-        Triple("学习", todayProgress[0], Color(0xFFe6933c)),
-        Triple("单选", todayProgress[1], Color(0xFF6cb66f)),
-        Triple("默写", todayProgress[2], Color(0xFF64abef)),
+        Triple("学习", todayProgress[0], Color(0xFFF286A0)),
+        Triple("单选", todayProgress[1], Color(0xFF96E6A1)),
+        Triple("默写", todayProgress[2], Color(0xFFA1C4FD)),
     )
 
     val dp16Px = with(density) { 16.dp.toPx() }
@@ -102,10 +103,16 @@ private fun ProgressChart(todayProgress: List<Float>) {
         val fullProgressWidth = this.size.width - dp48Px * 2.4f
 
         drawRect(
-            color = frameColor,
+            brush = Brush.linearGradient(
+                colors = listOf(
+                    Color(0xFFFFC2E9FB).copy(alpha = 0.5f), // 50%透明度
+                    Color(0xFFFAA1C4FD).copy(alpha = 0.5f)  // 50%透明度
+                ),
+                start = Offset(0f, 0f),
+                end = Offset(size.width, size.height)
+            ),
             topLeft = Offset.Zero,
-            size = Size(this.size.width, heightPx),
-            style = Stroke(width = strokeWidth)
+            size = Size(size.width, heightPx)
         )
 
         drawText(

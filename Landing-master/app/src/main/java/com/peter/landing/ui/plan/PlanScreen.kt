@@ -126,7 +126,7 @@ private fun PlanContent(
                             .fillMaxSize()
                     ) {
                         val image = if (isDarkMode) {
-                            R.drawable.empty_img_dark
+                            R.drawable.all_correct_dark
                         } else {
                             R.drawable.empty_img_light
                         }
@@ -180,6 +180,24 @@ private fun PlanContent(
                         modifier = Modifier
                             .fillMaxSize()
                     ) {
+                        if (planUiState.studyHistory.isNotEmpty()) {
+                            Box(
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                StudyHistoryChart(
+                                    historyData = planUiState.studyHistory.mapIndexed { index, value ->
+                                        val calendar = Calendar.getInstance().apply {
+                                            add(Calendar.DATE, index - 7) // 从一周前到昨天
+                                        }
+                                        val date = String.format("%02d-%02d",
+                                            calendar.get(Calendar.MONTH) + 1,
+                                            calendar.get(Calendar.DAY_OF_MONTH)
+                                        )
+                                        date to value.toInt()
+                                    }
+                                )
+                            }
+                        }
                         if (planUiState.progressReport.isNotEmpty()) {
                             Box(
                                 modifier = Modifier.padding(16.dp)
@@ -195,25 +213,6 @@ private fun PlanContent(
                                 TotalReportChart(
                                     planUiState.studyPlan.vocabularyName,
                                     planUiState.totalReport
-                                )
-                            }
-                        }
-
-                        if (planUiState.studyHistory.isNotEmpty()) {
-                            Box(
-                                modifier = Modifier.padding(16.dp)
-                            ) {
-                                StudyHistoryChart(
-                                    historyData = planUiState.studyHistory.mapIndexed { index, value ->
-                                        val calendar = Calendar.getInstance().apply {
-                                            add(Calendar.DATE, index - 6) // 从一周前到今天
-                                        }
-                                        val date = String.format("%02d-%02d",
-                                            calendar.get(Calendar.MONTH) + 1,
-                                            calendar.get(Calendar.DAY_OF_MONTH)
-                                        )
-                                        date to value.toInt()
-                                    }
                                 )
                             }
                         }
