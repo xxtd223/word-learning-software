@@ -22,8 +22,8 @@ fun VocabularyItem(
     updateNewPlanVocabulary: (Vocabulary) -> Unit,
 ) {
     val vocabularyImgId = when (vocabulary.name) {
-        Vocabulary.Name.BEGINNER -> R.drawable.vocabulary_beginner
-        else -> R.drawable.vocabulary_intermediate
+        Vocabulary.Name.BEGINNER -> R.drawable.turtle
+        else -> R.drawable.pikachu
     }
 
     Box(

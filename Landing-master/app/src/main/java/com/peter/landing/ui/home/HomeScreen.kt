@@ -162,12 +162,12 @@ fun getStateActionInfo(
     return when (studyState) {
         is StudyState.Learning -> {
             val image = if (studyState.progressState == ProgressState.FINISHED) {
-                R.drawable.home_studying
+                R.drawable.vocabverse
             } else {
                 if (isDarkMode) {
-                    R.drawable.home_learn_dark
+                    R.drawable.vocabverse
                 } else {
-                    R.drawable.home_learn_light
+                    R.drawable.vocabverse
                 }
             }
             val iconAndRoute = when (studyState.progressState) {
@@ -192,12 +192,12 @@ fun getStateActionInfo(
         }
         is StudyState.None, StudyState.PlanFinished -> {
             val image = if (studyState is StudyState.PlanFinished) {
-                R.drawable.home_finished
+                R.drawable.vocabverse
             } else {
                 if (isDarkMode) {
-                    R.drawable.home_default_dark
+                    R.drawable.vocabverse
                 } else {
-                    R.drawable.home_default_light
+                    R.drawable.vocabverse
                 }
             }
 

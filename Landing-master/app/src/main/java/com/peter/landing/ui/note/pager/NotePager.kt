@@ -75,9 +75,9 @@ private fun NoteList(
 @Composable
 private fun NoteListEmpty(isDarkMode: Boolean) {
     val image = if (isDarkMode) {
-        R.drawable.empty_img_dark
+        R.drawable.sleeppangding
     } else {
-        R.drawable.empty_img_light
+        R.drawable.sleeppangding
     }
 
     Column {
@@ -89,6 +89,7 @@ private fun NoteListEmpty(isDarkMode: Boolean) {
                 .padding(16.dp)
                 .weight(3.5f)
                 .fillMaxWidth()
+                    .height(280.dp) // 设置高度
         )
         Spacer(modifier = Modifier.weight(2f))
     }

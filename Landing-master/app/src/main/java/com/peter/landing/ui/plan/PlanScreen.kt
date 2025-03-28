@@ -126,9 +126,9 @@ private fun PlanContent(
                             .fillMaxSize()
                     ) {
                         val image = if (isDarkMode) {
-                            R.drawable.all_correct_dark
+                            R.drawable.plannew
                         } else {
-                            R.drawable.empty_img_light
+                            R.drawable.plannew
                         }
 
                         Spacer(modifier = Modifier.weight(1.2f))

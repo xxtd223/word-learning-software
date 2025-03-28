@@ -82,9 +82,9 @@ fun QuizPager(
                 }
             } else {
                 val image = if (isSystemInDarkTheme()) {
-                    R.drawable.learn_quiz_dark
+                    R.drawable.kedaya
                 } else {
-                    R.drawable.learn_quiz_light
+                    R.drawable.kedaya
                 }
 
                 Image(

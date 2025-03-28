@@ -69,9 +69,9 @@ private fun WrongList(
 @Composable
 private fun WrongListEmpty(isDarkMode: Boolean) {
     val image = if (isDarkMode) {
-        R.drawable.empty_img_dark
+        R.drawable.sleepkedaya
     } else {
-        R.drawable.empty_img_light
+        R.drawable.sleepkedaya
     }
 
     Column {
@@ -83,6 +83,8 @@ private fun WrongListEmpty(isDarkMode: Boolean) {
                 .padding(16.dp)
                 .weight(3.5f)
                 .fillMaxWidth()
+                    .height(280.dp) // 设置高度
+
         )
         Spacer(modifier = Modifier.weight(2f))
     }
