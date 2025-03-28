@@ -27,7 +27,7 @@ fun IpaList(
                     .fillMaxWidth()
                     .height(IntrinsicSize.Min)
             )
-            Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.onBackground)
+            //Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.onBackground)
         }
     }
 }

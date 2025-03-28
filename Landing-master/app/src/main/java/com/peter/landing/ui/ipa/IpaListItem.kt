@@ -1,10 +1,15 @@
 package com.peter.landing.ui.ipa
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -17,11 +22,19 @@ import com.peter.landing.data.local.ipa.Ipa
 fun IpaListItem(
     ipa: Ipa,
     playPron: (String) -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 2.dp)
+            .background(
+                Color(0xFFE3E3E3).copy(alpha = 0.4f),
+                shape = RoundedCornerShape(4.dp)
+            )
+            //.shadow(2.dp, shape = RoundedCornerShape(4.dp), clip = false) // 阴影效果
+            .padding(horizontal = 1.dp)
     ) {
         Text(
             text = ipa.text,
@@ -30,14 +43,9 @@ fun IpaListItem(
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(1f)
         )
-        Spacer(modifier = Modifier.padding(end = 16.dp))
-        Divider(
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier
-                .width(2.dp)
-                .fillMaxHeight()
-        )
-        Spacer(modifier = Modifier.padding(start = 32.dp))
+
+        Spacer(modifier = Modifier.width(16.dp))
+
         Column(
             modifier = Modifier.weight(3f)
         ) {
@@ -47,7 +55,7 @@ fun IpaListItem(
                 color = MaterialTheme.colorScheme.outline,
                 fontSize = 18.sp
             )
-            Spacer(modifier = Modifier.padding(vertical = 1.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = ipa.exampleWordIpa,
                 style = MaterialTheme.typography.titleMedium,
@@ -56,12 +64,13 @@ fun IpaListItem(
                 fontWeight = FontWeight.Bold
             )
         }
+
         IconButton(
             onClick = { playPron(ipa.exampleWordPronName) }
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_sound_24dp),
-                contentDescription = "",
+                contentDescription = "Play Pronunciation",
                 tint = MaterialTheme.colorScheme.secondary
             )
         }
