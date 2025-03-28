@@ -12,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.ui.graphics.Color
 import com.peter.landing.R
 import com.peter.landing.data.local.word.Word
 import com.peter.landing.ui.navigation.LandingDestination
@@ -76,7 +77,7 @@ private fun NoteContent(
                         Icon(
                             painter = painterResource(R.drawable.ic_reverse_24dp),
                             contentDescription = "",
-                            tint = MaterialTheme.colorScheme.secondary
+                            tint = Color.Unspecified
                         )
                     }
                 }

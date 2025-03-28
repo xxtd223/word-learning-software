@@ -1,11 +1,13 @@
 package com.peter.landing.ui.note.pager
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.peter.landing.R
@@ -47,17 +49,19 @@ fun NoteWord(
                 Icon(
                     painter = painterResource(R.drawable.ic_delete_24dp),
                     contentDescription = "",
-                    tint = MaterialTheme.colorScheme.error
+                    tint = Color.Unspecified
                 )
             }
             Spacer(modifier = Modifier.padding(horizontal = 12.dp))
-            IconButton(
-                onClick = { openDictionaryDialog(word) }
+            Box(
+                    modifier = Modifier
+                            .clickable { openDictionaryDialog(word) }
+                            .padding(8.dp) // 可选，增加触摸区域
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_dictionary_24dp),
                     contentDescription = "",
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = Color.Unspecified
                 )
             }
             Spacer(modifier = Modifier.padding(horizontal = 1.dp))

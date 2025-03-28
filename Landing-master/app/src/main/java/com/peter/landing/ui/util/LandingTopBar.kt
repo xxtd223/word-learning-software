@@ -50,7 +50,7 @@ fun LandingTopBar(
                 painter = painterResource(R.drawable.ic_menu_24dp),
                 contentDescription = "",
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(40.dp)
             )
         }
         Spacer(modifier = Modifier.padding(horizontal = 6.dp))
