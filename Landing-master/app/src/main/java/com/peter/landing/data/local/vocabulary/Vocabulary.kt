@@ -15,7 +15,7 @@ data class Vocabulary(
     constructor() : this(Name.NONE, 0, "")
 
     enum class Name(val cnValue: String) {
-        BEGINNER("基本运用"), INTERMEDIATE("生活常用"), NONE("")
+        BEGINNER("四级单词书"), INTERMEDIATE("六级单词书"), NONE("")
     }
 
 }
