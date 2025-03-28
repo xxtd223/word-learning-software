@@ -1,6 +1,8 @@
 package com.peter.landing.ui.home
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,89 +18,39 @@ fun HomeActionButtons(
     navigateTo: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+    val buttonItems = listOf(
+        ActionItem(R.drawable.ic_plan_24dp, "学习计划", LandingDestination.Main.Plan.route),
+        ActionItem(R.drawable.ic_search_24dp, "搜索", LandingDestination.Main.Search.route),
+        ActionItem(R.drawable.ic_note_24dp, "笔记", LandingDestination.Main.Note.route),
+        ActionItem(R.drawable.ic_ipa_24dp, "音标", LandingDestination.Main.Ipa.route),
+        ActionItem(R.drawable.ic_affix_24dp, "词缀", LandingDestination.Main.Affix.route),
+        ActionItem(R.drawable.ic_homophony, "谐音", LandingDestination.Main.Homophony.route),
+        ActionItem(R.drawable.ic_story, "故事", LandingDestination.Main.Story.route),
+        ActionItem(R.drawable.ic_cartoon, "漫画", LandingDestination.Main.Cartoon.route),
+        ActionItem(R.drawable.ic_exam, "真题", LandingDestination.Main.Exam.route),
+        ActionItem(R.drawable.ic_image_rec, "图片识别翻译", LandingDestination.Main.ImageRec.route)
+    )
+
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp),
         modifier = modifier.fillMaxWidth()
-    ){
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = modifier.fillMaxWidth()
-        ) {
-
+    ) {
+        items(items = buttonItems) { item ->
             ActionButton(
-                iconRes = R.drawable.ic_plan_24dp,
-                label = "学习计划",
-                onClick = { navigateTo(LandingDestination.Main.Plan.route) }
-            )
-
-            ActionButton(
-                iconRes = R.drawable.ic_search_24dp,
-                label = "搜索",
-                onClick = { navigateTo(LandingDestination.Main.Search.route) }
-            )
-
-            ActionButton(
-                iconRes = R.drawable.ic_note_24dp,
-                label = "笔记",
-                onClick = { navigateTo(LandingDestination.Main.Note.route) }
-            )
-
-            ActionButton(
-                iconRes = R.drawable.ic_ipa_24dp,
-                label = "音标",
-                onClick = { navigateTo(LandingDestination.Main.Ipa.route) }
-            )
-
-        }
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()
-        ){
-            ActionButton(
-                iconRes = R.drawable.ic_affix_24dp,
-                label = "词缀",
-                onClick = { navigateTo(LandingDestination.Main.Affix.route) }
-            )
-
-            ActionButton(
-                iconRes = R.drawable.ic_homophony,
-                label = "谐音",
-                onClick = { navigateTo(LandingDestination.Main.Homophony.route) }
-            )
-
-            ActionButton(
-                iconRes = R.drawable.ic_story,
-                label = "故事",
-                onClick = { navigateTo(LandingDestination.Main.Story.route) }
-            )
-
-            ActionButton(
-                iconRes = R.drawable.ic_cartoon,
-                label = "漫画",
-                onClick = { navigateTo(LandingDestination.Main.Cartoon.route) }
-            )
-        }
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()
-        ){
-            //
-            ActionButton(
-                iconRes = R.drawable.ic_exam,
-                label = "真题",
-                onClick = { navigateTo(LandingDestination.Main.Exam.route) }
-            )
-
-            //
-            ActionButton(
-                iconRes = R.drawable.ic_image_rec,
-                label = "图片识别翻译",
-                onClick = { navigateTo(LandingDestination.Main.ImageRec.route) }
+                iconRes = item.iconRes,
+                label = item.label,
+                onClick = { navigateTo(item.route) }
             )
         }
     }
 }
+
+private data class ActionItem(
+    val iconRes: Int,
+    val label: String,
+    val route: String
+)
 
 @Composable
 private fun ActionButton(
@@ -109,7 +61,7 @@ private fun ActionButton(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.width(80.dp)
+        modifier = modifier.width(80.dp).padding(vertical = 8.dp)
     ) {
         IconButton(
             onClick = onClick,

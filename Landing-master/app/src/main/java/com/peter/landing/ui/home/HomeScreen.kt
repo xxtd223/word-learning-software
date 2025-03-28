@@ -127,6 +127,8 @@ private fun HomeContent(
                             modifier = Modifier.padding(vertical = 16.dp)
                         )
 
+                        CalendarExample()
+
                         Row(
                             verticalAlignment = Alignment.Bottom,
                             modifier = Modifier
