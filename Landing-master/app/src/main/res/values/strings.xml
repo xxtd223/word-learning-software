@@ -1,8 +1,8 @@
 <resources>
     <string name="app_en_name">Landing</string>
-    <string name="app_cn_name" translatable="false">上岸单词</string>
+    <string name="app_cn_name" translatable="false">VocabVerse</string>
     <string name="app_version" translatable="false">2.0.3</string>
-    <string name="app_last_update" translatable="false">2023年 3月 25号</string>
+    <string name="app_last_update" translatable="false">2025年 3月 25号</string>
 
     <string name="screen_home" translatable="false">首页</string>
     <string name="screen_plan" translatable="false">学习计划</string>
@@ -11,7 +11,6 @@
     <string name="screen_note" translatable="false">单词笔记</string>
     <string name="screen_affix" translatable="false">词缀表格</string>
     <string name="screen_help" translatable="false">帮助</string>
-    <string name="screen_about" translatable="false">关于</string>
 
     <string name="screen_homophony" translatable="false">谐音梗</string>
     <string name="screen_story" translatable="false">故事</string>
