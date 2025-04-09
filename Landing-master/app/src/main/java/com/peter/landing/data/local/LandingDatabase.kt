@@ -45,7 +45,7 @@ import com.peter.landing.data.util.Converters
         VocabularyBeginnerView::class,
         VocabularyIntermediateView::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

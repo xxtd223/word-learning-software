@@ -124,22 +124,18 @@ sealed interface LandingDestination {
             }
         }
 
-        object ImageRec: Main {
-            override val route = "imageRec"
-            override val textId = R.string.screen_imageRec
-            override val iconId = R.drawable.ic_image_rec
+        object ImageTranslation: Main {
+            override val route = "imageTranslation"
+            override val textId = R.string.screen_image_translation
+            override val iconId = R.drawable.ic_camera
             override val iconCd = R.string.ic_content_description
-
-            fun getNavTermsRoute(termsType: Terms.Type): String {
-                return "${General.Terms.route}/${termsType.name}"
-            }
         }
 
         companion object {
             private val mainList = listOf(
                 Home, Plan, Search, Note, Ipa,
-                Affix, Help, Ai ,
-                Homophony, Story, Cartoon,Exam, ImageRec
+                Affix, Help, Ai,
+                Homophony, Story, Cartoon, Exam, ImageTranslation
             )
 
             fun getNavigationList(): List<Main> {

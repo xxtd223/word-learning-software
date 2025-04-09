@@ -28,7 +28,7 @@ fun HomeActionButtons(
         ActionItem(R.drawable.ic_story, "故事", LandingDestination.Main.Story.route),
         ActionItem(R.drawable.ic_cartoon, "漫画", LandingDestination.Main.Cartoon.route),
         ActionItem(R.drawable.ic_exam, "真题", LandingDestination.Main.Exam.route),
-        ActionItem(R.drawable.ic_image_rec, "图片识别翻译", LandingDestination.Main.ImageRec.route)
+        ActionItem(R.drawable.ic_camera, "图片翻译", LandingDestination.Main.ImageTranslation.route)
     )
 
     LazyRow(

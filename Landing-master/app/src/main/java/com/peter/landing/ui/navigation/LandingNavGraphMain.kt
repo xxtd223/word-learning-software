@@ -21,7 +21,6 @@ import com.peter.landing.ui.screen.help.HelpScreen
 import com.peter.landing.ui.viewModel.HelpViewModel
 import com.peter.landing.ui.screen.home.HomeScreen
 import com.peter.landing.ui.viewModel.HomeViewModel
-import com.peter.landing.ui.screen.ImageRecScreen
 import com.peter.landing.ui.screen.ipa.IpaScreen
 import com.peter.landing.ui.viewModel.IpaViewModel
 import com.peter.landing.ui.screen.note.NoteScreen
@@ -32,6 +31,7 @@ import com.peter.landing.ui.screen.search.SearchScreen
 import com.peter.landing.ui.viewModel.SearchViewModel
 import com.peter.landing.ui.screen.TermScreen
 import com.peter.landing.ui.viewModel.TermViewModel
+import com.peter.landing.ui.imageTranslation.ImageTranslationScreen
 
 @Composable
 fun LandingNavGraphMain(
@@ -273,15 +273,8 @@ fun LandingNavGraphMain(
             )
         }
 
-        composable(LandingDestination.Main.ImageRec.route) {
-            ImageRecScreen(
-                navigateToTerms = {
-                    navHostController.navigate(
-                        LandingDestination.Main.ImageRec.getNavTermsRoute(it)
-                    ) {
-                        launchSingleTop = true
-                    }
-                },
+        composable(LandingDestination.Main.ImageTranslation.route) {
+            ImageTranslationScreen(
                 navigateTo = {
                     navHostController.navigate(it) {
                         popUpTo(LandingDestination.Main.Home.route) {

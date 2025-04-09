@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import androidx.room.Index
 import com.peter.landing.data.local.progress.StudyProgress
 
 @Entity(
@@ -11,8 +12,15 @@ import com.peter.landing.data.local.progress.StudyProgress
     foreignKeys = [
         ForeignKey(
             entity = StudyProgress::class,
-            parentColumns = ["id"], childColumns = ["study_progress_id"],
+            parentColumns = ["id"],
+            childColumns = ["study_progress_id"],
             onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [
+        Index(
+            value = ["study_progress_id"],
+            name = "index_wrong_study_progress_id"
         )
     ]
 )

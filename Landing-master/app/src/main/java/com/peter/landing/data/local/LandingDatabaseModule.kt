@@ -2,6 +2,8 @@ package com.peter.landing.data.local
 
 import android.app.Application
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.peter.landing.data.local.affix.AffixCatalogDAO
 import com.peter.landing.data.local.affix.AffixDAO
 import com.peter.landing.data.local.help.HelpCatalogDAO
@@ -27,6 +29,17 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object LandingDatabaseModule {
 
+    private val MIGRATION_1_2 = object : Migration(1, 2) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            // 删除可能存在的旧索引
+            database.execSQL("DROP INDEX IF EXISTS `idx_wrong_study_progress_id`")
+            database.execSQL("DROP INDEX IF EXISTS `index_wrong_study_progress_id`")
+            
+            // 创建新索引
+            database.execSQL("CREATE INDEX IF NOT EXISTS `index_wrong_study_progress_id` ON `wrong` (`study_progress_id`)")
+        }
+    }
+
     @Provides
     @Singleton
     fun provideLandingDatabase(application: Application): LandingDatabase {
@@ -34,7 +47,10 @@ object LandingDatabaseModule {
             application,
             LandingDatabase::class.java,
             DATABASE_NAME
-        ).createFromAsset(DATABASE_PATH).build()
+        )
+        .createFromAsset(DATABASE_PATH)
+        .addMigrations(MIGRATION_1_2)
+        .build()
     }
 
     @Provides

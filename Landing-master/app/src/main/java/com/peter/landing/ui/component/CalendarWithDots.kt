@@ -38,10 +38,16 @@ fun CalendarWithDots(
 ) {
     val daysInMonth = yearMonth.lengthOfMonth()
     val firstDayOfMonth = yearMonth.atDay(1).dayOfWeek
-    val startOffset = (firstDayOfMonth.value + 6) % 7 // 对齐：周一=0
+    val startOffset = firstDayOfMonth.value % 7 // 0 for Sunday, 1 for Monday, etc.
 
-    // 生成当前月份所有日期（用于过滤）
-    val currentMonthDates = (1..daysInMonth).map { yearMonth.atDay(it) }
+    // Generate all days in month with empty slots for offset
+    val days = List(42) { index ->
+        if (index >= startOffset && index < startOffset + daysInMonth) {
+            yearMonth.atDay(index - startOffset + 1)
+        } else {
+            null
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -52,12 +58,12 @@ fun CalendarWithDots(
             text = "本月学习情况",
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Left,
-            color = Color(0xFF6200EE),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.SansSerif
+            color = Color(0xFF6200EE), // 直接指定颜色
+            fontSize = 20.sp, // 字体大小
+            fontWeight = FontWeight.Bold, // 字体粗细
+            fontFamily = FontFamily.SansSerif // 字体家族
         )
-
+        // Month and year header
         Text(
             text = "${yearMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault())} ${yearMonth.year}",
             style = MaterialTheme.typography.titleLarge,
@@ -67,6 +73,7 @@ fun CalendarWithDots(
             textAlign = TextAlign.Center
         )
 
+        // Weekday headers
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -82,15 +89,9 @@ fun CalendarWithDots(
             }
         }
 
+        // Calendar grid
         LazyColumn {
-            items((0..5).map { weekOffset -> // 固定6周行
-                (0..6).map { dayOffset ->  // 每周7天
-                    val dateIndex = weekOffset * 7 + dayOffset
-                    if (dateIndex >= startOffset && dateIndex < startOffset + daysInMonth) {
-                        yearMonth.atDay(dateIndex - startOffset + 1)
-                    } else null
-                }
-            }) { week ->
+            items(days.chunked(7)) { week ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
@@ -105,6 +106,7 @@ fun CalendarWithDots(
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                     verticalArrangement = Arrangement.Center
                                 ) {
+                                    // Date number
                                     Text(
                                         text = date.dayOfMonth.toString(),
                                         modifier = Modifier
@@ -113,8 +115,8 @@ fun CalendarWithDots(
                                         textAlign = TextAlign.Center
                                     )
 
-                                    // 确保日期在当前月且被标记
-                                    if (date in currentMonthDates && date in markedDates) {
+                                    // Green dot if date is marked
+                                    if (markedDates.contains(date)) {
                                         Box(
                                             modifier = Modifier
                                                 .size(6.dp)
@@ -131,6 +133,7 @@ fun CalendarWithDots(
         }
     }
 }
+
 
 @Composable
 fun CalendarExample() {
