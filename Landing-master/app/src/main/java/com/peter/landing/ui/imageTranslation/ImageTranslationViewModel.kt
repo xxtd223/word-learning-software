@@ -20,7 +20,7 @@ import com.peter.landing.databinding.LayoutImageTranslationBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class ImageTranslationFragment : Fragment() {
+class ImageTranslationViewModel : Fragment() {
     private var _binding: LayoutImageTranslationBinding? = null
     private val binding get() = _binding!!
     
