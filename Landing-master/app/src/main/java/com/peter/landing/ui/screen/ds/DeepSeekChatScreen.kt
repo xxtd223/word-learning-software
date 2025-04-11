@@ -12,28 +12,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.peter.landing.ui.viewModel.DeepSeekViewModel
+
+var mess = ""
 
 @Composable
 fun DeepSeekChatScreen(
@@ -122,13 +117,37 @@ fun DeepSeekChatScreen(
                 onClick = {
                     if (selectedWords.value.isNotEmpty()) {
                         val prompt = if (selectedWords.value.size == 1) {
-                            "${selectedWords.value.first()}这个词的故事是什么？\n要求：1.这个故事可以有效帮助理解这些词的释义。\n2.这个故事简短易懂。"
+                            "角色:你是一个专业的故事家，能够根据用户提供的英文单词，丰富情节，并使用英文输出。 \n" +
+                                    "\n" +
+                                    "要求 \n" +
+                                    "1. 描述要详细、准确，充分展现单词意思。 \n" +
+                                    "2. 语言生动、有趣，富有表现力。 \n" +
+                                    "3. 输出一定是英文！！！！ \n" +
+                                    "\n" +
+                                    "限制 \n" +
+                                    "1. 描述总长度不超过 350 个单词。 \n" +
+                                    "2. 主角（两个人）姓名：Anon Chihaya,Nagasaki Soyo\n" +
+                                    "3.不添加无关内容。你只需要回答故事就行了，其他的东西一个字也不要说\n " +
+                                    "如果你准备好了，请回答"+
+                            "${selectedWords.value.first()}"
                         } else {
-                            "${selectedWords.value.joinToString("、")}这两个单词能组成什么故事？\n" +
-                                    "要求：1.这个故事可以有效帮助理解这些词的释义。\n" +
-                                    "2.这个故事简短易懂。"
+                            "角色:你是一个专业的故事家，能够根据用户提供的英文单词，丰富情节，并使用英文输出。 \n" +
+                                    "\n" +
+                                    "要求 \n" +
+                                    "1. 描述要详细、准确，充分展现单词意思。 \n" +
+                                    "2. 语言生动、有趣，富有表现力。 \n" +
+                                    "3. 输出一定是英文！！！！ \n" +
+                                    "\n" +
+                                    "限制 \n" +
+                                    "1. 描述总长度不超过 350 个单词。 \n" +
+                                    "2. 主角（两个人）姓名：Anon Chihaya,Nagasaki Soyo\n" +
+                                    "3.不添加无关内容。你只需要回答故事就行了，其他的东西一个字也不要说\n " +
+                                    "如果你准备好了，请回答"+
+                            "${selectedWords.value.joinToString("、")}"
+
                         }
                         viewModel.sendPrompt(prompt)
+
                         selectedWords.value = emptySet() // 查询后清空选择
                     }
                 },
@@ -184,6 +203,7 @@ fun ChatHistory(
     isLoading: Boolean,
     modifier: Modifier = Modifier
 ) {
+
     Surface(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
@@ -194,38 +214,58 @@ fun ChatHistory(
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            if (history.isEmpty() && currentResponse.isEmpty()) {
+            val messages = history.split("\n\n\n").filter { it.isNotBlank() }
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                reverseLayout = true
+            ) {
+                // 显示 loading 时的占位消息
+                if (isLoading) {
+                    item {
+                        ChatBubble(
+                            text = "思考中",
+                            isUser = false,
+                            isTyping = true // 动画效果
+                        )
+                    }
+                }
+
+                // 显示完整历史
+                items(messages.reversed()) { message ->
+                    if (message.startsWith("用户: ")) {
+                        ChatBubble(
+                            text = message.removePrefix("用户: "),
+                            isUser = true
+                        )
+                    } else if (message.startsWith("助手: ")) {
+                        val cleanedMessage = message
+                            .removePrefix("助手: ")
+                            .replace(Regex("<think>.*?</think>", RegexOption.DOT_MATCHES_ALL), "")
+
+                        mess = cleanedMessage
+
+                        ChatBubble(
+                            text = cleanedMessage,
+                            isUser = false
+                        )
+                    }
+                }
+            }
+
+            // 如果完全没有历史和当前响应
+            if (history.isEmpty() && currentResponse.isEmpty() && !isLoading) {
                 Text(
                     text = "查询结果将显示在这里...",
                     modifier = Modifier.align(Alignment.Center),
                     color = Color.Gray,
                     textAlign = TextAlign.Center
                 )
-            } else {
-                val messages = history.split("\n\n\n").filter { it.isNotBlank() }
-
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    reverseLayout = true
-                ) {
-                    if (currentResponse.isNotBlank()) {
-                        item {
-                            ChatBubble(
-                                text = currentResponse,
-                                isUser = false,
-                                isTyping = isLoading
-                            )
-                        }
-                    }
-                }
-            }
-
-            if (isLoading && currentResponse.isEmpty()) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
     }
 }
+
 
 @Composable
 fun ChatBubble(
@@ -271,3 +311,12 @@ fun ChatBubble(
         }
     }
 }
+
+
+//if(!mess.isEmpty()){
+//                            viewModel.sendSilentPrompt(mess)
+//                            mess = ""
+//                        }
+//
+//                        val he = viewModel.hiddenResponse
+//                        Log.d("double", "二次询问: $he")

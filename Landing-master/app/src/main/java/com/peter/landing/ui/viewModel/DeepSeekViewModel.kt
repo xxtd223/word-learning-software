@@ -14,42 +14,78 @@ import kotlinx.coroutines.launch
 
 class DeepSeekViewModel : ViewModel() {
     private val deepSeekService = DeepSeekService()
-    private val TAG = "DeepSeekDebug00" // 定义日志标签
+    private val TAG = "DeepSeekDebug00"
 
     var uiState by mutableStateOf(DeepSeekUiState())
+        private set
+
+    var hiddenResponse by mutableStateOf("")
         private set
 
     private var currentJob: Job? = null
 
     fun sendPrompt(prompt: String) {
-        currentJob?.cancel() // 取消之前的请求
+        currentJob?.cancel()
 
         currentJob = viewModelScope.launch {
+            val buffer = StringBuilder()
+
             deepSeekService.streamResponse(prompt)
                 .onStart {
-                    Log.d(TAG, "开始请求，用户输入: $prompt") // 打印用户输入
+                    Log.d(TAG, "开始请求，用户输入: $prompt")
+
                     uiState = uiState.copy(
                         isLoading = true,
                         currentResponse = "",
-                        fullResponse = uiState.fullResponse + "\n用户: $prompt"
+                        fullResponse = uiState.fullResponse + "\n\n\n用户: $prompt"
                     )
                 }
-                .onCompletion {
-                        cause ->
-                    if (cause == null) {
-                        Log.d(TAG, "请求完成，最终回复: ${uiState.currentResponse}") // 打印最终回复
+                .onCompletion { cause ->
+                    val finalResponse = buffer.toString()
+                    val newFullResponse = if (finalResponse.isNotBlank()) {
+                        uiState.fullResponse + "\n\n\n助手: $finalResponse"
                     } else {
-                        Log.e(TAG, "请求失败: ${cause.message}") // 打印错误
+                        uiState.fullResponse + "\n\n\n助手: （无响应）"
                     }
+
                     uiState = uiState.copy(
                         isLoading = false,
-                        fullResponse = uiState.fullResponse + "\n助手: ${uiState.currentResponse}"
+                        currentResponse = "",
+                        fullResponse = newFullResponse
                     )
+
+                    if (cause == null) {
+                        Log.d(TAG, "请求完成，最终回复: $buffer")
+                    } else {
+                        Log.e(TAG, "请求失败: ${cause.message}")
+                    }
                 }
                 .collect { chunk ->
-                    uiState = uiState.copy(
-                        currentResponse = uiState.currentResponse + chunk
-                    )
+                    buffer.append(chunk)
+                }
+        }
+    }
+
+    fun sendSilentPrompt(prompt: String) {
+        viewModelScope.launch {
+            val buffer = StringBuilder()
+
+            deepSeekService.streamResponse(prompt)
+                .onStart {
+                    Log.d(TAG, "开始静默请求: $prompt")
+                    hiddenResponse = ""
+                }
+                .onCompletion { cause ->
+                    if (cause == null) {
+                        Log.d(TAG, "静默请求完成，结果: $buffer")
+                        hiddenResponse = buffer.toString()
+                    } else {
+                        Log.e(TAG, "静默请求失败: ${cause.message}")
+                        hiddenResponse = "（请求失败）"
+                    }
+                }
+                .collect { chunk ->
+                    buffer.append(chunk)
                 }
         }
     }
@@ -57,6 +93,7 @@ class DeepSeekViewModel : ViewModel() {
     fun clearConversation() {
         currentJob?.cancel()
         uiState = DeepSeekUiState()
+        hiddenResponse = ""
     }
 }
 

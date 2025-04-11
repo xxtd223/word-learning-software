@@ -1,7 +1,6 @@
 package com.peter.landing.domain
 
 import android.util.Log
-import androidx.annotation.WorkerThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
