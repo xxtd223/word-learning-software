@@ -18,8 +18,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,7 +30,26 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.peter.landing.ui.viewModel.DeepSeekViewModel
 
-var mess = ""
+var mess by mutableStateOf("")
+
+val description = "你是一个专业的四格漫画画家，能够根据用户提供的简单故事情节和角色设定，将给定的故事分成4份，丰富每一格漫画的画面描述，并使用英文输出，描述开头需带上[4koma]。 \n" +
+        "\n" +
+        "## 示例 \n" +
+        "[4koma] In this delightful and charming sequence, \n" +
+        "[SCENE-1] <Sora>, a creative and observant young artist with blue eyes and short purple hair, is seated at a restaurant table, diligently sketching on a napkin while a waiter, wearing a red and white striped apron, approaches with a concerned expression, requesting more napkins; \n" +
+        "[SCENE-2] as the scene transitions, <Sora> is now in a car, eyes sparkling with inspiration, pointing excitedly at a small, round creature with a red shell on the dashboard, while musical notes float in the air, indicating a moment of creative epiphany; \n" +
+        "[SCENE-3] at the beach, <Sora> is engrossed in an intense gaze with a fish-like creature emerging from the water, the sun shining brightly in the background, casting a warm glow over the scene; \n" +
+        "[SCENE-4] back in the car, <Sora> joyfully exclaims upon finding ink, ready to capture the new inspiration, while a squid-like creature, with a mischievous expression, stands nearby, holding a pen, as if ready to assist in the creative process. \n" +
+        "\n" +
+        "要求 \n" +
+        "1. 严格按照[4koma]和[SCENE-1/2/3/4]的格式进行描述。 \n" +
+        "2. 输出一定是英文！！！！ \n" +
+        "\n" +
+        "限制 \n" +
+        "1. 描述总长度一定一定不超过 350 个单词！！！！\n" +
+        "2. 一定只回答以上格式的内容不添加无关内容！！！！\n" +
+        "\n" +
+        " 如果你准备好了，那么故事为："
 
 @Composable
 fun DeepSeekChatScreen(
@@ -128,9 +149,10 @@ fun DeepSeekChatScreen(
                                     "1. 描述总长度不超过 350 个单词。 \n" +
                                     "2. 主角（两个人）姓名：Anon Chihaya,Nagasaki Soyo\n" +
                                     "3.不添加无关内容。你只需要回答故事就行了，其他的东西一个字也不要说\n " +
-                                    "如果你准备好了，请回答"+
+                                    "如果你准备好了，请回答：\n"+
                             "${selectedWords.value.first()}"
-                        } else {
+                        }
+                        else {
                             "角色:你是一个专业的故事家，能够根据用户提供的英文单词，丰富情节，并使用英文输出。 \n" +
                                     "\n" +
                                     "要求 \n" +
@@ -157,6 +179,22 @@ fun DeepSeekChatScreen(
                 Text("查询")
             }
         }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = {
+                    val combinedPrompt = "$description\n\n$mess"
+                    viewModel.sendSilentPrompt(combinedPrompt)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                enabled = (!viewModel.uiState.isLoading) && (mess.isNotEmpty()) && (!viewModel.hiddenUiState.isLoading)
+            ) {
+                Text("分析故事结构")
+            }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 
@@ -311,12 +349,3 @@ fun ChatBubble(
         }
     }
 }
-
-
-//if(!mess.isEmpty()){
-//                            viewModel.sendSilentPrompt(mess)
-//                            mess = ""
-//                        }
-//
-//                        val he = viewModel.hiddenResponse
-//                        Log.d("double", "二次询问: $he")

@@ -7,6 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peter.landing.domain.DeepSeekService
+import com.peter.landing.domain.extract4komaScenes
+import com.peter.landing.domain.postToGenerateEndpoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -19,7 +21,7 @@ class DeepSeekViewModel : ViewModel() {
     var uiState by mutableStateOf(DeepSeekUiState())
         private set
 
-    var hiddenResponse by mutableStateOf("")
+    var hiddenUiState by mutableStateOf(DeepSeekUiState())
         private set
 
     private var currentJob: Job? = null
@@ -55,7 +57,7 @@ class DeepSeekViewModel : ViewModel() {
                     )
 
                     if (cause == null) {
-                        Log.d(TAG, "请求完成，最终回复: $buffer")
+                        Log.d(TAG, "请求完成，最终回复111: $buffer")
                     } else {
                         Log.e(TAG, "请求失败: ${cause.message}")
                     }
@@ -73,15 +75,36 @@ class DeepSeekViewModel : ViewModel() {
             deepSeekService.streamResponse(prompt)
                 .onStart {
                     Log.d(TAG, "开始静默请求: $prompt")
-                    hiddenResponse = ""
+                    hiddenUiState = hiddenUiState.copy(
+                        isLoading = true,
+                        currentResponse = "",
+                        fullResponse = hiddenUiState.fullResponse + prompt
+                    )
                 }
                 .onCompletion { cause ->
-                    if (cause == null) {
-                        Log.d(TAG, "静默请求完成，结果: $buffer")
-                        hiddenResponse = buffer.toString()
+                    val finalResponse = buffer.toString()
+                    val newFullResponse = if (finalResponse.isNotBlank()) {
+                        hiddenUiState.fullResponse + finalResponse
                     } else {
-                        Log.e(TAG, "静默请求失败: ${cause.message}")
-                        hiddenResponse = "（请求失败）"
+                        hiddenUiState.fullResponse + "（请求失败）"
+                    }
+
+                    hiddenUiState = hiddenUiState.copy(
+                        isLoading = false,
+                        currentResponse = "",
+                        fullResponse = newFullResponse
+                    )
+
+                    if (cause == null) {
+
+                        Log.d(TAG, "请求完成，最终回复: $buffer")
+//目前故事传递功能正在调试，目前注释掉
+//                        viewModelScope.launch {
+//                            val result = postToGenerateEndpoint(finalResponse)
+//                            Log.d(TAG, "发送到生成接口返回：$result")
+//                        }
+                    } else {
+                        Log.e(TAG, "请求失败: ${cause.message}")
                     }
                 }
                 .collect { chunk ->
@@ -93,7 +116,7 @@ class DeepSeekViewModel : ViewModel() {
     fun clearConversation() {
         currentJob?.cancel()
         uiState = DeepSeekUiState()
-        hiddenResponse = ""
+        hiddenUiState = DeepSeekUiState()
     }
 }
 

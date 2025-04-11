@@ -64,7 +64,6 @@ class DeepSeekService(
                 data: String
             ) {
                 val trimmedData = data.trim()
-                Log.d("DeepSeekDebug", "收到完整数据: $trimmedData")
 
                 if (trimmedData == "[DONE]") {
                     // 请求结束时打印最终结果
