@@ -7,7 +7,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peter.landing.domain.DeepSeekService
-import com.peter.landing.domain.extract4komaScenes
 import com.peter.landing.domain.postToGenerateEndpoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
@@ -18,11 +17,15 @@ class DeepSeekViewModel : ViewModel() {
     private val deepSeekService = DeepSeekService()
     private val TAG = "DeepSeekDebug00"
 
+    var sendFlag by mutableStateOf(false)
+
     var uiState by mutableStateOf(DeepSeekUiState())
         private set
 
     var hiddenUiState by mutableStateOf(DeepSeekUiState())
         private set
+
+    private var ss:String = ""
 
     private var currentJob: Job? = null
 
@@ -96,13 +99,11 @@ class DeepSeekViewModel : ViewModel() {
                     )
 
                     if (cause == null) {
-
                         Log.d(TAG, "请求完成，最终回复: $buffer")
-//目前故事传递功能正在调试，目前注释掉
-//                        viewModelScope.launch {
-//                            val result = postToGenerateEndpoint(finalResponse)
-//                            Log.d(TAG, "发送到生成接口返回：$result")
-//                        }
+                        ss = finalResponse
+                        if (ss.isNotEmpty()) {
+                            sendFlag = true
+                        }
                     } else {
                         Log.e(TAG, "请求失败: ${cause.message}")
                     }
@@ -118,7 +119,17 @@ class DeepSeekViewModel : ViewModel() {
         uiState = DeepSeekUiState()
         hiddenUiState = DeepSeekUiState()
     }
+
+    fun sendR(){
+        viewModelScope.launch {
+            val result = postToGenerateEndpoint(ss)
+            Log.d(TAG, "发送到生成接口返回：$result")
+        }
+    }
 }
+
+
+
 
 data class DeepSeekUiState(
     val isLoading: Boolean = false,

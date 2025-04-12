@@ -59,7 +59,8 @@ fun DeepSeekChatScreen(
     // 定义10个单词
     val words = listOf(
         "apple", "banana", "orange", "grape", "pear",
-        "strawberry", "blueberry", "kiwi", "mango", "pineapple"
+        "strawberry", "blueberry", "kiwi", "mango", "pineapple",
+        "guitar","band","stage"
     )
 
     // 使用Set来记录选中的单词，支持多选
@@ -188,10 +189,19 @@ fun DeepSeekChatScreen(
                     val combinedPrompt = "$description\n\n$mess"
                     viewModel.sendSilentPrompt(combinedPrompt)
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.weight(1f).padding(end = 4.dp),
                 enabled = (!viewModel.uiState.isLoading) && (mess.isNotEmpty()) && (!viewModel.hiddenUiState.isLoading)
             ) {
                 Text("分析故事结构")
+            }
+            Button(
+                onClick = {
+                    viewModel.sendR()
+                },
+                modifier = Modifier.weight(1f).padding(start = 4.dp),
+                enabled = viewModel.sendFlag
+            ) {
+                Text("sendR")
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
