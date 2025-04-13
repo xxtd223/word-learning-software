@@ -1,4 +1,4 @@
-package com.peter.landing.ui.imageTranslation
+package com.peter.landing.ui.screen
 
 import android.Manifest
 import android.content.Context
@@ -33,7 +33,6 @@ import com.google.mlkit.nl.translate.TranslatorOptions
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import java.util.concurrent.Executor
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -64,7 +63,7 @@ fun ImageTranslationScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Camera Preview
+        // 相机预览区域
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -86,7 +85,7 @@ fun ImageTranslationScreen(
                     modifier = Modifier.fillMaxSize()
                 )
                 
-                // Capture Button
+                // 拍照按钮
                 FloatingActionButton(
                     onClick = {
                         captureImage(
@@ -108,7 +107,7 @@ fun ImageTranslationScreen(
             }
         }
         
-        // Results Container
+        // 结果显示区
         Column(
             modifier = Modifier
                 .background(Color.White)

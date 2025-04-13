@@ -1,4 +1,4 @@
-package com.peter.landing.ui.imageTranslation
+package com.peter.landing.ui.viewModel
 
 import android.Manifest
 import android.content.pm.PackageManager

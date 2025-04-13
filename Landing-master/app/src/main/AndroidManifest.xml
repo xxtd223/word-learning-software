@@ -5,9 +5,9 @@
     <application
         android:usesCleartextTraffic="true"
         android:name=".LandingApp"
-        android:icon="@mipmap/landing_launcher"
+        android:icon="@mipmap/vocabverse_launcher"
         android:label="@string/app_en_name"
-        android:roundIcon="@mipmap/landing_launcher_round"
+        android:roundIcon="@mipmap/vocabverse_launcher_round"
         android:supportsRtl="true">
         <activity
             android:name=".ui.MainActivity"

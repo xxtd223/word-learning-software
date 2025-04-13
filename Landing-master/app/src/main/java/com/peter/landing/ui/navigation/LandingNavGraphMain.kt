@@ -34,7 +34,7 @@ import com.peter.landing.ui.screen.search.SearchScreen
 import com.peter.landing.ui.viewModel.SearchViewModel
 import com.peter.landing.ui.screen.TermScreen
 import com.peter.landing.ui.viewModel.TermViewModel
-import com.peter.landing.ui.imageTranslation.ImageTranslationScreen
+import com.peter.landing.ui.screen.ImageTranslationScreen
 
 @Composable
 fun LandingNavGraphMain(
