@@ -1,11 +1,14 @@
 package com.peter.landing.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.peter.landing.ui.screen.*
 import com.peter.landing.ui.screen.affix.AffixScreen
 import com.peter.landing.ui.viewModel.AffixViewModel
 import com.peter.landing.ui.screen.AiScreen
@@ -232,6 +235,7 @@ fun LandingNavGraphMain(
         }
 
         composable(LandingDestination.Main.Cartoon.route) {
+            val generationState = remember { mutableStateOf(GenerationState.Idle) }
             CartoonScreen(
                 navigateToTerms = {
                     navHostController.navigate(
@@ -248,7 +252,10 @@ fun LandingNavGraphMain(
                         launchSingleTop = true
                         restoreState = true
                     }
-                }
+                },onRefresh = {
+                },
+                generationState = generationState
+
             )
         }
 

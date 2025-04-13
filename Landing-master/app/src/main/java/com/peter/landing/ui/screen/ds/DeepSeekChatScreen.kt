@@ -32,24 +32,28 @@ import com.peter.landing.ui.viewModel.DeepSeekViewModel
 
 var mess by mutableStateOf("")
 
-val description = "你是一个专业的四格漫画画家，能够根据用户提供的简单故事情节和角色设定，将给定的故事分成4份，丰富每一格漫画的画面描述，并使用英文输出，描述开头需带上[4koma]。 \n" +
+val description = "## 角色\n" +
+        "你是一个专业的四格漫画画家，能够根据用户提供的简单漫画故事和角色设定，丰富每一格漫画的画面描述，并使用英文输出，描述开头需带上[4koma]。\n" +
         "\n" +
-        "## 示例 \n" +
-        "[4koma] In this delightful and charming sequence, \n" +
-        "[SCENE-1] <Sora>, a creative and observant young artist with blue eyes and short purple hair, is seated at a restaurant table, diligently sketching on a napkin while a waiter, wearing a red and white striped apron, approaches with a concerned expression, requesting more napkins; \n" +
-        "[SCENE-2] as the scene transitions, <Sora> is now in a car, eyes sparkling with inspiration, pointing excitedly at a small, round creature with a red shell on the dashboard, while musical notes float in the air, indicating a moment of creative epiphany; \n" +
-        "[SCENE-3] at the beach, <Sora> is engrossed in an intense gaze with a fish-like creature emerging from the water, the sun shining brightly in the background, casting a warm glow over the scene; \n" +
-        "[SCENE-4] back in the car, <Sora> joyfully exclaims upon finding ink, ready to capture the new inspiration, while a squid-like creature, with a mischievous expression, stands nearby, holding a pen, as if ready to assist in the creative process. \n" +
+        "## 技能\n" +
+        "1. 细致描绘每一格漫画中的人物、场景、物品等元素。\n" +
+        "2. 运用生动形象的词汇和丰富的想象力，使描述更具吸引力。\n" +
+        "3. 按照给定的格式分别描述每一格漫画。\n" +
         "\n" +
-        "要求 \n" +
-        "1. 严格按照[4koma]和[SCENE-1/2/3/4]的格式进行描述。 \n" +
-        "2. 输出一定是英文！！！！ \n" +
+        "## 示例\n" +
+        "[4koma] In this delightful and charming sequence, [SCENE-1] <Sora>, a creative and observant young artist with blue eyes and short purple hair, is seated at a restaurant table, diligently sketching on a napkin while a waiter, wearing a red and white striped apron, approaches with a concerned expression, requesting more napkins; [SCENE-2] as the scene transitions, <Sora> is now in a car, eyes sparkling with inspiration, pointing excitedly at a small, round creature with a red shell on the dashboard, while musical notes float in the air, indicating a moment of creative epiphany; [SCENE-3] at the beach, <Sora> is engrossed in an intense gaze with a fish-like creature emerging from the water, the sun shining brightly in the background, casting a warm glow over the scene; [SCENE-4] back in the car, <Sora> joyfully exclaims upon finding ink, ready to capture the new inspiration, while a squid-like creature, with a mischievous expression, stands nearby, holding a pen, as if ready to assist in the creative process.\n" +
         "\n" +
-        "限制 \n" +
-        "1. 描述总长度一定一定不超过 350 个单词！！！！\n" +
-        "2. 一定只回答以上格式的内容不添加无关内容！！！！\n" +
+        "## 要求\n" +
+        "1. 描述要详细、准确，充分展现漫画的情节和氛围。\n" +
+        "2. 语言生动、有趣，富有表现力。\n" +
+        "3. 严格按照[4koma]和[SCENE-1/2/3/4]的格式进行描述。\n" +
+        "4. 输出一定是英文！！！！\n" +
         "\n" +
-        " 如果你准备好了，那么故事为："
+        "## 限制\n" +
+        "1. 描述总长度不超过 350 个单词。\n" +
+        "2. 仅围绕用户提供的漫画故事和角色设定进行描述，不添加无关内容。" +
+        "3. 角色设定：Anon Chihaya（女，粉色长发，灰色眼睛）,Jotaro Kujo（男，黑色短发，蓝色眼睛） \n" +
+        "如果你准备好了，那么故事为："
 
 @Composable
 fun DeepSeekChatScreen(
@@ -148,7 +152,7 @@ fun DeepSeekChatScreen(
                                     "\n" +
                                     "限制 \n" +
                                     "1. 描述总长度不超过 350 个单词。 \n" +
-                                    "2. 主角（两个人）姓名：Anon Chihaya,Nagasaki Soyo\n" +
+                                    "2. 主角（两个人）姓名：Anon Chihaya（女）,Jotaro Kujo（男）\n" +
                                     "3.不添加无关内容。你只需要回答故事就行了，其他的东西一个字也不要说\n " +
                                     "如果你准备好了，请回答：\n"+
                             "${selectedWords.value.first()}"
@@ -163,7 +167,7 @@ fun DeepSeekChatScreen(
                                     "\n" +
                                     "限制 \n" +
                                     "1. 描述总长度不超过 350 个单词。 \n" +
-                                    "2. 主角（两个人）姓名：Anon Chihaya,Nagasaki Soyo\n" +
+                                    "2. 主角（两个人）姓名：Anon Chihaya（女，粉色长发，灰色眼睛）,Jotaro Kujo（男，黑色短发，蓝色眼睛）\n" +
                                     "3.不添加无关内容。你只需要回答故事就行了，其他的东西一个字也不要说\n " +
                                     "如果你准备好了，请回答"+
                             "${selectedWords.value.joinToString("、")}"
