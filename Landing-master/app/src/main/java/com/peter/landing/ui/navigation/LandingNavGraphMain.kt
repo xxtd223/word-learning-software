@@ -11,7 +11,6 @@ import androidx.navigation.compose.composable
 import com.peter.landing.ui.screen.*
 import com.peter.landing.ui.screen.affix.AffixScreen
 import com.peter.landing.ui.viewModel.AffixViewModel
-import com.peter.landing.ui.screen.AiScreen
 import com.peter.landing.ui.screen.CartoonScreen
 import com.peter.landing.ui.screen.ExamScreen
 import com.peter.landing.ui.screen.HomophonyScreen
@@ -172,26 +171,7 @@ fun LandingNavGraphMain(
                 }
             )
         }
-        composable(LandingDestination.Main.Ai.route) {
-            AiScreen(
-                navigateToTerms = {
-                    navHostController.navigate(
-                        LandingDestination.Main.Ai.getNavTermsRoute(it)
-                    ) {
-                        launchSingleTop = true
-                    }
-                },
-                navigateTo = {
-                    navHostController.navigate(it) {
-                        popUpTo(LandingDestination.Main.Home.route) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            )
-        }
+
         composable(LandingDestination.Main.Homophony.route) {
             HomophonyScreen(
                 navigateToTerms = {

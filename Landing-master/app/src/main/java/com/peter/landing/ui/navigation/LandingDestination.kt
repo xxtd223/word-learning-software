@@ -69,17 +69,6 @@ sealed interface LandingDestination {
             override val iconCd = R.string.ic_content_description
         }
 
-        object Ai: Main {
-            override val route = "ai"
-            override val textId = R.string.screen_ai
-            override val iconId = R.drawable.ic_ai
-            override val iconCd = R.string.ic_content_description
-
-            fun getNavTermsRoute(termsType: Terms.Type): String {
-                return "${General.Terms.route}/${termsType.name}"
-            }
-        }
-
         object Homophony: Main {
             override val route = "homophony"
             override val textId = R.string.screen_homophony
@@ -134,7 +123,7 @@ sealed interface LandingDestination {
         companion object {
             private val mainList = listOf(
                 Home, Plan, Search, Note, Ipa,
-                Affix, Help, Ai,
+                Affix, Help,
                 Homophony, Story, Cartoon, Exam, ImageTranslation
             )
 
