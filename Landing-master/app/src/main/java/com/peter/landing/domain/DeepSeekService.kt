@@ -18,9 +18,9 @@ import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
 class DeepSeekService(
-    private val apiBase: String = "http://10.2.8.77:3000/v1",
-    private val apiKey: String = "sk-93nWYhI8SrnXad5m9932CeBdDeDf4233B21d93D217095f22",
-    private val model: String = "DeepSeek-R1"
+    private val apiBase: String = "https://api.deepseek.com",
+    private val apiKey: String = "sk-3cee899196044a4ba3d23d7dbfab90bc",
+    private val model: String = "deepseek-chat"
 ) {
     private val client = OkHttpClient.Builder()
         .connectTimeout(60, TimeUnit.SECONDS)
