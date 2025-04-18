@@ -71,7 +71,7 @@ fun HomeActionButtons(
                 modifier = Modifier.fillMaxWidth()
         ) {
             items(items = buttonItems) { item ->
-                InteractiveActionButton(
+                ActionButton(
                         iconRes = item.iconRes,
                         label = item.label,
                         onClick = { navigateTo(item.route) }
@@ -80,52 +80,25 @@ fun HomeActionButtons(
         }
     }
 }
-
-private class DashedShape : Shape {
-    override fun createOutline(
-            size: Size,
-            layoutDirection: LayoutDirection,
-            density: Density
-    ): Outline {
-        return Outline.Generic(
-                Path().apply {
-                    val step = with(density) { 20.dp.toPx() }
-                    var x = 0f
-                    while (x < size.width) {
-                        moveTo(x, size.height)
-                        lineTo(x + step / 2, size.height)
-                        x += step
-                    }
-                }
-        )
-    }
-}
+private data class ActionItem(
+        val iconRes: Int,
+        val label: String,
+        val route: String
+)
 
 @Composable
-private fun InteractiveActionButton(
+private fun ActionButton(
         iconRes: Int,
         label: String,
-        onClick: () -> Unit
+        onClick: () -> Unit,
+        modifier: Modifier = Modifier
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-
     Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                    .width(80.dp)
-                    .padding(vertical = 8.dp)
-                    .then(
-                            if (isPressed) Modifier.border(
-                                    width = 1.dp,
-                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                                    shape = DashedShape()
-                            ) else Modifier
-                    )
+            modifier = modifier.width(80.dp).padding(vertical = 8.dp)
     ) {
         IconButton(
                 onClick = onClick,
-                interactionSource = interactionSource,
                 modifier = Modifier.size(48.dp)
         ) {
             Icon(
@@ -138,13 +111,7 @@ private fun InteractiveActionButton(
         Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onBackground
         )
     }
 }
-
-private data class ActionItem(
-        val iconRes: Int,
-        val label: String,
-        val route: String
-)
