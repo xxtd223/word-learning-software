@@ -2,6 +2,8 @@ package com.peter.landing.ui.screen.plan
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
@@ -181,10 +183,11 @@ private fun PlanContent(
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
+                            .verticalScroll(rememberScrollState()) // 添加垂直滚动
                     ) {
                         if (planUiState.studyHistory.isNotEmpty()) {
                             Box(
-                                modifier = Modifier.padding(16.dp)
+                                modifier = Modifier.padding(16.dp).fillMaxWidth()
                             ) {
                                 StudyHistoryChart(
                                     historyData = planUiState.studyHistory.mapIndexed { index, value ->
@@ -200,6 +203,7 @@ private fun PlanContent(
                                 )
                             }
                         }
+                        Spacer(Modifier.height(if (planUiState.progressReport.isNotEmpty()) 8.dp else 0.dp)) // 动态间距
                         if (planUiState.progressReport.isNotEmpty()) {
                             Box(
                                 modifier = Modifier.padding(16.dp)
@@ -207,6 +211,7 @@ private fun PlanContent(
                                 ProgressReportChart(planUiState.progressReport)
                             }
                         }
+                        Spacer(Modifier.height(if (planUiState.totalReport.isNotEmpty()) 8.dp else 0.dp))
 
                         if (planUiState.totalReport.isNotEmpty()) {
                             Box(
@@ -218,7 +223,7 @@ private fun PlanContent(
                                 )
                             }
                         }
-
+                        Spacer(Modifier.height(16.dp)) // 底部留出空间
                     }
 
                 }

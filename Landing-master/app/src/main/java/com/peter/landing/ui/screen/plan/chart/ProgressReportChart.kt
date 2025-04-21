@@ -11,6 +11,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.*
@@ -49,7 +50,7 @@ private fun ProgressChart(todayProgress: List<Float>) {
     val density = LocalDensity.current
     val heightPx = with(density) { height.toPx() }
     val frameColor = MaterialTheme.colorScheme.onBackground
-    val strokeWidth = 4f
+    val strokeWidth = 6f
 
     val textMeasurer = rememberTextMeasurer()
     val sectionTextStyle = MaterialTheme.typography.headlineLarge.copy(
@@ -68,7 +69,7 @@ private fun ProgressChart(todayProgress: List<Float>) {
         style = MaterialTheme.typography.headlineLarge.copy(
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.primary
         ),
     )
     val titleTextSize = titleTextLayoutResult.size
@@ -78,7 +79,7 @@ private fun ProgressChart(todayProgress: List<Float>) {
         style = MaterialTheme.typography.headlineLarge.copy(
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFFEC5C5C)
+            color =  Color(0xFF5C94E8).copy(alpha = 0.7f)
         ),
     )
     val mottoTextSize = mottoTextLayout.size
@@ -102,18 +103,20 @@ private fun ProgressChart(todayProgress: List<Float>) {
     ) {
         val fullProgressWidth = this.size.width - dp48Px * 2.4f
 
+
+        // 移除渐变背景
+        /* 删除原始背景绘制
         drawRoundRect(
-            brush = Brush.linearGradient(
-                colors = listOf(
-                    Color(0xFFFFC2E9FB).copy(alpha = 0.5f),
-                    Color(0xFFFAA1C4FD).copy(alpha = 0.5f)
-                ),
-                start = Offset(0f, 0f),
-                end = Offset(size.width, size.height)
-            ),
-            topLeft = Offset.Zero,
-            size = Size(size.width, heightPx),
-            cornerRadius = CornerRadius(8.dp.toPx())
+            brush = Brush.linearGradient(...),
+            ...
+        )
+        */
+
+        // 新增边框绘制
+        drawRoundRect(
+                color = frameColor,
+                cornerRadius = CornerRadius(8.dp.toPx()),
+                style = Stroke(width = 1.dp.toPx())
         )
 
         drawText(
@@ -139,14 +142,23 @@ private fun ProgressChart(todayProgress: List<Float>) {
             )
 
             drawRoundRect(
-                color = section.third,
+                color =  Color(0xFF2C7F3E).copy(alpha = 0.7f),
                 topLeft = Offset(sectionProgressStartX, sectionProgressStartY),
                 size = Size(
                     width = progressWidth,
                     height = sectionTextSize.height * 1.3f
-                )
+                ),
+                    style = Stroke(width = strokeWidth)
             )
+            drawRoundRect(
+                    color =  Color(0xFF2C7F3E).copy(alpha = 0.4f),
+                    topLeft = Offset(sectionProgressStartX, sectionProgressStartY),
+                    size = Size(
+                            width = progressWidth,
+                            height = sectionTextSize.height * 1.3f
+                    ),
 
+            )
             val progressTextLayoutResult = sectionTextLayout("${section.second.toInt()} %")
             val progressTextSize = progressTextLayoutResult.size
             val progressTextStartX = textIndent + sectionTextSize.width + progressWidth + dp16Px - (progressTextSize.width / 2f)
