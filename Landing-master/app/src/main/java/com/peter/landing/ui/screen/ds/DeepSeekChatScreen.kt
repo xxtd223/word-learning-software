@@ -155,7 +155,7 @@ fun DeepSeekChatScreen(
                                     "2. 主角（两个人）姓名：Anon Chihaya（女）,Jotaro Kujo（男）\n" +
                                     "3.不添加无关内容。你只需要回答故事就行了，其他的东西一个字也不要说\n " +
                                     "如果你准备好了，请回答：\n"+
-                            "${selectedWords.value.first()}"
+                                    "${selectedWords.value.first()}"
                         }
                         else {
                             "角色:你是一个专业的故事家，能够根据用户提供的英文单词，丰富情节，并使用英文输出。 \n" +
@@ -170,7 +170,7 @@ fun DeepSeekChatScreen(
                                     "2. 主角（两个人）姓名：Anon Chihaya（女，粉色长发，灰色眼睛）,Jotaro Kujo（男，黑色短发，蓝色眼睛）\n" +
                                     "3.不添加无关内容。你只需要回答故事就行了，其他的东西一个字也不要说\n " +
                                     "如果你准备好了，请回答"+
-                            "${selectedWords.value.joinToString("、")}"
+                                    "${selectedWords.value.joinToString("、")}"
 
                         }
                         viewModel.sendPrompt(prompt)

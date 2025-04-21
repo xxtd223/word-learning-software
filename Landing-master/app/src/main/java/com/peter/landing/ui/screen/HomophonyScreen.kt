@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.peter.landing.data.local.terms.Terms
 import com.peter.landing.ui.navigation.LandingDestination
+import com.peter.landing.ui.screen.ds.HomophonyChatScreen
 import com.peter.landing.ui.util.LandingTopBar
 
 @Composable
@@ -51,7 +52,7 @@ private fun HomophonyContent(
                 .padding(16.dp)
                 .fillMaxWidth()
         ){
-            Text(text = "Hello")
+            HomophonyChatScreen()
         }
 
     }
