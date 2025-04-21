@@ -11,6 +11,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.drawText
@@ -26,7 +27,7 @@ import kotlin.random.Random
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun StudyHistoryChart(
-    historyData: List<Pair<String, Int>> // (日期, 单词数量)
+        historyData: List<Pair<String, Int>> // (日期, 单词数量)
 ) {
     val density = LocalDensity.current
     val height = 228.dp
@@ -36,17 +37,17 @@ fun StudyHistoryChart(
     // 颜色
     val frameColor = MaterialTheme.colorScheme.onBackground
     val textColor = MaterialTheme.colorScheme.onBackground
-    val strokeWidth = 4f
+    val strokeWidth = 6f
 
     // 文本样式
     val titleStyle = MaterialTheme.typography.headlineLarge.copy(
-        fontSize = 16.sp,
-        fontWeight = FontWeight.Bold,
-        color = textColor
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary
     )
     val labelStyle = MaterialTheme.typography.bodyLarge.copy(
-        fontSize = 14.sp,
-        color = textColor
+            fontSize = 14.sp,
+            color = textColor
     )
 
     // 文本布局
@@ -61,44 +62,46 @@ fun StudyHistoryChart(
     val chartPaddingV = dp48 * 0.8f
 
     Canvas(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(height)
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .height(height)
     ) {
         // 边框
+        // 移除渐变背景
+        /* 删除原始背景绘制
         drawRoundRect(
-            brush = Brush.linearGradient(
-                colors = listOf(
-                    Color(0xFFFFC2E9FB).copy(alpha = 0.5f),
-                    Color(0xFFFAA1C4FD).copy(alpha = 0.5f)
-                ),
-                start = Offset(0f, 0f),
-                end = Offset(size.width, size.height)
-            ),
-            topLeft = Offset.Zero,
-            size = Size(size.width, heightPx),
-            cornerRadius = CornerRadius(8.dp.toPx())
+            brush = Brush.linearGradient(...),
+            ...
         )
+        */
+
+        // 新增边框绘制
+        drawRoundRect(
+                color = frameColor,
+                cornerRadius = CornerRadius(8.dp.toPx()),
+                style = Stroke(width = 1.dp.toPx())
+        )
+
 
         // 标题
         drawText(
-            textLayoutResult = titleLayout,
-            topLeft = Offset(
-                (size.width / 2) - (titleLayout.size.width / 2),
-                dp16 * 1.2f
-            )
+                textLayoutResult = titleLayout,
+                topLeft = Offset(
+                        (size.width / 2) - (titleLayout.size.width / 2),
+                        dp16 * 1.2f
+                )
         )
 
         // 图表主体
         val chartArea = Size(
-            width = size.width - chartPadding * 2,
-            height = heightPx - chartPaddingV * 2 - dp24
+                width = size.width - chartPadding * 2,
+                height = heightPx - chartPaddingV * 2 - dp24
         )
 
         // 柱状图
         val maxValue = historyData.maxOfOrNull { it.second }?.toFloat() ?: 1f
         val barWidth = (chartArea.width / historyData.size) * 0.9f
-        val barSpacing = (chartArea.width / historyData.size) * 0.15f
+        val barSpacing = (chartArea.width / historyData.size) * 0.18f
 
         historyData.forEachIndexed { index, (date, value) ->
             val barHeight = (value / maxValue) * chartArea.height
@@ -107,37 +110,38 @@ fun StudyHistoryChart(
 
             // 判断颜色，整十数为绿色，否则为黄色
             val barColor = if (value % 10 == 0) {
-                Color(0xFF96E6A1)
+                Color(0xFF2C7F3E).copy(alpha = 0.7f)
             } else {
-                Color(0xFFFCC687)
+                Color(0xFF5C94E8).copy(alpha = 0.7f)
             }
 
             // 绘制柱状图
             drawRoundRect(
-                color = barColor,
-                topLeft = Offset(xPos, yPos),
-                size = Size(barWidth, barHeight),
-                cornerRadius = CornerRadius(4.dp.toPx())
+                    color = barColor,
+                    topLeft = Offset(xPos, yPos),
+                    size = Size(barWidth, barHeight),
+                    cornerRadius = CornerRadius(4.dp.toPx()),
+                            style = Stroke(width = strokeWidth)
             )
 
             // 绘制日期
             val dateLayout = textMeasurer.measure(date, labelStyle)
             drawText(
-                textLayoutResult = dateLayout,
-                topLeft = Offset(
-                    xPos + barWidth / 2 - dateLayout.size.width / 2,
-                    heightPx - chartPaddingV + 8.dp.toPx()
-                )
+                    textLayoutResult = dateLayout,
+                    topLeft = Offset(
+                            xPos + barWidth / 2 - dateLayout.size.width / 2,
+                            heightPx - chartPaddingV + 8.dp.toPx()
+                    )
             )
 
             // 绘制数值
             val valueLayout = textMeasurer.measure("$value", labelStyle)
             drawText(
-                textLayoutResult = valueLayout,
-                topLeft = Offset(
-                    xPos + barWidth / 2 - valueLayout.size.width / 2,
-                    yPos - valueLayout.size.height - 4.dp.toPx()
-                )
+                    textLayoutResult = valueLayout,
+                    topLeft = Offset(
+                            xPos + barWidth / 2 - valueLayout.size.width / 2,
+                            yPos - valueLayout.size.height - 4.dp.toPx()
+                    )
             )
         }
     }
@@ -148,8 +152,8 @@ fun StudyHistoryChart(
 fun StudyHistoryChartPreview() {
     LandingAppTheme {
         Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
         ) {
             // 生成模拟数据
             val calendar = Calendar.getInstance()
@@ -165,7 +169,7 @@ fun StudyHistoryChartPreview() {
             }.reversed()
 
             StudyHistoryChart(
-                historyData = simulatedHistory
+                    historyData = simulatedHistory
             )
         }
     }
