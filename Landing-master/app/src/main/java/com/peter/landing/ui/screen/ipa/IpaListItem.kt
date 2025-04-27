@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -73,4 +74,20 @@ fun IpaListItem(
             )
         }
     }
+}
+@Preview(showBackground = true)
+@Composable
+fun PreviewIpaListItem() {
+    val ipa = Ipa(
+        type = Ipa.Type.VOWELS,
+        text = "æ",
+        exampleWordSpelling = "cat",
+        exampleWordIpa = "/kæt/",
+        exampleWordPronName = "cat_pron"
+    )
+
+    IpaListItem(
+        ipa = ipa,
+        playPron = { pronName -> println("Playing pronunciation for: $pronName") }
+    )
 }
