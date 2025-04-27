@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.peter.landing.ui.component.MarkdownRenderer
 import com.peter.landing.ui.viewModel.DeepSeekViewModel
 
 var mess by mutableStateOf("")
@@ -465,47 +466,55 @@ fun ChatBubble(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-            shape = RoundedCornerShape(
-                    topStart = if (isUser) 16.dp else 4.dp,
-                    topEnd = if (isUser) 4.dp else 16.dp,
-                    bottomStart = 16.dp,
-                    bottomEnd = 16.dp
-            ), // 6. 动态气泡形状
-
+        shape = RoundedCornerShape(
+            topStart = if (isUser) 16.dp else 4.dp,
+            topEnd = if (isUser) 4.dp else 16.dp,
+            bottomStart = 16.dp,
+            bottomEnd = 16.dp
+        ),
         color = bubbleColor,
-            shadowElevation = 2.dp
+        shadowElevation = 2.dp
     ) {
         Column(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp) // 7. 调整内边距
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
             Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 6.dp)
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(bottom = 6.dp)
             ) {
                 Icon(
-                        painter = painterResource(if (isUser) com.peter.landing.R.drawable.ic_story_bot_24dp else com.peter.landing.R.drawable.ic_story_user_24dp),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
-                        modifier = Modifier.size(30.dp)
+                    painter = painterResource(if (isUser) com.peter.landing.R.drawable.ic_story_bot_24dp else com.peter.landing.R.drawable.ic_story_user_24dp),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(30.dp)
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                        text = if (isUser) "你" else "DeepSeek",
-                        style = MaterialTheme.typography.labelSmall.copy(
-                                fontWeight = FontWeight.SemiBold,
-                                letterSpacing = 0.3.sp
-                        ),
-                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                    text = if (isUser) "你" else "DeepSeek",
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        fontWeight = FontWeight.SemiBold,
+                        letterSpacing = 0.3.sp
+                    ),
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
                 )
             }
 
-            Text(
+            if (isUser || isTyping) {
+                Text(
                     text = if (isTyping) "$text..." else text,
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium.copy(
-                            lineHeight = 18.sp // 8. 调整行高
+                        lineHeight = 18.sp
                     )
-            )
+                )
+            } else {
+                // 使用 Markwon 渲染 Markdown
+                MarkdownRenderer(
+                    markdown = text,
+                    textColor = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
     }
 }
