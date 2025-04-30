@@ -8,8 +8,8 @@
         <option name="gradleJvm" value="17" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/Landing-master" />
-            <option value="$PROJECT_DIR$/Landing-master/app" />
+            <option value="$PROJECT_DIR$/landing-master" />
+            <option value="$PROJECT_DIR$/landing-master/app" />
           </set>
         </option>
       </GradleProjectSettings>
