@@ -1,9 +1,17 @@
 package com.peter.landing.ui.screen.note.pager
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
@@ -22,8 +30,13 @@ fun WrongPager(
     playPron: (String) -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(16.dp)) // 背景色和圆角效果
+            .border(2.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(16.dp)) // 设置更粗的边框和圆角
+            .alpha(0.8f) // 设置透明度
+    ){
         val pagingItems = wrongWordList.collectAsLazyPagingItems()
         if (pagingItems.itemCount != 0) {
             WrongList(

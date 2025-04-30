@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import com.peter.landing.R
 import com.peter.landing.data.local.word.Word
@@ -61,7 +63,11 @@ private fun NoteContent(
 ) {
     val pagerState = rememberPagerState()
     val titleList = listOf("生词列表", "错词列表")
-
+    // 对应的图标资源
+    val icons = listOf(
+        R.drawable.ic_note_shengci_24dp,  // "生词列表" 的图标
+        R.drawable.ic_note_paodaxing_24dp // "错词列表" 的图标
+    )
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -72,7 +78,7 @@ private fun NoteContent(
             currentDestination = LandingDestination.Main.Note,
             navigateTo = navigateTo,
             actions = {
-                if (pagerState.currentPage == 0){
+                if (pagerState.currentPage == 0) {
                     IconButton(
                         onClick = openReverseDialog
                     ) {
@@ -97,6 +103,7 @@ private fun NoteContent(
                         modifier = Modifier.size(24.dp, 24.dp)
                     )
                 }
+
                 is NoteUiState.Default -> {
 
                     when (uiState.dialog) {
@@ -109,6 +116,7 @@ private fun NoteContent(
                                 )
                             }
                         }
+
                         NoteUiState.Default.Dialog.Reverse -> {
                             NoteReverseDialog(
                                 removedNoteList = uiState.removedNoteList,
@@ -116,6 +124,7 @@ private fun NoteContent(
                                 onDismiss = closeDialog
                             )
                         }
+
                         NoteUiState.Default.Dialog.Explain -> {
                             ExplainZoomInDialog(
                                 spelling = uiState.wrongWordSpelling,
@@ -123,6 +132,7 @@ private fun NoteContent(
                                 onDismiss = closeDialog
                             )
                         }
+
                         NoteUiState.Default.Dialog.None -> Unit
                     }
 
@@ -148,10 +158,20 @@ private fun NoteContent(
                                     onClick = { },
                                     modifier = Modifier.height(38.dp)
                                 ) {
-                                    Text(
-                                        text = title,
-                                        style = MaterialTheme.typography.titleSmall
-                                    )
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        // 根据不同的 title 为每个标签设置不同的图标
+                                        Icon(
+                                            painter = painterResource(icons[index]), // 动态获取图标资源
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.tertiary,
+                                            modifier = Modifier.size(25.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp)) // 图标和文字之间的间隔
+                                        Text(
+                                            text = title,
+                                            style = MaterialTheme.typography.titleSmall
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -171,6 +191,7 @@ private fun NoteContent(
                                         playPron = playPron
                                     )
                                 }
+
                                 1 -> {
                                     WrongPager(
                                         isDarkMode = isDarkMode,
@@ -179,6 +200,7 @@ private fun NoteContent(
                                         playPron = playPron
                                     )
                                 }
+
                                 else -> Unit
                             }
                         }
@@ -189,5 +211,11 @@ private fun NoteContent(
     }
 
 }
+
+
+
+
+
+
 
 
