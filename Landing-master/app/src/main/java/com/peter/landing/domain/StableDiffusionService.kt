@@ -12,7 +12,7 @@ object StableDiffusionService {
 
     // 向 ComfyUI API 发送正面和负面提示词
     suspend fun sendPromptToComfyUI(positivePrompt: String, negativePrompt: String, onResponse: (String) -> Unit) {
-        val url = "http://10.27.245.63:8001/generate"
+        val url = " http://172.20.10.3:8001/generate"
         val client = OkHttpClient()
 
         val json = JSONObject().apply {
