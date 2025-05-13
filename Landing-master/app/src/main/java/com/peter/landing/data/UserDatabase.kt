@@ -45,8 +45,6 @@ class UserDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         }
     }
 
-
-
     fun checkUser(username: String, password: String): Boolean {
         val db = this.readableDatabase
         val cursor = db.query(
