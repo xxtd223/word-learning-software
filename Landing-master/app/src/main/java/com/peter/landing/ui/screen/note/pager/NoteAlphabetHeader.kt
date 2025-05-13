@@ -27,13 +27,13 @@ fun NoteAlphabetHeader(alphabet: String) {
             Icon(
                 painter = painterResource(R.drawable.ic_note_xielaoban_24dp),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.secondary,
+                tint = MaterialTheme.colorScheme.tertiary,
                 modifier = Modifier.size(25.dp)
             )
             Text(
                 text = alphabet,
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.secondary,
+                color = MaterialTheme.colorScheme.tertiary,
                 fontSize = 18.sp,
                 modifier = Modifier
                     .padding(horizontal = 16.dp, vertical = 8.dp)

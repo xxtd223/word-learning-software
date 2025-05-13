@@ -23,13 +23,13 @@ fun WrongWordNumHeader(num: Long) {
         Icon(
             painter = painterResource(R.drawable.ic_note_zhangyuge_24dp),
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.secondary,
+            tint = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier.size(25.dp)
         )
         Text(
             text = "课时 - $num",
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.secondary,
+            color =MaterialTheme.colorScheme.tertiary,
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .fillMaxWidth()
