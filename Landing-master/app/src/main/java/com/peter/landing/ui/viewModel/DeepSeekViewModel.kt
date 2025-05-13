@@ -2,18 +2,34 @@ package com.peter.landing.ui.viewModel
 
 import android.util.Log
 import androidx.compose.runtime.getValue
+
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+
+import com.peter.landing.data.repository.progress.StudyProgressRepository
+import com.peter.landing.data.repository.vocabulary.VocabularyViewRepository
+
 import com.peter.landing.domain.DeepSeekService
 import com.peter.landing.domain.postToGenerateEndpoint
+
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DeepSeekViewModel : ViewModel() {
+@HiltViewModel
+class DeepSeekViewModel @Inject constructor(
+    private val vocabularyViewRepository: VocabularyViewRepository,
+    private val studyProgressRepository: StudyProgressRepository
+): ViewModel() {
+    var spellingList by mutableStateOf(emptyList<String>())
+        private set
+
+
     private val deepSeekService = DeepSeekService()
     private val TAG = "DeepSeekDebug00"
 
@@ -28,6 +44,21 @@ class DeepSeekViewModel : ViewModel() {
     private var ss:String = ""
 
     private var currentJob: Job? = null
+
+    init {
+        viewModelScope.launch {
+            val progress = studyProgressRepository.getStudyProgressLatest()
+            if (progress != null) {
+                val wordList = vocabularyViewRepository.getWordList(
+                    start = progress.start,
+                    wordListSize = progress.wordListSize,
+                    vocabularyName = progress.vocabularyName
+                )
+                spellingList = wordList.map { it.spelling }
+                Log.d("Spelling", spellingList.toString())
+            }
+        }
+    }
 
     fun sendPrompt(prompt: String) {
         currentJob?.cancel()
