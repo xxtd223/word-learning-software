@@ -1,5 +1,7 @@
 package com.peter.landing.ui.screen.ds
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.peter.landing.R
 import com.peter.landing.ui.viewModel.DeepSeekViewModel
@@ -30,17 +33,26 @@ import com.peter.landing.ui.viewModel.DeepSeekViewModel
 @Composable
 fun HomophonyChatScreen(
     modifier: Modifier = Modifier,
-    viewModel: DeepSeekViewModel = viewModel()
+    viewModel: DeepSeekViewModel = hiltViewModel()
 ) {
-    // 定义10个单词
-    val words = listOf(
-        "apple", "banana", "orange", "grape", "pear",
-        "strawberry", "blueberry", "kiwi", "mango", "pineapple",
-        "guitar","band","stage"
+    val words = viewModel.spellingList
+    val selectedWords = remember { mutableStateOf(emptySet<String>()) }
+
+    // 根据是否有聊天内容决定权重分配
+    val hasChatContent = viewModel.uiState.fullResponse.isNotEmpty() ||
+            viewModel.uiState.currentResponse.isNotEmpty() ||
+            viewModel.uiState.isLoading
+
+    val wordSectionWeight by animateFloatAsState(
+            targetValue = if (hasChatContent) 0.5f else 0.8f,
+            animationSpec = tween(durationMillis = 300)
     )
 
-    // 使用Set来记录选中的单词，支持多选
-    val selectedWords = remember { mutableStateOf(emptySet<String>()) }
+    val chatSectionWeight by animateFloatAsState(
+            targetValue = if (hasChatContent) 1.3f else 0.5f,
+            animationSpec = tween(durationMillis = 300)
+    )
+
 
     Column(
         modifier = modifier
@@ -51,7 +63,7 @@ fun HomophonyChatScreen(
         // 单词选择区域
         Surface(
                 modifier = Modifier
-                        .weight(0.77f)
+                        .weight(wordSectionWeight)
                         .fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium,
 
@@ -119,7 +131,7 @@ fun HomophonyChatScreen(
                 history = viewModel.uiState.fullResponse,
                 currentResponse = viewModel.uiState.currentResponse,
                 isLoading = viewModel.uiState.isLoading,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(chatSectionWeight)
         )
 
         // 底部按钮区域
