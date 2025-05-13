@@ -8,6 +8,8 @@ import com.peter.landing.R
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.peter.landing.data.UserDatabase
+
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var userDatabase: UserDatabase
