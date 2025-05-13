@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -19,6 +21,7 @@ import com.peter.landing.ui.util.LandingKeyboard
 import com.peter.landing.ui.util.LandingTopBar
 import com.peter.landing.ui.viewModel.SearchViewModel
 import kotlinx.coroutines.delay
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun BannerCarousel(images: List<Int>) {
@@ -214,30 +217,41 @@ fun SearchDefaultContent(
         }
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         Row(
-                modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
+            verticalAlignment = Alignment.CenterVertically, // 垂直居中对齐
+            modifier = Modifier.fillMaxWidth() // 让整个 Row 占满宽度
         ) {
+            Spacer(modifier = Modifier.width(8.dp)) // 图标和文本之间的间隔
+            Icon(
+                painter = painterResource(R.drawable.ic_search_cat_24dp),
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier.size(25.dp)
+            )
+            Spacer(modifier = Modifier.width(6.dp))
             Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                             .padding(end = 8.dp)
                             .weight(1f)
                             .height(48.dp)
+                            .background(
+                            Color(0xFFE3E3E3).copy(alpha = 0.4f),
+                            shape = RoundedCornerShape(4.dp)
+                        )
                             .border(
                                     width = 1.dp,
                                     color = MaterialTheme.colorScheme.tertiary,
                                     shape = MaterialTheme.shapes.extraSmall,
                             )
             ) {
-                Text(
+                    Text(
                         text = spelling,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier
-                                .padding(horizontal = 8.dp)
-                                .fillMaxWidth()
-                )
+                            .padding(horizontal = 8.dp)
+                            .fillMaxWidth()
+                    )
             }
             Button(
                     onClick = {
@@ -269,3 +283,20 @@ fun SearchDefaultContent(
         )
     }
 }
+@Preview(showBackground = true)
+@Composable
+fun SearchDefaultContentPreview() {
+    MaterialTheme {
+        SearchDefaultContent(
+            isDarkMode = false,
+            search = { /* 预览中无需实际搜索 */ },
+            spelling = "", // 可替换为 "example" 预览不同分支
+            write = {},
+            clearAlphabet = {},
+            suggestionList = listOf("apple", "banana", "cherry", "date", "elderberry"),
+            setWord = {},
+            navigateToDefinition = {}
+        )
+    }
+}
+

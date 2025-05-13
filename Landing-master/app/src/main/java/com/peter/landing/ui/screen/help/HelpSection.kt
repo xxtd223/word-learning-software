@@ -84,7 +84,7 @@ fun HelpSection(
                                 painter = painterResource(R.drawable.ic_help_xigua_24dp),
                                 contentDescription = null,
                                 tint = Color.Unspecified,
-                                modifier = Modifier.size(25.dp)
+                                modifier = Modifier.size(15.dp)
                             )
                             Spacer(modifier = Modifier.width(6.dp)) // 图标和文本之间的间隔
                             Text(
