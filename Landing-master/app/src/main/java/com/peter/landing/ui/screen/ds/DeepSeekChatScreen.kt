@@ -1,7 +1,9 @@
 package com.peter.landing.ui.screen.ds
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,16 +19,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.drawWithCache
+
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
+
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.peter.landing.ui.component.MarkdownRenderer
 import com.peter.landing.ui.viewModel.DeepSeekViewModel
@@ -59,17 +62,25 @@ val description = "## 角色\n" +
 @Composable
 fun DeepSeekChatScreen(
     modifier: Modifier = Modifier,
-    viewModel: DeepSeekViewModel = viewModel()
+    viewModel: DeepSeekViewModel = hiltViewModel()
 ) {
-    // 定义10个单词
-    val words = listOf(
-        "apple", "banana", "orange", "grape", "pear",
-        "strawberry", "blueberry", "kiwi", "mango", "pineapple",
-        "guitar","band","stage"
+    val words = viewModel.spellingList
+    val selectedWords = remember { mutableStateOf(emptySet<String>()) }
+
+    // 根据是否有聊天内容决定权重分配
+    val hasChatContent = viewModel.uiState.fullResponse.isNotEmpty() ||
+            viewModel.uiState.currentResponse.isNotEmpty() ||
+            viewModel.uiState.isLoading
+
+    val wordSectionWeight by animateFloatAsState(
+        targetValue = if (hasChatContent) 0.5f else 0.8f,
+        animationSpec = tween(durationMillis = 300)
     )
 
-    // 使用Set来记录选中的单词，支持多选
-    val selectedWords = remember { mutableStateOf(emptySet<String>()) }
+    val chatSectionWeight by animateFloatAsState(
+        targetValue = if (hasChatContent) 1.3f else 0.5f,
+        animationSpec = tween(durationMillis = 300)
+    )
 
     Column(
         modifier = modifier
@@ -81,7 +92,7 @@ fun DeepSeekChatScreen(
         // 单词选择区域 - 添加卡片容器
         Surface(
                 modifier = Modifier
-                        .weight(0.77f)
+                        .weight(wordSectionWeight)
                         .fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium,
 
@@ -150,7 +161,7 @@ fun DeepSeekChatScreen(
                 history = viewModel.uiState.fullResponse,
                 currentResponse = viewModel.uiState.currentResponse,
                 isLoading = viewModel.uiState.isLoading,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(chatSectionWeight)
         )
 
         // 底部按钮区域
@@ -410,12 +421,7 @@ fun ChatHistory(
 
                 // 显示完整历史
                 items(messages.reversed()) { message ->
-                    if (message.startsWith("用户: ")) {
-                        ChatBubble(
-                            text = message.removePrefix("用户: "),
-                            isUser = true
-                        )
-                    } else if (message.startsWith("助手: ")) {
+                    if (message.startsWith("助手: ")) {
                         val cleanedMessage = message
                             .removePrefix("助手: ")
                             .replace(Regex("<think>.*?</think>", RegexOption.DOT_MATCHES_ALL), "")

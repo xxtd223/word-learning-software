@@ -1,44 +1,26 @@
 package com.peter.landing.ui.screen
 
 import android.content.Context
-import android.util.Log
 import android.widget.ImageView
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import com.peter.landing.data.local.terms.Terms
 import com.peter.landing.ui.navigation.LandingDestination
 import com.peter.landing.ui.util.LandingTopBar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import java.util.regex.Pattern
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.viewinterop.AndroidView
-import coil.ImageLoader
-import coil.disk.DiskCache
-import coil.memory.MemoryCache
-import coil.request.CachePolicy
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.peter.landing.R
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.*
-import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import com.peter.landing.domain.FileService
 import com.peter.landing.domain.StableDiffusionService
@@ -54,11 +36,11 @@ fun CartoonScreen(
     val imageUrl = remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
     val generationState = remember { mutableStateOf(GenerationState.Idle) }
-    val positivePrompt = remember { mutableStateOf("[4koma] In this emotionally nuanced four-panel comic, we follow the journey of <Anon Chihaya>, a spirited high school girl with flowing pink hair and gentle gray eyes, as she navigates the challenges of studying abroad in the UK.\n" +
-            "[SCENE-1] <Anon Chihaya> stands at the bustling international arrivals gate of a London airport, suitcase in hand, beaming with excitement. Her eyes shimmer with hope as she wears her school-issued blazer. Behind her, a “Welcome to the UK” banner flutters above crowds of arriving students and signs in English. A soft golden light filters through the glass ceiling, symbolizing new beginnings.\n" +
-            "[SCENE-2] In a brightly lit British classroom filled with chatter, <Anon> stands hesitantly near a group of classmates gathered around a shared project. Her posture is slightly hunched, clutching her English textbook tightly to her chest. The students, speaking rapidly in English with expressive gestures, barely notice her. A speech bubble from <Anon> shows a simple phrase: “C-Can I join...?”—but no one responds, their backs turned.\n" +
-            "[SCENE-3] Seated alone in the school cafeteria, <Anon> pokes at a plate of unfamiliar food. The surrounding tables are filled with lively student groups laughing and talking, their voices forming a faded blur behind her. Her expression is a quiet mixture of confusion and longing. A thought bubble shows Japanese script: 「みんなと話せたらいいのに…」(“I wish I could talk with them…”). The background is softly muted, emphasizing her isolation.\n" +
-            "[SCENE-4] Later that evening, in her small dorm room, <Anon> sits at her desk under a warm lamp light, a determined spark now in her eyes. An English workbook is open before her, and sticky notes with vocabulary cover the wall. She practices pronunciation with earbuds in, a slight smile forming as she whispers, “I will… try again tomorrow.” A steaming mug beside her reads, “Never give up.”") }
+    val positivePrompt = remember { mutableStateOf("[4koma] In this lively and musical encounter:\n" +
+            "[SCENE-1] <Anon Chihaya> sits cross-legged on a grassy patch beneath a cherry blossom tree, a sleek acoustic guitar resting on her lap. Her pink hair sways slightly in the breeze as her fingers strum the strings with joyful precision. Notes float through the air around her, and her gray eyes sparkle with passion. A dreamy smile is on her face as she hums along, clearly lost in her own musical world.\n" +
+            "[SCENE-2] A sudden rhythm interrupts the melody—<Jotaro Kujo> appears on the next panel, sitting behind a compact drum set set up in an alleyway. His eyes are focused, blue and intense, as his sticks move with calm precision. The background is a blur of motion lines emphasizing his steady beat. A few curious cats gather around, nodding to the rhythm. Jotaro, unaware of any audience, is entirely in sync with the drums.\n" +
+            "[SCENE-3] <Anon> peeks around the corner with wide eyes and a huge grin, guitar slung over her shoulder. She rushes toward Jotaro, her hands animated in excitement as cherry petals float around her. “You play drums?! That’s amazing!” she exclaims, practically bouncing. Jotaro looks up, slightly startled but composed, raising an eyebrow in mild curiosity.\n" +
+            "[SCENE-4] The two now face each other—Anon striking a dynamic pose with one hand pointing at Jotaro, the other gripping her guitar, while Jotaro rests his drumsticks on his shoulders with a calm smile. A large, vibrant speech bubble hovers between them: “Let’s start a band!” Musical notes and colorful spark lines burst from the panel, capturing the moment of this new, spontaneous partnership.") }
     val negativePrompt = remember { mutableStateOf("lowers, bad anatomy, bad hands, text,error, missing fngers,extra digt ,fewer digits,cropped, wort quality ,low quality,normal quality, jpeg artifacts,signature,watermark, username, blurry, bad feet,") }
 
     LaunchedEffect(Unit) {
@@ -71,6 +53,7 @@ fun CartoonScreen(
         imageUrl = imageUrl.value,
         onRefresh = {
             scope.launch {
+                //clearGlideCache(context)
                 imageUrl.value = FileService.getLatestImageUrl(context)
             }
         },
@@ -80,22 +63,21 @@ fun CartoonScreen(
             scope.launch {
                 generationState.value = GenerationState.Loading
 
-                StableDiffusionService.sendPromptToComfyUI(pos, neg) { response ->
-                    val jsonResponse = JSONObject(response)
-                    val newImageUrl = jsonResponse.optString("image_url", null)
+                withContext(Dispatchers.IO) {
+                    StableDiffusionService.sendPromptToComfyUI(pos, neg) { response ->
+                        val jsonResponse = JSONObject(response)
+                        val newImageUrl = jsonResponse.optString("image_url", null)
 
-                    generationState.value = GenerationState.Generating
+                        generationState.value = GenerationState.Generating
 
-                    if (newImageUrl != null) {
                         imageUrl.value = newImageUrl
                     }
-                    // 延迟后刷新
-                    scope.launch {
-                        delay(60000)
-                        onRefresh()
-                        generationState.value = GenerationState.Idle
-                    }
                 }
+
+                // 延迟后刷新
+                delay(60000)
+                onRefresh()
+                generationState.value = GenerationState.Idle
             }
         },
         generationState = generationState
@@ -128,24 +110,36 @@ private fun CartoonContent(
 
             Box(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
                     .padding(16.dp)
             ) {
-                imageUrl?.let {
-                    GlideImage(
-                        imageUrl = it,
-                        modifier = Modifier.fillMaxWidth()
+                if (imageUrl.isNullOrEmpty()) {
+                    // imageUrl为空时显示默认占位符图片
+                    AndroidView(
+                        factory = { context ->
+                            ImageView(context).apply {
+                                adjustViewBounds = true
+                                scaleType = ImageView.ScaleType.FIT_CENTER
+                                Glide.with(context)
+                                    .load(R.drawable.placeholder_image)
+                                    .into(this)
+                            }
+                        },
+                        modifier = Modifier
+                            .width(1448.dp)
+                            .wrapContentHeight()
                     )
-                } ?: Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
+                } else {
+                    GlideImage(
+                        imageUrl = imageUrl,
+                        modifier = Modifier
+                            .width(1448.dp)
+                            .wrapContentHeight()
+                    )
                 }
             }
-
             Spacer(modifier = Modifier.height(64.dp))
         }
 
@@ -208,8 +202,12 @@ fun GlideImage(
                 scaleType = ImageView.ScaleType.FIT_CENTER
                 Glide.with(context)
                     .load(imageUrl)
-                    .apply(RequestOptions().placeholder(android.R.drawable.progress_indeterminate_horizontal))
+                    .apply(RequestOptions()
+                        .placeholder(R.drawable.placeholder_image)
+                        .error(R.drawable.placeholder_image) //加载失败时显示默认图片
+                    )
                     .fitCenter()
+                    .override(1448, 1448)
                     .into(this)
             }
         },
@@ -221,4 +219,13 @@ enum class GenerationState {
     Idle,         // 空闲
     Loading,      // 请求发送中
     Generating    // 收到响应但图片未刷新
+}
+
+// 清除缓存
+@OptIn(DelicateCoroutinesApi::class)
+fun clearGlideCache(context: Context) {
+    Glide.get(context).clearMemory()
+    GlobalScope.launch(Dispatchers.IO) {
+        Glide.get(context).clearDiskCache()
+    }
 }

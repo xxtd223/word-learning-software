@@ -15,7 +15,7 @@ object FileService {
         return try {
             // 获取文件列表
             val request = Request.Builder()
-                .url("http://10.27.245.63:8000/")
+                .url("http://172.20.10.3:8000/")
                 .build()
 
             val response = withContext(Dispatchers.IO) { client.newCall(request).execute() }
@@ -24,7 +24,7 @@ object FileService {
 
             // 解析最新文件名
             html?.let { parseLatestImage(it) }?.let {
-                "http://10.27.245.63:8000/$it"
+                "http://172.20.10.3:8000/$it"
             }
         } catch (e: Exception) {
             e.printStackTrace()
