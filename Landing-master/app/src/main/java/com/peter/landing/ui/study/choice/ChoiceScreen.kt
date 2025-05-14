@@ -5,8 +5,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -167,6 +169,21 @@ private fun ChoiceContent(
             }
         }
     }
+    // 外层 Box，确保 Icon 在中央
+    Box(
+        modifier = Modifier
+            .fillMaxSize() // 包裹整个 Box
+            .wrapContentSize(Alignment.Center) // 使内容居中
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.sdu_logo_1), // 替换为你的图标资源
+            contentDescription = "Central Icon",
+            tint = MaterialTheme.colorScheme.outline,
+            modifier = Modifier
+                .size(300.dp) // 设置图标大小
+                .alpha(0.1f) // 设置透明度，0.3f 表示30%的透明度
+        )
+    }
 }
 
 @Composable
@@ -247,3 +264,62 @@ private fun ColumnScope.ExerciseContent(
         }
     }
 }
+@Preview(showBackground = true, name = "ChoiceContent Only Selection UI")
+@Composable
+fun PreviewChoiceContentSelectionOnly() {
+    val word = Word(
+        spelling = "example",
+        ipa = "/ɪɡˈzɑːmpəl/",
+        cn = mapOf("n." to listOf("例子", "样本")),
+        en = mapOf("n." to listOf("an instance serving to illustrate a rule")),
+        pronName = "example.mp3"
+    ).apply { id = 1L }
+
+    val optionWords = listOf(
+        Word("example", "/ɪɡˈzɑːmpəl/", mapOf("n." to listOf("例子")), mapOf("n." to listOf("example")), "example.mp3"),
+        Word("apple", "/ˈæp.əl/", mapOf("n." to listOf("苹果")), mapOf("n." to listOf("apple")), "apple.mp3"),
+        Word("banana", "/bəˈnɑː.nə/", mapOf("n." to listOf("香蕉")), mapOf("n." to listOf("banana")), "banana.mp3"),
+        Word("car", "/kɑːr/", mapOf("n." to listOf("汽车")), mapOf("n." to listOf("car")), "car.mp3")
+    )
+
+    val options = optionWords.map { it.cn to it.en }
+
+    val fakeUiState = ChoiceUiState.Success(
+        current = 0,
+        totalNum = 4,
+        wordId = word.id,
+        spelling = word.spelling,
+        pronName = word.pronName,
+        ipa = word.ipa,
+        optionList = options,
+        correctIndex = 0,
+        chosenIndex = -2, // 未选择
+        submitted = false, // 未提交
+        showWrongList = false, // ❌ 不显示错题
+        wrongList = emptyList(),
+        clickedWrongWord = null,
+        dialog = ChoiceUiState.Success.Dialog.None // ❌ 不显示词典弹窗
+    )
+
+    MaterialTheme {
+        ChoiceContent(
+            isDarkMode = false,
+            uiState = fakeUiState,
+            choose = {},
+            submit = {},
+            getNextWord = {},
+            playPron = {},
+            showWrongList = {},
+            hideWrongList = {},
+            openDictionaryDialog = {},
+            closeDialog = {},
+            navigateToSpelling = {},
+            navigateUp = {}
+        )
+    }
+}
+
+
+
+
+
