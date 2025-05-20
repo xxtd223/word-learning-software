@@ -370,46 +370,4 @@ fun SpellingContentPreview() {
     )
 }
 
-@Preview(showBackground = true, name = "SpellingContent Preview")
-@Composable
-fun PreviewSpellingContent() {
-    val sampleWord = Word(
-        spelling = "example",
-        ipa = "/ɪɡˈzɑːmpəl/",
-        cn = mapOf("n." to listOf("例子", "样本")),
-        en = mapOf("n." to listOf("a thing characteristic of its kind")),
-        pronName = "example.mp3"
-    )
-
-    val uiState = SpellingUiState.Success(
-        current = 0,
-        totalNum = 10,
-        word = sampleWord,
-        input = "examp",
-        submitted = true,
-        showWrongList = false,
-        wrongList = listOf(
-            sampleWord.copy(spelling = "mistake", ipa = "/mɪˈsteɪk/")
-        ),
-        clickedWrongWord = null,
-        dialog = SpellingUiState.Success.Dialog.None
-    )
-
-    MaterialTheme {
-        SpellingContent(
-            uiState = uiState,
-            write = {},
-            remove = {},
-            getNextWord = {},
-            submit = {},
-            playPron = {},
-            showWrongList = {},
-            hideWrongList = {},
-            openDictionaryDialog = {},
-            closeDialog = {},
-            navigateUp = {}
-        )
-    }
-}
-
 
