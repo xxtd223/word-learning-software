@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import com.peter.landing.ui.study.InputButtonRow
 import com.peter.landing.ui.util.ErrorNotice
 import com.peter.landing.ui.util.LandingTopBar
 import kotlinx.coroutines.launch
+import com.peter.landing.data.local.word.Word
 
 @Composable
 fun LearnScreen(
@@ -173,3 +175,41 @@ private fun LearnContent(
         }
     }
 }
+@Preview(showBackground = true)
+@Composable
+fun PreviewLearnContent() {
+    val mockUiState = LearnUiState.Success(
+        current = 0,
+        totalNum = 5,
+        word = Word(
+            spelling = "example",
+            ipa = "/ɪɡˈzɑːmpəl/",
+            cn = mapOf("n." to listOf("例子", "样本")),
+            en = mapOf("n." to listOf("an instance serving to illustrate a rule")),
+            pronName = "example.mp3"
+        ),
+        quiz = "example",
+        input = "examp",
+        submitted = false,
+        correct = false,
+        learned = true,
+        finished = false,
+        dialog = LearnUiState.Success.Dialog.None
+    )
+
+    MaterialTheme {
+        LearnContent(
+            uiState = mockUiState,
+            getNextWord = {},
+            submit = {},
+            reset = {},
+            write = {},
+            remove = {},
+            playPron = {},
+            navigateToChoice = {},
+            navigateUp = {}
+        )
+    }
+}
+
+

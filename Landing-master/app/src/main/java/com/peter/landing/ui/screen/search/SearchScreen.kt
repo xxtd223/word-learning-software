@@ -22,7 +22,6 @@ import com.peter.landing.ui.util.LandingTopBar
 import com.peter.landing.ui.viewModel.SearchViewModel
 import kotlinx.coroutines.delay
 import androidx.compose.ui.tooling.preview.Preview
-
 @Composable
 fun BannerCarousel(images: List<Int>) {
     // 当前显示的图片索引
@@ -220,7 +219,7 @@ fun SearchDefaultContent(
             verticalAlignment = Alignment.CenterVertically, // 垂直居中对齐
             modifier = Modifier.fillMaxWidth() // 让整个 Row 占满宽度
         ) {
-            Spacer(modifier = Modifier.width(8.dp)) // 图标和文本之间的间隔
+            //Spacer(modifier = Modifier.width(8.dp)) // 图标和文本之间的间隔
             Icon(
                 painter = painterResource(R.drawable.ic_search_cat_24dp),
                 contentDescription = null,

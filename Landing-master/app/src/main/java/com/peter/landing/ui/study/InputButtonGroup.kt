@@ -6,6 +6,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -73,5 +74,24 @@ fun InputButtonRow(
                 modifier = Modifier.size(28.dp)
             )
         }
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun InputButtonRowPreview() {
+    MaterialTheme {
+        InputButtonRow(
+            pronName = "example",
+            playPron = { /* no-op */ },
+            leftButtonEnable = true,
+            leftButtonIconId = R.drawable.ic_help_yazi_24dp,
+            leftButtonAction = { /* no-op */ },
+            rightButtonEnable = true,
+            rightButtonIconId = R.drawable.ic_help_yazi_24dp,
+            rightButtonAction = { /* no-op */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        )
     }
 }

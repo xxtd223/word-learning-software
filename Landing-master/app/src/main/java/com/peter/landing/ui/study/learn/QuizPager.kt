@@ -4,6 +4,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -107,8 +108,17 @@ fun QuizPager(
             }
         }
         Row(
-            modifier = Modifier.fillMaxWidth()
+            verticalAlignment = Alignment.CenterVertically, // 垂直居中对齐
+            modifier = Modifier.fillMaxWidth() // 让整个 Row 占满宽度
         ) {
+            Spacer(modifier = Modifier.width(8.dp)) // 图标和文本之间的间隔
+            Icon(
+                painter = painterResource(R.drawable.ic_help_yazi_24dp),
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier.size(25.dp)
+            )
+            Spacer(modifier = Modifier.width(6.dp))
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -174,3 +184,21 @@ fun QuizPager(
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewQuizPager() {
+    MaterialTheme {
+        QuizPager(
+            quiz = "example",
+            answer = "example",
+            ipa = "/ɪɡˈzɑːmpəl/",
+            input = "exa",
+            write = {},
+            remove = {},
+            submitted = false, // 你可以切换为 true 来预览答案界面
+            learned = true     // 控制图标：正确或错误
+        )
+    }
+}
+

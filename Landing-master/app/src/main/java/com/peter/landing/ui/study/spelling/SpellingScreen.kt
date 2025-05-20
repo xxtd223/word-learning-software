@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -179,12 +180,25 @@ private fun ColumnScope.ExerciseContent(
             .weight(1f)
             .fillMaxWidth()
     ) {
-        Text(
-            text = "请根据所给的解释拼写出单词",
-            color = MaterialTheme.colorScheme.outline,
-            style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier.fillMaxWidth()
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically, // 垂直居中对齐
+            modifier = Modifier.fillMaxWidth() // 让整个 Row 占满宽度
+        ) {
+            //Spacer(modifier = Modifier.width(8.dp)) // 图标和文本之间的间隔
+            Icon(
+                painter = painterResource(R.drawable.ic_affix_jinpguo_24dp),
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(6.dp)) // 图标和文本之间的间隔
+            Text(
+                text = "请根据所给的解释拼写出单词",
+                color = MaterialTheme.colorScheme.outline,
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
         Row(
             modifier = Modifier
@@ -211,23 +225,36 @@ private fun ColumnScope.ExerciseContent(
             )
         }
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.tertiary,
-                )
-                .padding(12.dp)
+        Row(
+            verticalAlignment = Alignment.CenterVertically, // 垂直居中对齐
+            modifier = Modifier.fillMaxWidth() // 让整个 Row 占满宽度
         ) {
-            Text(
-                text = uiState.input,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.W400,
-                letterSpacing = 2.sp,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.fillMaxWidth()
+            //Spacer(modifier = Modifier.width(8.dp)) // 图标和文本之间的间隔
+            Icon(
+                painter = painterResource(R.drawable.ic_help_yazi_24dp),
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier.size(25.dp)
             )
+            Spacer(modifier = Modifier.width(6.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.tertiary,
+                    )
+                    .padding(12.dp)
+            ) {
+                Text(
+                    text = uiState.input,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.W400,
+                    letterSpacing = 2.sp,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
         if (!uiState.submitted) {
@@ -247,11 +274,24 @@ private fun ColumnScope.ExerciseContent(
                     .weight(1f)
                     .fillMaxWidth()
             ) {
-                Text(
-                    text = "正确拼写：",
-                    color = MaterialTheme.colorScheme.outline,
-                    style = MaterialTheme.typography.titleSmall
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically, // 垂直居中对齐
+                    modifier = Modifier.fillMaxWidth() // 让整个 Row 占满宽度
+                ) {
+                    //Spacer(modifier = Modifier.width(8.dp)) // 图标和文本之间的间隔
+                    Icon(
+                        painter = painterResource(R.drawable.ic_spelling_caomei_24dp),
+                        contentDescription = null,
+                        tint = Color.Unspecified,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp)) // 图标和文本之间的间隔
+                    Text(
+                        text = "正确拼写：",
+                        color = MaterialTheme.colorScheme.outline,
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                }
                 Spacer(modifier = Modifier.padding(vertical = 16.dp))
                 Text(
                     text = uiState.word.spelling,
@@ -291,3 +331,85 @@ private fun ColumnScope.ExerciseContent(
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun SpellingContentPreview() {
+    val mockWord = Word(
+        spelling = "example",
+        ipa = "/ɪɡˈzɑːmpəl/",
+        cn = mapOf("n." to listOf("例子", "样本")),
+        en = mapOf("n." to listOf("a thing characteristic of its kind")),
+        pronName = "example.mp3"
+    )
+
+    val uiState = SpellingUiState.Success(
+        current = 0,
+        totalNum = 10,
+        word = mockWord,
+        input = "examp",
+        submitted = true,
+        showWrongList = false,
+        wrongList = listOf(mockWord.copy(spelling = "mistake")),
+        clickedWrongWord = null,
+        dialog = SpellingUiState.Success.Dialog.None
+    )
+
+    SpellingContent(
+        uiState = uiState,
+        write = {},
+        remove = {},
+        getNextWord = {},
+        submit = {},
+        playPron = {},
+        showWrongList = {},
+        hideWrongList = {},
+        openDictionaryDialog = {},
+        closeDialog = {},
+        navigateUp = {}
+    )
+}
+
+@Preview(showBackground = true, name = "SpellingContent Preview")
+@Composable
+fun PreviewSpellingContent() {
+    val sampleWord = Word(
+        spelling = "example",
+        ipa = "/ɪɡˈzɑːmpəl/",
+        cn = mapOf("n." to listOf("例子", "样本")),
+        en = mapOf("n." to listOf("a thing characteristic of its kind")),
+        pronName = "example.mp3"
+    )
+
+    val uiState = SpellingUiState.Success(
+        current = 0,
+        totalNum = 10,
+        word = sampleWord,
+        input = "examp",
+        submitted = true,
+        showWrongList = false,
+        wrongList = listOf(
+            sampleWord.copy(spelling = "mistake", ipa = "/mɪˈsteɪk/")
+        ),
+        clickedWrongWord = null,
+        dialog = SpellingUiState.Success.Dialog.None
+    )
+
+    MaterialTheme {
+        SpellingContent(
+            uiState = uiState,
+            write = {},
+            remove = {},
+            getNextWord = {},
+            submit = {},
+            playPron = {},
+            showWrongList = {},
+            hideWrongList = {},
+            openDictionaryDialog = {},
+            closeDialog = {},
+            navigateUp = {}
+        )
+    }
+}
+
+
