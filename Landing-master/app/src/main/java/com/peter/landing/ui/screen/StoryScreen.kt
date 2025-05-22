@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.peter.landing.data.local.terms.Terms
 import com.peter.landing.ui.navigation.LandingDestination
 import com.peter.landing.ui.screen.ds.DeepSeekChatScreen
@@ -24,10 +24,12 @@ import com.peter.landing.ui.util.LandingTopBar
 fun StoryScreen(
     navigateToTerms: (Terms.Type) -> Unit,
     navigateTo: (String) -> Unit,
+    navHostController: NavHostController
 ) {
     StoryContent(
         navigateToTerms = navigateToTerms,
-        navigateTo = navigateTo
+        navigateTo = navigateTo,
+        navHostController = navHostController
     )
 }
 
@@ -35,6 +37,7 @@ fun StoryScreen(
 private fun StoryContent(
     navigateToTerms: (Terms.Type) -> Unit,
     navigateTo: (String) -> Unit,
+    navHostController: NavHostController
 ) {
     Column(
         modifier = Modifier
@@ -52,7 +55,9 @@ private fun StoryContent(
                 .padding(16.dp)
                 .fillMaxWidth()
         ){
-            DeepSeekChatScreen()
+            DeepSeekChatScreen(
+                navHostController = navHostController // 传递导航控制器
+            )
         }
 
     }

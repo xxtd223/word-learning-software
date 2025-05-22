@@ -8,35 +8,28 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.peter.landing.ui.MainViewModel
 import com.peter.landing.ui.screen.*
 import com.peter.landing.ui.screen.affix.AffixScreen
-import com.peter.landing.ui.viewModel.AffixViewModel
 import com.peter.landing.ui.screen.CartoonScreen
 import com.peter.landing.ui.screen.ExamScreen
 import com.peter.landing.ui.screen.HomophonyScreen
 import com.peter.landing.ui.screen.StoryScreen
 import com.peter.landing.ui.screen.DefinitionScreen
-import com.peter.landing.ui.viewModel.DefinitionViewModel
 import com.peter.landing.ui.screen.greeting.GreetingScreen
-import com.peter.landing.ui.viewModel.GreetingViewModel
 import com.peter.landing.ui.screen.help.HelpScreen
-import com.peter.landing.ui.viewModel.HelpViewModel
 import com.peter.landing.ui.screen.home.HomeScreen
-import com.peter.landing.ui.viewModel.HomeViewModel
 import com.peter.landing.ui.screen.ipa.IpaScreen
-import com.peter.landing.ui.viewModel.IpaViewModel
 import com.peter.landing.ui.screen.note.NoteScreen
-import com.peter.landing.ui.viewModel.NoteViewModel
 import com.peter.landing.ui.screen.plan.PlanScreen
-import com.peter.landing.ui.viewModel.PlanViewModel
 import com.peter.landing.ui.screen.search.SearchScreen
-import com.peter.landing.ui.viewModel.SearchViewModel
 import com.peter.landing.ui.screen.TermScreen
-import com.peter.landing.ui.viewModel.TermViewModel
 import com.peter.landing.ui.screen.ImageTranslationScreen
+import com.peter.landing.ui.viewModel.*
 
 @Composable
 fun LandingNavGraphMain(
+    viewModel: MainViewModel,
     isDarkMode: Boolean,
     playPron: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -210,13 +203,16 @@ fun LandingNavGraphMain(
                         launchSingleTop = true
                         restoreState = true
                     }
-                }
+                },
+                navHostController = navHostController
             )
         }
 
         composable(LandingDestination.Main.Cartoon.route) {
+            val viewModel = hiltViewModel<DeepSeekViewModel>()
             val generationState = remember { mutableStateOf(GenerationState.Idle) }
             CartoonScreen(
+                viewModel = viewModel,
                 navigateToTerms = {
                     navHostController.navigate(
                         LandingDestination.Main.Cartoon.getNavTermsRoute(it)
@@ -232,10 +228,11 @@ fun LandingNavGraphMain(
                         launchSingleTop = true
                         restoreState = true
                     }
-                },onRefresh = {
+                },onRefreshComic = {
+                },
+                onRefreshStory = {
                 },
                 generationState = generationState
-
             )
         }
 

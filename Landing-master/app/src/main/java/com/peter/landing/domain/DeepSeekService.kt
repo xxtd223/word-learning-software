@@ -27,17 +27,33 @@ class DeepSeekService(
         .readTimeout(60, TimeUnit.SECONDS)
         .build()
 
-    fun streamResponse(prompt: String): Flow<String> = callbackFlow {
+    fun streamResponse(messages: List<Pair<String, String>>, prompt: String): Flow<String> = callbackFlow {
         val url = "$apiBase/chat/completions"
+
+        // 构建 JSON 的 `messages` 数组，将对话历史附加到请求中
+        val jsonMessages = JSONArray().apply {
+            // 添加历史消息
+            for ((userInput, assistantReply) in messages) {
+                put(JSONObject().apply {
+                    put("role", "user")
+                    put("content", userInput) // 用户输入的内容
+                })
+                put(JSONObject().apply {
+                    put("role", "assistant")
+                    put("content", assistantReply) // 助手的回复
+                })
+            }
+
+            // 添加当前用户输入
+            put(JSONObject().apply {
+                put("role", "user")
+                put("content", prompt) // 当前用户输入的内容
+            })
+        }
 
         val payload = JSONObject().apply {
             put("model", model)
-            put("messages", JSONArray().apply {
-                put(JSONObject().apply {
-                    put("role", "user")
-                    put("content", prompt)
-                })
-            })
+            put("messages", jsonMessages)  // 将完整历史记录传递到 API
             put("temperature", 0.7)
             put("max_tokens", 1024)
             put("stream", true)
@@ -64,7 +80,7 @@ class DeepSeekService(
                 data: String
             ) {
                 val trimmedData = data.trim()
-                Log.d("DeepSeekDebug", "收到完整数据: $trimmedData")
+                //Log.d("DeepSeekDebug", "收到完整数据: $trimmedData")
 
                 if (trimmedData == "[DONE]") {
                     // 请求结束时打印最终结果

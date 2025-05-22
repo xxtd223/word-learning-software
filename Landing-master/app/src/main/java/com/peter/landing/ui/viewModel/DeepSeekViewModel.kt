@@ -13,12 +13,15 @@ import com.peter.landing.data.repository.vocabulary.VocabularyViewRepository
 
 import com.peter.landing.domain.DeepSeekService
 import com.peter.landing.domain.postToGenerateEndpoint
+import com.peter.landing.domain.GlobalTracker
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +31,6 @@ class DeepSeekViewModel @Inject constructor(
 ): ViewModel() {
     var spellingList by mutableStateOf(emptyList<String>())
         private set
-
 
     private val deepSeekService = DeepSeekService()
     private val TAG = "DeepSeekDebug00"
@@ -42,8 +44,8 @@ class DeepSeekViewModel @Inject constructor(
         private set
 
     private var ss:String = ""
-
     private var currentJob: Job? = null
+
 
     init {
         viewModelScope.launch {
@@ -60,13 +62,22 @@ class DeepSeekViewModel @Inject constructor(
         }
     }
 
+    private val mutex = Mutex()
+
     fun sendPrompt(prompt: String) {
         currentJob?.cancel()
 
         currentJob = viewModelScope.launch {
             val buffer = StringBuilder()
 
-            deepSeekService.streamResponse(prompt)
+            val history = uiState.fullResponse.split("\n\n\n").mapNotNull {
+                val parts = it.split(": ", limit = 2)
+                if (parts.size == 2) parts[1] else null
+            }.chunked(2).map {
+                it[0] to (it.getOrNull(1) ?: "")
+            }
+
+            deepSeekService.streamResponse(history, prompt)
                 .onStart {
                     Log.d(TAG, "开始请求，用户输入: $prompt")
 
@@ -90,8 +101,20 @@ class DeepSeekViewModel @Inject constructor(
                         fullResponse = newFullResponse
                     )
 
+                    //Log.d("StoryPageDebug", "添加前permanentFullResponse: $permanentFullResponse\n")
+                    Log.d("StoryPageDebug", "添加的newFullResponse: $buffer\n")
+                    // 使用 Mutex 确保静态变量更新是线程安全的
+                    mutex.withLock {
+                        viewModelScope.launch {
+                            // 在请求开始时更新 GlobalTracker
+                            GlobalTracker.appendContent("$buffer\n")
+                        }
+                    }
+                    //Log.d("StoryPageDebug", "添加后permanentFullResponse: $permanentFullResponse\n")
+
                     if (cause == null) {
-                        Log.d(TAG, "请求完成，最终回复111: $buffer")
+                        Log.d(TAG, "请求完成，最终回复111: $buffer\n")
+                        Log.d(TAG, "finalResponse内容: $finalResponse\n")
                     } else {
                         Log.e(TAG, "请求失败: ${cause.message}")
                     }
@@ -106,7 +129,14 @@ class DeepSeekViewModel @Inject constructor(
         viewModelScope.launch {
             val buffer = StringBuilder()
 
-            deepSeekService.streamResponse(prompt)
+            val history = uiState.fullResponse.split("\n\n\n").mapNotNull {
+                val parts = it.split(": ", limit = 2)
+                if (parts.size == 2) parts[1] else null
+            }.chunked(2).map {
+                it[0] to (it.getOrNull(1) ?: "")
+            }
+
+            deepSeekService.streamResponse(history, prompt)
                 .onStart {
                     Log.d(TAG, "开始静默请求: $prompt")
                     hiddenUiState = hiddenUiState.copy(
@@ -128,6 +158,8 @@ class DeepSeekViewModel @Inject constructor(
                         currentResponse = "",
                         fullResponse = newFullResponse
                     )
+
+                    //permanentFullResponse += newFullResponse
 
                     if (cause == null) {
                         Log.d(TAG, "请求完成，最终回复: $buffer")
@@ -158,9 +190,6 @@ class DeepSeekViewModel @Inject constructor(
         }
     }
 }
-
-
-
 
 data class DeepSeekUiState(
     val isLoading: Boolean = false,

@@ -14,12 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.peter.landing.data.util.ThemeMode
 import com.peter.landing.ui.navigation.LandingNavGraphMain
 import com.peter.landing.ui.theme.LandingAppTheme
 import com.peter.landing.ui.util.ErrorNotice
 import com.peter.landing.ui.util.Sound
+import com.peter.landing.ui.viewModel.DeepSeekViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -28,6 +30,8 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var mainViewModel: MainViewModel
+
+    //val deepSeekViewModel: DeepSeekViewModel=hiltViewModel()
 
     private lateinit var sound: Sound
 
@@ -53,6 +57,7 @@ class MainActivity : ComponentActivity() {
                 is MainUiState.Success -> {
                     LandingAppTheme(themeMode = uiState.themeMode) {
                         LandingNavGraphMain(
+                            viewModel = mainViewModel,
                             isDarkMode = uiState.themeMode == ThemeMode.DARK,
                             playPron = sound::playAudio,
                             navHostController = navHostController,

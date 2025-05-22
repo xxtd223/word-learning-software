@@ -3,36 +3,30 @@ package com.peter.landing.ui.screen.ds
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.material3.R
+import androidx.compose.runtime.*
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.peter.landing.ui.component.MarkdownRenderer
+import com.peter.landing.ui.navigation.LandingDestination
 import com.peter.landing.ui.viewModel.DeepSeekViewModel
+import kotlinx.coroutines.launch
 
 var mess by mutableStateOf("")
 
@@ -62,10 +56,14 @@ val description = "## 角色\n" +
 @Composable
 fun DeepSeekChatScreen(
     modifier: Modifier = Modifier,
-    viewModel: DeepSeekViewModel = hiltViewModel()
+    viewModel: DeepSeekViewModel = hiltViewModel(),
+    navHostController: NavHostController
 ) {
     val words = viewModel.spellingList
     val selectedWords = remember { mutableStateOf(emptySet<String>()) }
+    var isLoading by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+
 
     // 根据是否有聊天内容决定权重分配
     val hasChatContent = viewModel.uiState.fullResponse.isNotEmpty() ||
@@ -320,9 +318,16 @@ fun DeepSeekChatScreen(
                     }
                 }
                 Button(
-                        onClick = {
-                            viewModel.sendR()
-                        },
+                    onClick = {
+                        isLoading = true
+                        viewModel.sendR()
+
+                        coroutineScope.launch {
+                            kotlinx.coroutines.delay(4000)
+                            isLoading = false
+                            navHostController.navigate(LandingDestination.Main.Cartoon.route) // 跳转到CartoonScreen
+                        }
+                    },
                         modifier = Modifier.weight(1f),
                         contentPadding = PaddingValues(
                                 horizontal = 14.dp,  // 横向内边距（原16dp）
@@ -340,7 +345,11 @@ fun DeepSeekChatScreen(
                         enabled = viewModel.sendFlag
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {  // 新增Row
-                        Text("sendR", fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                        Text(
+                            text = if (isLoading) "生成中…" else "生成漫画",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium
+                        )
                         Spacer(Modifier.width(4.dp))
                         Icon(
                                 painter = painterResource(com.peter.landing.R.drawable.ic_story_fourthbutton), // 使用发送图标
