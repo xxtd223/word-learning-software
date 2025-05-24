@@ -17,6 +17,7 @@
     <string name="screen_cartoon" translatable="false">漫画</string>
     <string name="screen_exam" translatable="false">真题</string>
     <string name="screen_image_translation" translatable="false">图片翻译</string>
+    <string name="screen_words_reader" translatable="false">每日阅读</string>
 
     <string name="screen_ai" translatable="false">ai</string>
     <string name="screen_greeting" translatable="false">欢迎</string>

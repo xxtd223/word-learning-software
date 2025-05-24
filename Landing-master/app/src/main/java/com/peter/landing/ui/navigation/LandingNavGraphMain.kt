@@ -208,6 +208,22 @@ fun LandingNavGraphMain(
             )
         }
 
+        //reader
+        composable(LandingDestination.Main.DailyReading.route) {
+            DailyReadingScreen(
+
+                navigateTo = {
+                    navHostController.navigate(it) {
+                        popUpTo(LandingDestination.Main.Home.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+
         composable(LandingDestination.Main.Cartoon.route) {
             val viewModel = hiltViewModel<DeepSeekViewModel>()
             val generationState = remember { mutableStateOf(GenerationState.Idle) }

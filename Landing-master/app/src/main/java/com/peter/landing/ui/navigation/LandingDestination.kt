@@ -120,11 +120,20 @@ sealed interface LandingDestination {
             override val iconCd = R.string.ic_content_description
         }
 
+        object DailyReading : Main{
+            override val route = "wordReaderPage"
+            override val textId = R.string.screen_words_reader
+            override val iconId = R.drawable.ic_camera
+            override val iconCd = R.string.ic_content_description
+
+        }
+
         companion object {
             private val mainList = listOf(
                 Home, Plan, Search, Note, Ipa,
                 Affix, Help,
-                Homophony, Story, Cartoon, Exam, ImageTranslation
+                Homophony, Story, Cartoon, Exam, ImageTranslation ,
+                DailyReading
             )
 
             fun getNavigationList(): List<Main> {
