@@ -1,5 +1,9 @@
 package com.peter.landing.ui.screen.ds
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,6 +11,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.*
@@ -62,89 +67,105 @@ fun WordReaderScreen(
 
     val scrollState = rememberScrollState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(16.dp)
-    ) {
-        Text(
-            text = "📖 Word Reader",
-            style = MaterialTheme.typography.headlineLarge.copy(
-                fontSize = 30.sp,
-                fontWeight = FontWeight.ExtraBold,
-                letterSpacing = 0.5.sp,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "📖 Word Reader",
+                style = MaterialTheme.typography.headlineLarge.copy(
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    letterSpacing = 0.5.sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.primary
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 24.dp),
+            )
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
+            ) {
+                Column(modifier = Modifier.padding(24.dp)) {
+                    ClickableText(
+                        text = annotatedText,
+                        onClick = { offset ->
+                            annotatedText.getStringAnnotations("WORD", offset, offset)
+                                .firstOrNull()?.let { viewModel.onWordClicked(it.item) }
+                        },
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            lineHeight = 28.sp,
+                            fontWeight = FontWeight.Medium,
+                            letterSpacing = 0.3.sp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            textAlign = TextAlign.Justify
+                        )
+                    )
+                }
+            }
+        }
+
+        // ✅ 右侧滑出释义卡片
+        AnimatedVisibility(
+            visible = selectedWord != null,
+            enter = slideInHorizontally(
+                initialOffsetX = { it },
+                animationSpec = tween(durationMillis = 300)
+            ),
+            exit = slideOutHorizontally(
+                targetOffsetX = { it },
+                animationSpec = tween(durationMillis = 300)
             ),
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 24.dp),
-        )
-
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(20.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White)
+                .align(Alignment.CenterEnd)
         ) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                ClickableText(
-                    text = annotatedText,
-                    onClick = { offset ->
-                        annotatedText.getStringAnnotations("WORD", offset, offset)
-                            .firstOrNull()?.let { viewModel.onWordClicked(it.item) }
-                    },
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight.Medium,
-                        letterSpacing = 0.3.sp,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Justify
-                    )
-                )
+            selectedWord?.let {
+                Card(
+                    modifier = Modifier
+                        .width(280.dp)
+                        .fillMaxHeight()
+                        .padding(16.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    elevation = CardDefaults.cardElevation(8.dp)
+                ) {
+                    Column(modifier = Modifier.padding(20.dp)) {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "📘 ${it.word}",
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            )
+                            TextButton(onClick = { viewModel.dismissDialog() }) {
+                                Text("✖")
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = it.meaning,
+                            style = MaterialTheme.typography.bodyLarge.copy(
+                                fontSize = 18.sp,
+                                lineHeight = 26.sp
+                            )
+                        )
+                    }
+                }
             }
         }
     }
-
-    selectedWord?.let {
-        AlertDialog(
-            onDismissRequest = { viewModel.dismissDialog() },
-            confirmButton = {
-                TextButton(onClick = { viewModel.dismissDialog() }) {
-                    Text("Got it")
-                }
-            },
-            title = {
-                Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                    Text(
-                        text = "📘 ${it.word}",
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-                }
-            },
-            text = {
-                Column(modifier = Modifier.padding(top = 8.dp)) {
-                    Text(
-                        text = it.meaning,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Normal,
-                            lineHeight = 26.sp,
-                            letterSpacing = 0.25.sp
-                        )
-                    )
-                }
-            },
-            shape = RoundedCornerShape(20.dp),
-            containerColor = MaterialTheme.colorScheme.surface,
-            tonalElevation = 8.dp
-        )
-    }
 }
-
-
