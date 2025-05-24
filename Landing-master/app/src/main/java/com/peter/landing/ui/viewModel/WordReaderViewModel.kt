@@ -26,7 +26,12 @@ class WordReaderViewModel @Inject constructor() : ViewModel() {
     )
 
     fun onWordClicked(word: String) {
-        selectedWord = allWords.find { it.word.equals(word, ignoreCase = true) }
+        val found = allWords.find { it.word.equals(word, ignoreCase = true) }
+        if (found != null) {
+            selectedWord = found
+        } else {
+            selectedWord = Word(word,"目前没有释义")
+        }
     }
 
     fun dismissDialog() {
