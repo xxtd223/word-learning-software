@@ -1,6 +1,8 @@
 package com.peter.landing.ui.screen.ds
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -14,10 +16,12 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.*
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -114,35 +118,50 @@ fun WordReaderScreen(
 
         // 中间弹窗：显示选中的单词解释
         selectedWord?.let {
-            AlertDialog(
-                onDismissRequest = { viewModel.dismissDialog() },
-                confirmButton = {
-                    TextButton(onClick = { viewModel.dismissDialog() }) {
-                        Text("Got it")
-                    }
-                },
-                title = {
-                    Text(
-                        text = "📘 ${it.word}",
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold
+            val dialogKey = viewModel.isTranslating
+
+            key(dialogKey) {
+                AlertDialog(
+                    onDismissRequest = { viewModel.dismissDialog() },
+                    confirmButton = {
+                        TextButton(onClick = { viewModel.dismissDialog() }) {
+                            Text("Got it")
+                        }
+                    },
+                    title = {
+                        Text(
+                            text = "📘 ${it.word}",
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Bold
+                            )
                         )
-                    )
-                },
-                text = {
-                    Text(
-                        text = it.meaning,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontSize = 18.sp,
-                            lineHeight = 26.sp
-                        )
-                    )
-                },
-                shape = RoundedCornerShape(20.dp),
-                containerColor = MaterialTheme.colorScheme.surface,
-                tonalElevation = 8.dp
-            )
+                    },
+                    text = {
+                        if (viewModel.isTranslating) {
+                            Text(
+                                text = "⏳ 正在翻译中...",
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    fontSize = 18.sp,
+                                    fontStyle = FontStyle.Italic,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            )
+                        } else {
+                            Text(
+                                text = it.meaning,
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    fontSize = 18.sp,
+                                    lineHeight = 26.sp
+                                )
+                            )
+                        }
+                    },
+                    shape = RoundedCornerShape(20.dp),
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    tonalElevation = 8.dp
+                )
+            }
         }
 
         // 右侧滑出词汇表
