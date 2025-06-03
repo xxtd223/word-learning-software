@@ -1,11 +1,10 @@
 package com.peter.landing.ui.screen.ds
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontStyle
@@ -31,8 +32,18 @@ import com.peter.landing.ui.viewModel.WordReaderViewModel
 
 @Composable
 fun WordReaderScreen(
-    viewModel: WordReaderViewModel = hiltViewModel(),
+        viewModel: WordReaderViewModel = hiltViewModel(),
 ) {
+    // 渐变背景配置（保持原有主题色基础上叠加）
+    val gradientBrush = Brush.linearGradient(
+            colors = listOf(
+                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
+                    MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.6f)
+            ),
+            start = Offset(0f, 0f),
+            end = Offset(1000f, 1000f)
+    )
+
     val article = """
         Jetpack Compose is Android’s modern toolkit for building native UI.
         Learning English can be a rewarding experience, but it requires dedication and smart strategies.
@@ -47,11 +58,11 @@ fun WordReaderScreen(
             pushStringAnnotation("WORD", word)
             val isSelected = word == selectedWord?.word
             withStyle(
-                SpanStyle(
-                    background = if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
-                    color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.primary,
-                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
-                )
+                    SpanStyle(
+                            background = if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
+                            color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.primary,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                    )
             ) {
                 append(word)
             }
@@ -62,26 +73,42 @@ fun WordReaderScreen(
 
     val scrollState = rememberScrollState()
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
+    Box(
             modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(16.dp)
+                    .fillMaxSize())
+    {
+
+        // 新增的白色半透明底层（先绘制）
+        Box(
+                modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White.copy(alpha = 1.0f)) // 60%不透明度的白色
+        )
+    // 渐变层（叠加在白色层上）
+        Box(
+            modifier = Modifier
+                    .fillMaxSize()
+                    .background(brush = gradientBrush)
+        )
+        Column(
+                modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(scrollState)
+                        .padding(16.dp)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "📖 Word Reader",
-                    style = MaterialTheme.typography.headlineLarge.copy(
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        letterSpacing = 0.5.sp,
-                        color = MaterialTheme.colorScheme.primary
-                    ),
+                        text = "📖 Word Reader",
+                        style = MaterialTheme.typography.headlineLarge.copy(
+                                fontSize = 30.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                letterSpacing = 0.5.sp,
+                                color = MaterialTheme.colorScheme.primary
+                        ),
                 )
                 IconButton(onClick = { viewModel.toggleSidebar() }) {
                     Icon(Icons.Default.List, contentDescription = "All Words")
@@ -91,126 +118,136 @@ fun WordReaderScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(20.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White)
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(24.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                    colors = CardDefaults.cardColors(
+                            containerColor = Color.White.copy(alpha = 0.9f) // 半透明白色背景
+                    )
             ) {
                 Column(modifier = Modifier.padding(24.dp)) {
                     ClickableText(
-                        text = annotatedText,
-                        onClick = { offset ->
-                            annotatedText.getStringAnnotations("WORD", offset, offset)
-                                .firstOrNull()?.let { viewModel.onWordClicked(it.item) }
-                        },
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            lineHeight = 28.sp,
-                            fontWeight = FontWeight.Medium,
-                            letterSpacing = 0.3.sp,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            textAlign = TextAlign.Justify
-                        )
+                            text = annotatedText,
+                            onClick = { offset ->
+                                annotatedText.getStringAnnotations("WORD", offset, offset)
+                                        .firstOrNull()?.let { viewModel.onWordClicked(it.item) }
+                            },
+                            style = TextStyle(
+                                    fontSize = 18.sp,
+                                    lineHeight = 30.sp,
+                                    fontWeight = FontWeight.Medium,
+                                    letterSpacing = 0.3.sp,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    textAlign = TextAlign.Justify
+                            )
                     )
                 }
             }
         }
 
-        // 中间弹窗：显示选中的单词解释
+        // 中间弹窗
         selectedWord?.let {
             val dialogKey = viewModel.isTranslating
 
             key(dialogKey) {
                 AlertDialog(
-                    onDismissRequest = { viewModel.dismissDialog() },
-                    confirmButton = {
-                        TextButton(onClick = { viewModel.dismissDialog() }) {
-                            Text("Got it")
-                        }
-                    },
-                    title = {
-                        Text(
-                            text = "📘 ${it.word}",
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
-                    },
-                    text = {
-                        if (viewModel.isTranslating) {
+                        onDismissRequest = { viewModel.dismissDialog() },
+                        confirmButton = {
+                            TextButton(onClick = { viewModel.dismissDialog() }) {
+                                Text("Got it")
+                            }
+                        },
+                        title = {
                             Text(
-                                text = "⏳ 正在翻译中...",
-                                style = MaterialTheme.typography.bodyLarge.copy(
-                                    fontSize = 18.sp,
-                                    fontStyle = FontStyle.Italic,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
+                                    text = "📘 ${it.word}",
+                                    style = MaterialTheme.typography.titleLarge.copy(
+                                            color = MaterialTheme.colorScheme.primary,
+                                            fontWeight = FontWeight.Bold
+                                    )
                             )
-                        } else {
-                            Text(
-                                text = it.meaning,
-                                style = MaterialTheme.typography.bodyLarge.copy(
-                                    fontSize = 18.sp,
-                                    lineHeight = 26.sp
+                        },
+                        text = {
+                            if (viewModel.isTranslating) {
+                                Text(
+                                        text = "⏳ 正在翻译中...",
+                                        style = MaterialTheme.typography.bodyLarge.copy(
+                                                fontSize = 18.sp,
+                                                fontStyle = FontStyle.Italic,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
                                 )
-                            )
-                        }
-                    },
-                    shape = RoundedCornerShape(20.dp),
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    tonalElevation = 8.dp
+                            } else {
+                                Text(
+                                        text = it.meaning,
+                                        style = MaterialTheme.typography.bodyLarge.copy(
+                                                fontSize = 18.sp,
+                                                lineHeight = 26.sp
+                                        )
+                                )
+                            }
+                        },
+                        shape = RoundedCornerShape(24.dp),
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        tonalElevation = 12.dp
                 )
             }
         }
 
         // 右侧滑出词汇表
         AnimatedVisibility(
-            visible = isSidebarVisible,
-            enter = slideInHorizontally(initialOffsetX = { it }, animationSpec = tween(300)),
-            exit = slideOutHorizontally(targetOffsetX = { it }, animationSpec = tween(300)),
-            modifier = Modifier.align(Alignment.CenterEnd)
+                visible = isSidebarVisible,
+                enter = slideInHorizontally(initialOffsetX = { it }, animationSpec = tween(300)),
+                exit = slideOutHorizontally(targetOffsetX = { it }, animationSpec = tween(300)),
+                modifier = Modifier.align(Alignment.CenterEnd)
         ) {
             Card(
-                modifier = Modifier
-                    .width(280.dp)
-                    .fillMaxHeight()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                elevation = CardDefaults.cardElevation(8.dp)
+                    modifier = Modifier
+                            .width(280.dp)
+                            .fillMaxHeight()
+                            .padding(16.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f) // 半透明背景
+                    ),
+                    elevation = CardDefaults.cardElevation(8.dp)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "📚 All Words",
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary
-                            )
+                                text = "📚 All Words",
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.primary
+                                )
                         )
                         IconButton(onClick = { viewModel.toggleSidebar() }) {
                             Icon(Icons.Default.Close, contentDescription = "Close Sidebar")
                         }
                     }
                     Spacer(modifier = Modifier.height(12.dp))
-                    viewModel.allWords.forEach { word ->
+                    viewModel.allWords.forEachIndexed { index, word ->
                         Column(modifier = Modifier.padding(vertical = 8.dp)) {
                             Text(
-                                text = word.word,
-                                style = MaterialTheme.typography.titleMedium.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
+                                    text = word.word,
+                                    style = MaterialTheme.typography.titleMedium.copy(
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.primary
+                                    )
                             )
                             Text(
-                                text = word.meaning,
-                                style = MaterialTheme.typography.bodyMedium
+                                    text = word.meaning,
+                                    style = MaterialTheme.typography.bodyMedium
                             )
+                            if (index < viewModel.allWords.size - 1) {
+                                Divider(
+                                        modifier = Modifier.padding(top = 8.dp),
+                                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+                                )
+                            }
                         }
                     }
                 }
@@ -218,4 +255,3 @@ fun WordReaderScreen(
         }
     }
 }
-
