@@ -35,7 +35,10 @@ import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import com.peter.landing.ui.viewModel.DeepSeekViewModel
@@ -183,7 +186,8 @@ private fun CartoonContent(
     val titleList = listOf("漫画", "故事")
     val icons = listOf(
         R.drawable.ic_cartoon,
-        R.drawable.ic_story
+        R.drawable.ic_story,
+
     )
     Box(
         modifier = Modifier
@@ -221,7 +225,7 @@ private fun CartoonContent(
                             Icon(
                                 painter = painterResource(icons[index]),
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.tertiary,
+                                tint = Color.Unspecified,
                                 modifier = Modifier.size(24.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
@@ -255,43 +259,55 @@ private fun CartoonContent(
         }
 
         // 固定底部操作栏
-        Row(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .padding(vertical = 8.dp, horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+        Column( // 用Column包裹两个Row（第1处改动）
+                modifier = Modifier
+                        .align(Alignment.BottomCenter) // 固定在底部
+                        .padding(vertical = 2.dp)
+                        .drawBehind { // 添加虚线绘制（第2处改动）
+                            drawRect(
+                                    color = Color(0xFF2C7F3E),
+                                    style = Stroke(
+                                            width = 1.dp.toPx(),
+                                            pathEffect = PathEffect.dashPathEffect(floatArrayOf(20f, 15f), 0f)
+                                    )
+                            )
+                        }
+                        .padding(4.dp),// 添加内边距（第3处改动）,
+                verticalArrangement = Arrangement.spacedBy(1.dp) // 修改3：行间距控制
         ) {
-            ActionButton(
-                text = "刷新漫画",
-                iconResId = R.drawable.ic_story_clear, //图标
-                onClick = {
-                    if (generationState.value == GenerationState.Idle) {
-                        onRefreshComic()
-                        //viewModel.refreshFullResponse()
-                    }
-                },
-                enabled = generationState.value == GenerationState.Idle,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp)
-            )
-            ActionButton(
-                text = "刷新故事",
-                iconResId = R.drawable.ic_story_fourthbutton,
-                onClick = {
-                    if (generationState.value == GenerationState.Idle) {
-                        onRefreshStory()
-                        //viewModel.refreshFullResponse()
-                    }
-                },
-                enabled = generationState.value == GenerationState.Idle,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp)
-            )
+            Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                ActionButton(
+                        text = "刷新漫画",
+                        iconResId = R.drawable.ic_story_clear, //图标
+                        onClick = {
+                            if (generationState.value == GenerationState.Idle) {
+                                onRefreshComic()
+                                //viewModel.refreshFullResponse()
+                            }
+                        },
+                        enabled = generationState.value == GenerationState.Idle,
+                        modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = 8.dp)
+                )
+                ActionButton(
+                        text = "刷新故事",
+                        iconResId = R.drawable.ic_story_fourthbutton,
+                        onClick = {
+                            if (generationState.value == GenerationState.Idle) {
+                                onRefreshStory()
+                                //viewModel.refreshFullResponse()
+                            }
+                        },
+                        enabled = generationState.value == GenerationState.Idle,
+                        modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = 8.dp)
+                )
+            }
         }
     }
 }

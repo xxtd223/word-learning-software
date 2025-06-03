@@ -6,6 +6,8 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -37,8 +39,8 @@ fun WordReaderScreen(
     // 渐变背景配置（保持原有主题色基础上叠加）
     val gradientBrush = Brush.linearGradient(
             colors = listOf(
-                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
-                    MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.6f)
+                    Color(0xFF6200EA).copy(alpha = 0.4f), // 紫色
+                    Color(0xFFFF4081).copy(alpha = 0.4f)  // 粉色
             ),
             start = Offset(0f, 0f),
             end = Offset(1000f, 1000f)
@@ -207,7 +209,7 @@ fun WordReaderScreen(
                             .padding(16.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f) // 半透明背景
+                            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 1.0f) // 半透明背景
                     ),
                     elevation = CardDefaults.cardElevation(8.dp)
             ) {
@@ -229,20 +231,24 @@ fun WordReaderScreen(
                         }
                     }
                     Spacer(modifier = Modifier.height(12.dp))
-                    viewModel.allWords.forEachIndexed { index, word ->
-                        Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                            Text(
-                                    text = word.word,
-                                    style = MaterialTheme.typography.titleMedium.copy(
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.primary
-                                    )
-                            )
-                            Text(
-                                    text = word.meaning,
-                                    style = MaterialTheme.typography.bodyMedium
-                            )
-                            if (index < viewModel.allWords.size - 1) {
+
+                    // 使用 LazyColumn 实现上下滑动
+                    LazyColumn(
+                            modifier = Modifier.fillMaxHeight()
+                    ) {
+                        items(viewModel.allWords) { word ->
+                            Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                                Text(
+                                        text = word.word,
+                                        style = MaterialTheme.typography.titleMedium.copy(
+                                                fontWeight = FontWeight.Bold,
+                                                color = MaterialTheme.colorScheme.primary
+                                        )
+                                )
+                                Text(
+                                        text = word.meaning,
+                                        style = MaterialTheme.typography.bodyMedium
+                                )
                                 Divider(
                                         modifier = Modifier.padding(top = 8.dp),
                                         color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)

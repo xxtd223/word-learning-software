@@ -121,7 +121,7 @@ sealed interface LandingDestination {
         }
 
         object DailyReading : Main{
-            override val route = "wordReaderPage"
+            override val route = "dailyReading"
             override val textId = R.string.screen_words_reader
             override val iconId = R.drawable.ic_daily_reading
             override val iconCd = R.string.ic_content_description

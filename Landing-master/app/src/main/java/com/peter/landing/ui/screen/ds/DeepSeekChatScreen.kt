@@ -468,7 +468,7 @@ fun ChatBubble(
     val bubbleColor = if (isUser) {
         MaterialTheme.colorScheme.primary.copy(alpha = 0.8f) // 4. 添加透明度
     } else {
-        MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f) // 4. 添加透明度
+        MaterialTheme.colorScheme.primary.copy(alpha = 0.8f) // 4. 添加透明度
     }
 
     val textColor = if (isUser) {
@@ -510,7 +510,7 @@ fun ChatBubble(
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = 0.3.sp
                     ),
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.8f)
                 )
             }
 

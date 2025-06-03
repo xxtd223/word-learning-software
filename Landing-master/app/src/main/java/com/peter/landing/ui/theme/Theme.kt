@@ -85,7 +85,8 @@ private val EyeCareColors = lightColorScheme(
     onBackground = Color.Black,       // 背景上的文字颜色
     surface = Color(0xFFFFF8E1),      // 表面颜色
     onSurface = Color.Black,          // 表面上的文字颜色
-    // 可以为其他颜色元素也设置类似的温暖色调
+        primaryContainer = Color(0xFFFF9800)
+        // 可以为其他颜色元素也设置类似的温暖色调
 )
 // **彩色模式（活力模式 Vibrant）**
 private val VibrantColors = lightColorScheme(
@@ -96,7 +97,8 @@ private val VibrantColors = lightColorScheme(
     surface = Color.White,
     onSurface = Color.Black,
     secondary = Color(0xFFFF9800),  // 橙色
-    onSecondary = Color.White
+    onSecondary = Color.White,
+        primaryContainer = Color(0xFF2196F3)
 )
 private val DefaultColors = lightColorScheme(
     primary = Color(0xFF9E9E9E),  // 中性灰
