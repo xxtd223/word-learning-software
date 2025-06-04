@@ -77,7 +77,8 @@ fun WordReaderScreen(
 
     Box(
             modifier = Modifier
-                    .fillMaxSize())
+                    .fillMaxSize()
+            .background(brush = gradientBrush))
     {
 
         // 新增的白色半透明底层（先绘制）
