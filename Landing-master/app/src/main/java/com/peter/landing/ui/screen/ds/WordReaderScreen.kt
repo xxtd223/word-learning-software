@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -46,10 +47,20 @@ fun WordReaderScreen(
             end = Offset(1000f, 1000f)
     )
 
-    val article = """
-        Jetpack Compose is Android’s modern toolkit for building native UI.
-        Learning English can be a rewarding experience, but it requires dedication and smart strategies.
-    """.trimIndent()
+    val articles = listOf(
+        EnglishReadingPassages.PASSAGE_1,
+        EnglishReadingPassages.PASSAGE_2,
+        EnglishReadingPassages.PASSAGE_3,
+        EnglishReadingPassages.PASSAGE_4,
+        EnglishReadingPassages.PASSAGE_5,
+        EnglishReadingPassages.PASSAGE_6,
+        EnglishReadingPassages.PASSAGE_7,
+        EnglishReadingPassages.PASSAGE_8,
+        EnglishReadingPassages.PASSAGE_9,
+        EnglishReadingPassages.PASSAGE_10
+    )
+
+    val article = remember { articles.random() } // 只会在初始组合时随机一次
 
     val selectedWord = viewModel.selectedWord
     val isSidebarVisible = viewModel.isSidebarVisible
@@ -261,4 +272,81 @@ fun WordReaderScreen(
             }
         }
     }
+}
+
+object EnglishReadingPassages {
+    // 1. The Importance of Sleep
+    val PASSAGE_1 = """
+        Adequate sleep is essential for physical and mental health. Studies show that adults need 7-9 hours of sleep daily, 
+        yet many sacrifice sleep due to work or entertainment. Lack of sleep weakens immunity, impairs memory, 
+        and increases the risk of chronic diseases like diabetes. During sleep, the brain removes toxins 
+        and consolidates memories, which is crucial for learning. To improve sleep quality, 
+        experts recommend avoiding screens before bed and maintaining a consistent schedule.
+    """.trimIndent()
+
+    // 2. The Rise of Remote Work
+    val PASSAGE_2 = """
+        Remote work has become increasingly popular since the COVID-19 pandemic. Many employees enjoy its flexibility, 
+        while companies save on office costs. However, challenges include isolation and blurred work-life boundaries. 
+        Surveys indicate that 60% of workers prefer hybrid models—combining home and office work. 
+        To adapt, businesses must invest in digital tools and prioritize mental health support.
+    """.trimIndent()
+
+    // 3. Plastic Pollution Crisis
+    val PASSAGE_3 = """
+        Over 8 million tons of plastic enter oceans yearly, harming marine life and ecosystems. 
+        Microplastics even enter human food chains, posing health risks. While recycling helps, 
+        only 9% of plastic is recycled globally. Solutions include reducing single-use plastics 
+        and developing biodegradable alternatives. Governments must enforce stricter regulations to address this urgent issue.
+    """.trimIndent()
+
+    // 4. Benefits of Bilingualism
+    val PASSAGE_4 = """
+        Learning a second language enhances cognitive abilities, such as problem-solving and multitasking. 
+        Bilingual individuals often have better memory and delayed dementia onset. Additionally, 
+        it boosts career opportunities in a globalized world. Despite the effort required, 
+        the long-term advantages make it worthwhile.
+    """.trimIndent()
+
+    // 5. Social Media's Impact on Mental Health
+    val PASSAGE_5 = """
+        Excessive social media use correlates with anxiety and depression, especially among teens. 
+        Constant comparison with others' curated lives lowers self-esteem. Yet, platforms also connect people 
+        and spread awareness. Experts advise limiting screen time and engaging in offline activities to maintain balance.
+    """.trimIndent()
+
+    // 6. The Value of Volunteering
+    val PASSAGE_6 = """
+        Volunteering benefits both society and individuals. It builds skills, expands networks, and fosters empathy. 
+        Research shows volunteers report higher happiness levels. Whether tutoring children or aiding disaster relief, 
+        contributing time creates meaningful change.
+    """.trimIndent()
+
+    // 7. Urban Green Spaces
+    val PASSAGE_7 = """
+        Parks and gardens improve city life by reducing air pollution and stress. They also encourage physical activity 
+        and social interaction. Cities like Singapore integrate nature into urban planning, 
+        setting an example for sustainable development.
+    """.trimIndent()
+
+    // 8. Fast Fashion's Environmental Cost
+    val PASSAGE_8 = """
+        Cheap, trendy clothing generates massive waste and pollution. The industry accounts for 10% of global carbon emissions. 
+        Alternatives like thrifting or supporting eco-friendly brands can mitigate harm. 
+        Consumers must embrace sustainable fashion choices.
+    """.trimIndent()
+
+    // 9. The Power of Gratitude
+    val PASSAGE_9 = """
+        Practicing gratitude—such as keeping a journal—reduces stress and increases resilience. 
+        Studies link gratitude to stronger relationships and life satisfaction. 
+        Simple acts, like thanking others, can shift perspectives positively.
+    """.trimIndent()
+
+    // 10. Space Exploration's Future
+    val PASSAGE_10 = """
+        Private companies like SpaceX aim to colonize Mars, while NASA focuses on lunar research. 
+        Critics argue funds should address Earth's problems, but space technology often yields everyday innovations (e.g., GPS). 
+        Balancing priorities is key.
+    """.trimIndent()
 }
