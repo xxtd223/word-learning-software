@@ -27,19 +27,17 @@ import kotlin.random.Random
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun StudyHistoryChart(
-        historyData: List<Pair<String, Int>> // (日期, 单词数量)
+        historyData: List<Pair<String, Int>>
 ) {
     val density = LocalDensity.current
     val height = 228.dp
     val heightPx = with(density) { height.toPx() }
     val textMeasurer = rememberTextMeasurer()
 
-    // 颜色
     val frameColor = MaterialTheme.colorScheme.onBackground
     val textColor = MaterialTheme.colorScheme.onBackground
     val strokeWidth = 6f
 
-    // 文本样式
     val titleStyle = MaterialTheme.typography.headlineLarge.copy(
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
@@ -50,10 +48,8 @@ fun StudyHistoryChart(
             color = textColor
     )
 
-    // 文本布局
     val titleLayout = textMeasurer.measure("学习历史", titleStyle)
 
-    // 尺寸参数
     val dp16 = with(density) { 16.dp.toPx() }
     val dp24 = with(density) { 24.dp.toPx() }
     val dp36 = with(density) { 36.dp.toPx() }
@@ -66,24 +62,12 @@ fun StudyHistoryChart(
                     .fillMaxWidth()
                     .height(height)
     ) {
-        // 边框
-        // 移除渐变背景
-        /* 删除原始背景绘制
-        drawRoundRect(
-            brush = Brush.linearGradient(...),
-            ...
-        )
-        */
-
-        // 新增边框绘制
         drawRoundRect(
                 color = frameColor,
                 cornerRadius = CornerRadius(8.dp.toPx()),
                 style = Stroke(width = 1.dp.toPx())
         )
 
-
-        // 标题
         drawText(
                 textLayoutResult = titleLayout,
                 topLeft = Offset(
@@ -92,39 +76,55 @@ fun StudyHistoryChart(
                 )
         )
 
-        // 图表主体
         val chartArea = Size(
                 width = size.width - chartPadding * 2,
                 height = heightPx - chartPaddingV * 2 - dp24
         )
 
-        // 柱状图
         val maxValue = historyData.maxOfOrNull { it.second }?.toFloat() ?: 1f
-        val barWidth = (chartArea.width / historyData.size) * 0.9f
-        val barSpacing = (chartArea.width / historyData.size) * 0.18f
+
+        // 计算最小日期标签宽度
+        val minLabelWidth = historyData.maxOf {
+            textMeasurer.measure(it.first, labelStyle).size.width.toFloat()
+        }
+
+        // 计算每个柱子的宽度和间隔
+        val totalRequiredWidth = (historyData.size * minLabelWidth * 1.2f)
+        val spacingScale = if (totalRequiredWidth > chartArea.width) {
+            chartArea.width / totalRequiredWidth
+        } else {
+            1f
+        }
+
+        val baseSpacing = chartArea.width / historyData.size
+        val barWidth = baseSpacing * 0.8f * spacingScale
+        val barSpacing = baseSpacing * 0.2f * spacingScale
+
+        // 增加一个固定的间距值，避免日期重叠
+        val extraSpacing = 9.dp.toPx() // 新增的固定间距
+
+        // 计算柱状图起始的 x 位置，居中显示
+        val startX = (size.width - (barWidth * historyData.size + barSpacing * (historyData.size - 1) + extraSpacing * (historyData.size - 1))) / 2f
 
         historyData.forEachIndexed { index, (date, value) ->
             val barHeight = (value / maxValue) * chartArea.height
-            val xPos = chartPadding + (barWidth + barSpacing) * index
+            val xPos = startX + (barWidth + barSpacing + extraSpacing) * index
             val yPos = heightPx - dp36 - barHeight
 
-            // 判断颜色，整十数为绿色，否则为黄色
             val barColor = if (value % 10 == 0) {
                 Color(0xFF2C7F3E).copy(alpha = 0.7f)
             } else {
                 Color(0xFF5C94E8).copy(alpha = 0.7f)
             }
 
-            // 绘制柱状图
             drawRoundRect(
                     color = barColor,
                     topLeft = Offset(xPos, yPos),
                     size = Size(barWidth, barHeight),
                     cornerRadius = CornerRadius(4.dp.toPx()),
-                            style = Stroke(width = strokeWidth)
+                    style = Stroke(width = strokeWidth)
             )
 
-            // 绘制日期
             val dateLayout = textMeasurer.measure(date, labelStyle)
             drawText(
                     textLayoutResult = dateLayout,
@@ -134,7 +134,6 @@ fun StudyHistoryChart(
                     )
             )
 
-            // 绘制数值
             val valueLayout = textMeasurer.measure("$value", labelStyle)
             drawText(
                     textLayoutResult = valueLayout,
