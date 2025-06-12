@@ -182,26 +182,19 @@ private fun CartoonContent(
     onRefreshStory: () -> Unit,
     generateImage: () -> Unit,
     generationState: MutableState<GenerationState>
-) {val gradientBrush = Brush.linearGradient(
-        colors = listOf(
-                Color(0xFF2196F3).copy(alpha = 0.3f), // 蓝色
-                Color(0xFF006400).copy(alpha = 0.4f)  // 绿色
-        ),
-        start = Offset(0f, 0f),
-        end = Offset(1000f, 1000f)
-)
+) {
     val pagerState = rememberPagerState()
     val titleList = listOf("漫画", "故事")
     val icons = listOf(
-        R.drawable.ic_cartoon,
-        R.drawable.ic_story,
+            R.drawable.ic_cartoon,
+            R.drawable.ic_story,
 
-    )
+            )
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-                .background(brush = gradientBrush)
-            .windowInsetsPadding(insets = WindowInsets.systemBars)
+            modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .windowInsetsPadding(insets = WindowInsets.systemBars)
     ) {
         Column(
             modifier = Modifier
@@ -327,7 +320,7 @@ fun StoryPage(
     val gradientBrush = Brush.linearGradient(
             colors = listOf(
                     Color(0xFF2196F3).copy(alpha = 0.2f), // 蓝色
-                    Color(0xFF006400).copy(alpha = 0.2f)  // 绿色
+                    Color(0xFF006400).copy(alpha = 0.4f)  // 绿色
             ),
             start = Offset(0f, 0f),
             end = Offset(1000f, 1000f)
