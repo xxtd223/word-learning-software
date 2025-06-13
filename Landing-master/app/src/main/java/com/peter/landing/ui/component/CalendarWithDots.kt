@@ -180,21 +180,14 @@ fun CalendarWithDots(
 
 
 @Composable
-fun CalendarExample() {
+fun CalendarExample(markedDates: List<LocalDate>) {
     val currentMonth = YearMonth.now()
-    val markedDates = setOf(
-            currentMonth.atDay(5),
-            currentMonth.atDay(10),
-            currentMonth.atDay(15),
-            currentMonth.atDay(20),
-            currentMonth.atDay(25)
-    )
-
+    //markedDates list转set
     CalendarWithDots(
-            yearMonth = currentMonth,
-            markedDates = markedDates,
-            onDateClick = { date ->
-                println("Clicked on: $date")
-            }
+        yearMonth = currentMonth,
+        markedDates = markedDates.toSet(),
+        onDateClick = { date ->
+            println("Clicked on: $date")
+        }
     )
 }

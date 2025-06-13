@@ -1,5 +1,6 @@
 package com.peter.landing.ui.screen.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -21,6 +22,7 @@ import com.peter.landing.ui.state.StudyState
 import com.peter.landing.ui.util.ErrorNotice
 import com.peter.landing.ui.util.LandingTopBar
 import com.peter.landing.ui.viewModel.HomeViewModel
+import java.time.LocalDate
 
 @Composable
 fun HomeScreen(
@@ -30,13 +32,14 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.homeUiState.collectAsStateWithLifecycle()
     val themeMenuState = remember { mutableStateOf(false) }
-
+    val markedDates by viewModel.startDatesThisMonth.collectAsState()
     HomeContent(
         isDarkMode = isDarkMode,
         uiState = uiState,
         themeMenuState = themeMenuState,
         setTheme = viewModel::setThemeMode,
         navigateTo = navigateTo,
+        markedDates = markedDates,
     )
 }
 
@@ -46,8 +49,10 @@ private fun HomeContent(
     uiState: HomeUiState,
     themeMenuState: MutableState<Boolean>,
     setTheme: (ThemeMode) -> Unit,
-    navigateTo: (String) -> Unit
+    navigateTo: (String) -> Unit,
+    markedDates: List<LocalDate>,
 ) {
+    Log.d("数据库调用最后","$markedDates")
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -131,7 +136,8 @@ private fun HomeContent(
                             modifier = Modifier.padding(vertical = 16.dp)
                         )
 
-                        CalendarExample()
+
+                        CalendarExample(markedDates)
 
                         Row(
                             verticalAlignment = Alignment.Bottom,

@@ -1,5 +1,9 @@
 package com.peter.landing.ui.viewModel
 
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peter.landing.data.local.plan.StudyPlan
@@ -16,6 +20,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.YearMonth
+import java.time.ZoneId
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +32,36 @@ class HomeViewModel @Inject constructor(
     private val studyProgressRepository: StudyProgressRepository,
     private val preferencesRepository: PreferencesRepository
 ) : ViewModel() {
+
+    var dates by mutableStateOf<List<Calendar>>(emptyList())
+        private set
+
+    // 当前月份
+    private val currentMonth = YearMonth.now()
+
+    val startDatesThisMonth: StateFlow<List<LocalDate>> =
+        studyPlanRepository.getAllStartDatesFlow()
+            .map { calendarList ->
+                calendarList.mapNotNull { calendar ->
+                    try {
+                        // Calendar 转 LocalDate
+                        calendar.toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate()
+                    } catch (e: Exception) {
+                        null
+                    }
+                }.filter { date ->
+                    YearMonth.from(date) == currentMonth
+                }
+            }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList()
+            )
+
+
     private val today = getTodayDateTime()
     private val planFlow = studyPlanRepository.getStudyPlanFlow()
     private val progressFlow = studyProgressRepository.getStudyProgressLatestFlow()
@@ -120,5 +158,6 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
 
 }

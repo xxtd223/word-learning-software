@@ -27,6 +27,7 @@ import com.peter.landing.ui.component.MarkdownRenderer
 import com.peter.landing.ui.navigation.LandingDestination
 import com.peter.landing.ui.viewModel.DeepSeekViewModel
 import kotlinx.coroutines.launch
+import com.peter.landing.R
 
 var mess by mutableStateOf("")
 
@@ -498,7 +499,7 @@ fun ChatBubble(
                 modifier = Modifier.padding(bottom = 6.dp)
             ) {
                 Icon(
-                    painter = painterResource(if (isUser) com.peter.landing.R.drawable.ic_story_bot_24dp else com.peter.landing.R.drawable.ic_story_user_24dp),
+                    painter = painterResource(if (isUser) R.drawable.ic_story_bot_24dp else R.drawable.ic_story_user_24dp),
                     contentDescription = null,
                     tint = Color.Unspecified,
                     modifier = Modifier.size(30.dp)
