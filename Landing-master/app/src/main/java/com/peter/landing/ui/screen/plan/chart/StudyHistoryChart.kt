@@ -164,7 +164,7 @@ fun StudyHistoryChartPreview() {
                     listOf(30).random()
                 } else {
                     Random.nextInt(30)
-                } //还没接数据库，此为模拟数据
+                }
             }.reversed()
 
             StudyHistoryChart(

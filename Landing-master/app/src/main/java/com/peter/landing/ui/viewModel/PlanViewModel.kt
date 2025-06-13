@@ -48,9 +48,7 @@ class PlanViewModel @Inject constructor(
                 progressReport = progressRepository.getLatestLessonReport(
                     wordListSize = plan.wordListSize
                 ),
-                totalReport = progressRepository.getTotalReport(
-                    vocabularySize = plan.vocabularySize
-                ),
+                totalReport = listOf(133f, 4720f),
                 studyHistory = simulatedHistory
             )
         }
@@ -60,14 +58,8 @@ class PlanViewModel @Inject constructor(
         initialValue = PlanUiState.Loading
     )
 
-    // 模拟历史学习数据
     private fun generateSimulatedHistory(): List<Float> {
-        return (0..6).map { daysAgo ->
-            val calendar = Calendar.getInstance().apply {
-                add(Calendar.DATE, -daysAgo)
-            }
-            getRandomValue().toFloat() //还没接数据库，此为模拟数据
-        }
+        return listOf(0f, 0f, 0f, 0f, 30f, 14f, 19f)
     }
 
     fun getRandomValue(): Int {
