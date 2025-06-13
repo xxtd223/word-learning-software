@@ -1,4 +1,4 @@
-package com.peter.landing.domain
+package com.peter.landing.domain.model
 
 import kotlinx.serialization.Serializable
 

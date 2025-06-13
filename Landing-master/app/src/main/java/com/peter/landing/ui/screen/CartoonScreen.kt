@@ -24,8 +24,8 @@ import com.peter.landing.R
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.*
 import org.json.JSONObject
-import com.peter.landing.domain.FileService
-import com.peter.landing.domain.StableDiffusionService
+import com.peter.landing.domain.service.FileService
+import com.peter.landing.domain.service.StableDiffusionService
 import androidx.compose.foundation.background
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -44,7 +44,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import com.peter.landing.ui.viewModel.DeepSeekViewModel
-import com.peter.landing.domain.GlobalTracker
+import com.peter.landing.domain.component.GlobalTracker
 
 
 @Composable
@@ -174,72 +174,65 @@ fun CartoonScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CartoonContent(
-    viewModel: DeepSeekViewModel,
-    navigateToTerms: (Terms.Type) -> Unit,
-    navigateTo: (String) -> Unit,
-    imageUrl: String?,
-    onRefreshComic: () -> Unit,
-    onRefreshStory: () -> Unit,
-    generateImage: () -> Unit,
-    generationState: MutableState<GenerationState>
-) {val gradientBrush = Brush.linearGradient(
-        colors = listOf(
-                Color(0xFF2196F3).copy(alpha = 0.3f), // 蓝色
-                Color(0xFF006400).copy(alpha = 0.4f)  // 绿色
-        ),
-        start = Offset(0f, 0f),
-        end = Offset(1000f, 1000f)
-)
+        viewModel: DeepSeekViewModel,
+        navigateToTerms: (Terms.Type) -> Unit,
+        navigateTo: (String) -> Unit,
+        imageUrl: String?,
+        onRefreshComic: () -> Unit,
+        onRefreshStory: () -> Unit,
+        generateImage: () -> Unit,
+        generationState: MutableState<GenerationState>
+) {
     val pagerState = rememberPagerState()
     val titleList = listOf("漫画", "故事")
     val icons = listOf(
-        R.drawable.ic_cartoon,
-        R.drawable.ic_story,
+            R.drawable.ic_cartoon,
+            R.drawable.ic_story,
 
-    )
+            )
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-                .background(brush = gradientBrush)
-            .windowInsetsPadding(insets = WindowInsets.systemBars)
+            modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .windowInsetsPadding(insets = WindowInsets.systemBars)
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+                modifier = Modifier
+                        .fillMaxSize()
         ) {
             LandingTopBar(
-                currentDestination = LandingDestination.Main.Cartoon,
-                navigateTo = navigateTo,
+                    currentDestination = LandingDestination.Main.Cartoon,
+                    navigateTo = navigateTo,
             )
 
             TabRow(
-                selectedTabIndex = pagerState.currentPage,
-                contentColor = MaterialTheme.colorScheme.tertiary,
-                indicator = { tabPositions ->
-                    TabRowDefaults.Indicator(
-                        color = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage])
-                    )
-                },
-                modifier = Modifier.height(48.dp)
+                    selectedTabIndex = pagerState.currentPage,
+                    contentColor = MaterialTheme.colorScheme.tertiary,
+                    indicator = { tabPositions ->
+                        TabRowDefaults.Indicator(
+                                color = MaterialTheme.colorScheme.tertiary,
+                                modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage])
+                        )
+                    },
+                    modifier = Modifier.height(48.dp)
             ) {
                 titleList.forEachIndexed { index, title ->
                     Tab(
-                        selected = index == pagerState.currentPage,
-                        onClick = {  },
-                        modifier = Modifier.height(38.dp)
+                            selected = index == pagerState.currentPage,
+                            onClick = {  },
+                            modifier = Modifier.height(38.dp)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                painter = painterResource(icons[index]),
-                                contentDescription = null,
-                                tint = Color.Unspecified,
-                                modifier = Modifier.size(24.dp)
+                                    painter = painterResource(icons[index]),
+                                    contentDescription = null,
+                                    tint = Color.Unspecified,
+                                    modifier = Modifier.size(24.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = title,
-                                style = MaterialTheme.typography.titleSmall
+                                    text = title,
+                                    style = MaterialTheme.typography.titleSmall
                             )
                         }
                     }
@@ -248,10 +241,10 @@ private fun CartoonContent(
 
             // HorizontalPager切换左右页面（故事/漫画）
             HorizontalPager(
-                pageCount = 2,
-                state = pagerState,
-                pageSpacing = 16.dp,
-                modifier = Modifier.weight(1f)
+                    pageCount = 2,
+                    state = pagerState,
+                    pageSpacing = 16.dp,
+                    modifier = Modifier.weight(1f)
             ) { pageIndex ->
                 when (pageIndex) {
                     0 -> {
@@ -322,12 +315,12 @@ private fun CartoonContent(
 
 @Composable
 fun StoryPage(
-    viewModel: DeepSeekViewModel // 传入ViewModel
+        viewModel: DeepSeekViewModel // 传入ViewModel
 ) {
     val gradientBrush = Brush.linearGradient(
             colors = listOf(
                     Color(0xFF2196F3).copy(alpha = 0.2f), // 蓝色
-                    Color(0xFF006400).copy(alpha = 0.2f)  // 绿色
+                    Color(0xFF006400).copy(alpha = 0.4f)  // 绿色
             ),
             start = Offset(0f, 0f),
             end = Offset(1000f, 1000f)
@@ -338,9 +331,9 @@ fun StoryPage(
     // 筛选仅包含 "助手:" 的回复内容
     val formattedResponse = remember(uiState.fullResponse) {
         uiState.fullResponse
-            .split("\n\n\n")
-            .filter { it.startsWith("助手:") }
-            .joinToString("\n") { it.removePrefix("助手:").trim() } // 去掉 "助手:" 前缀，展示内容
+                .split("\n\n\n")
+                .filter { it.startsWith("助手:") }
+                .joinToString("\n") { it.removePrefix("助手:").trim() } // 去掉 "助手:" 前缀，展示内容
     }
 
     LaunchedEffect(uiState.fullResponse) {
@@ -349,46 +342,46 @@ fun StoryPage(
 
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-                .background(brush = gradientBrush)
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+            modifier = Modifier
+                    .fillMaxSize()
+                    .background(brush = gradientBrush)
+                    .padding(16.dp),
+            contentAlignment = Alignment.Center
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()) // 给内容添加垂直滚动
+                modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()) // 给内容添加垂直滚动
         ) {
             if (uiState.isLoading) {
                 CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             } else {
                 // 使用 WebView 渲染 HTML 格式的文本
                 AndroidView(
-                    factory = { context ->
-                        WebView(context).apply {
-                            // 开启 JavaScript 支持
-                            settings.javaScriptEnabled = true
-                            // 防止 WebView 缩放
-                            settings.setSupportZoom(false)
-                            settings.builtInZoomControls = false
-                            settings.displayZoomControls = false
+                        factory = { context ->
+                            WebView(context).apply {
+                                // 开启 JavaScript 支持
+                                settings.javaScriptEnabled = true
+                                // 防止 WebView 缩放
+                                settings.setSupportZoom(false)
+                                settings.builtInZoomControls = false
+                                settings.displayZoomControls = false
 
-                            // 加载HTML内容
-                            loadDataWithBaseURL(
-                                null,
-                                formattedResponse.ifBlank { "暂无生成内容。" },
-                                "text/html",
-                                "UTF-8",
-                                null
-                            )
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
+                                // 加载HTML内容
+                                loadDataWithBaseURL(
+                                        null,
+                                        formattedResponse.ifBlank { "暂无生成内容。" },
+                                        "text/html",
+                                        "UTF-8",
+                                        null
+                                )
+                            }
+                        },
+                        modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
                 )
             }
             Spacer(modifier = Modifier.height(70.dp))
@@ -399,37 +392,37 @@ fun StoryPage(
 @Composable
 fun ComicPage(imageUrl: String?, generationState: MutableState<GenerationState>) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+            modifier = Modifier
+                    .fillMaxSize()
             //.padding(12.dp)
     ){
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()) // 垂直滚动
+                modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()) // 垂直滚动
         ) {
             if (imageUrl.isNullOrEmpty()) {
                 // imageUrl为空时显示默认占位符图片
                 AndroidView(
-                    factory = { context ->
-                        ImageView(context).apply {
-                            adjustViewBounds = true
-                            scaleType = ImageView.ScaleType.FIT_CENTER
-                            Glide.with(context)
-                                .load(R.drawable.placeholder_image)
-                                .into(this)
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
+                        factory = { context ->
+                            ImageView(context).apply {
+                                adjustViewBounds = true
+                                scaleType = ImageView.ScaleType.FIT_CENTER
+                                Glide.with(context)
+                                        .load(R.drawable.placeholder_image)
+                                        .into(this)
+                            }
+                        },
+                        modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
                 )
             } else {
                 GlideImage(
-                    imageUrl = imageUrl,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight() // 保持图片的纵向适配
+                        imageUrl = imageUrl,
+                        modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight() // 保持图片的纵向适配
                 )
             }
             Spacer(modifier = Modifier.height(70.dp))
@@ -439,28 +432,28 @@ fun ComicPage(imageUrl: String?, generationState: MutableState<GenerationState>)
 
 @Composable
 fun GlideImage(
-    imageUrl: String,
-    modifier: Modifier = Modifier
+        imageUrl: String,
+        modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
     AndroidView(
-        factory = { context ->
-            ImageView(context).apply {
-                adjustViewBounds = true
-                scaleType = ImageView.ScaleType.FIT_CENTER
-                Glide.with(context)
-                    .load(imageUrl)
-                    .apply(RequestOptions()
-                        .placeholder(R.drawable.placeholder_image)
-                        .error(R.drawable.placeholder_image) //加载失败时显示默认图片
-                    )
-                    .fitCenter()
-                    .override(1448, 1448)
-                    .into(this)
-            }
-        },
-        modifier = modifier
+            factory = { context ->
+                ImageView(context).apply {
+                    adjustViewBounds = true
+                    scaleType = ImageView.ScaleType.FIT_CENTER
+                    Glide.with(context)
+                            .load(imageUrl)
+                            .apply(RequestOptions()
+                                    .placeholder(R.drawable.placeholder_image)
+                                    .error(R.drawable.placeholder_image) //加载失败时显示默认图片
+                            )
+                            .fitCenter()
+                            .override(1448, 1448)
+                            .into(this)
+                }
+            },
+            modifier = modifier
     )
 }
 
@@ -481,40 +474,40 @@ fun clearGlideCache(context: Context) {
 
 @Composable
 fun ActionButton(
-    text: String,
-    iconResId: Int,
-    onClick: () -> Unit,
-    enabled: Boolean = true,
-    loadingText: String? = null,
-    isLoading: Boolean = false,
-    modifier: Modifier = Modifier
+        text: String,
+        iconResId: Int,
+        onClick: () -> Unit,
+        enabled: Boolean = true,
+        loadingText: String? = null,
+        isLoading: Boolean = false,
+        modifier: Modifier = Modifier
 ) {
     Button(
-        onClick = onClick,
-        enabled = enabled,
-        modifier = modifier,
-        contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-        ),
-        elevation = ButtonDefaults.buttonElevation(
-            defaultElevation = 2.dp,
-            pressedElevation = 1.dp
-        )
+            onClick = onClick,
+            enabled = enabled,
+            modifier = modifier,
+            contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+            ),
+            elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 2.dp,
+                    pressedElevation = 1.dp
+            )
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                painter = painterResource(id = iconResId),
-                contentDescription = null,
-                tint = Color.Unspecified,
-                modifier = Modifier.size(24.dp)
+                    painter = painterResource(id = iconResId),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(24.dp)
             )
             Spacer(Modifier.width(4.dp))
             Text(
-                text = if (isLoading && loadingText != null) loadingText else text,
-                fontSize = 14.sp
+                    text = if (isLoading && loadingText != null) loadingText else text,
+                    fontSize = 14.sp
             )
         }
     }

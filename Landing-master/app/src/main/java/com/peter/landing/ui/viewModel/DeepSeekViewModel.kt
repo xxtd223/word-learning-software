@@ -11,9 +11,9 @@ import androidx.lifecycle.viewModelScope
 import com.peter.landing.data.repository.progress.StudyProgressRepository
 import com.peter.landing.data.repository.vocabulary.VocabularyViewRepository
 
-import com.peter.landing.domain.DeepSeekService
-import com.peter.landing.domain.postToGenerateEndpoint
-import com.peter.landing.domain.GlobalTracker
+import com.peter.landing.domain.service.DeepSeekService
+import com.peter.landing.domain.service.postToGenerateEndpoint
+import com.peter.landing.domain.component.GlobalTracker
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job

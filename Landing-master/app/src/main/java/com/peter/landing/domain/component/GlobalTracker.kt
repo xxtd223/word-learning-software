@@ -1,4 +1,4 @@
-package com.peter.landing.domain
+package com.peter.landing.domain.component
 
 import android.util.Log
 import kotlinx.coroutines.sync.Mutex

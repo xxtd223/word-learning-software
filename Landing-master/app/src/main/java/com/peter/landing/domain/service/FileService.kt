@@ -1,4 +1,4 @@
-package com.peter.landing.domain
+package com.peter.landing.domain.service
 
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
