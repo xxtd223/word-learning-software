@@ -1,6 +1,7 @@
-package com.peter.landing.domain
+package com.peter.landing.domain.service
 
 import android.util.Log
+import com.peter.landing.domain.model.PromptData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString

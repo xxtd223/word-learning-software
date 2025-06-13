@@ -24,8 +24,8 @@ import com.peter.landing.R
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.*
 import org.json.JSONObject
-import com.peter.landing.domain.FileService
-import com.peter.landing.domain.StableDiffusionService
+import com.peter.landing.domain.service.FileService
+import com.peter.landing.domain.service.StableDiffusionService
 import androidx.compose.foundation.background
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -44,7 +44,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import com.peter.landing.ui.viewModel.DeepSeekViewModel
-import com.peter.landing.domain.GlobalTracker
+import com.peter.landing.domain.component.GlobalTracker
 
 
 @Composable

@@ -8,7 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peter.landing.data.repository.word.WordRepository
-import com.peter.landing.domain.DeepSeekService
+import com.peter.landing.domain.service.DeepSeekService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
