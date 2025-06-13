@@ -59,7 +59,7 @@ class PlanViewModel @Inject constructor(
     )
 
     private fun generateSimulatedHistory(): List<Float> {
-        return listOf(0f, 0f, 0f, 0f, 30f, 14f, 19f)
+        return listOf(0f, 0f, 0f, 0f, 19f, 4f, 30f)
     }
 
     fun getRandomValue(): Int {
