@@ -2,7 +2,7 @@
 
 [![Kotlin 版本](https://img.shields.io/badge/Kotlin-1.8.20-blue.svg)](https://kotlinlang.org)
 
-<img src="logo.png" alt="VocabVerse 徽标" width="180"/>
+<img src="picture/logo.png" alt="VocabVerse 徽标" width="180"/>
 
 **VocabVerse** 是一款革命性的安卓单词学习应用，通过前沿AI技术将枯燥的单词记忆转化为沉浸式叙事体验。本应用基于认知科学原理，结合大语言模型与图像生成技术，为四六级、考研、雅思/托福考生提供高效的单词记忆解决方案。
 
@@ -49,15 +49,8 @@ VocabVerse 解决了传统单词学习的三大痛点：
 
 ## 📸 展示
 
-<img src="learning.png" alt="基础功能" width="200"/>
-<img src="learning2.png" alt="基础功能" width="200"/>
-<img src="story.png" alt="基础功能" width="200"/>
-<img src="story.png" alt="基础功能" width="200"/>
-<img src="story.png" alt="基础功能" width="200"/>
-<img src="story.png" alt="基础功能" width="200"/>
-<img src="OCR.png" alt="基础功能" width="200"/>
-<img src="test.png" alt="基础功能" width="200"/>
-<img src="read.png" alt="基础功能" width="200"/>
+<img src="picture/show.png" alt="功能展示" width="757"/>
+
 
 ## 🛠️ 技术架构
 
