@@ -1,4 +1,4 @@
-# VocabVerse：AI驱动的沉浸式单词记忆APP
+# VocabVerse：AI驱动的沉浸式单词记忆APP 1.0
 
 [![Kotlin 版本](https://img.shields.io/badge/Kotlin-1.8.20-blue.svg)](https://kotlinlang.org)
 
@@ -26,7 +26,7 @@ VocabVerse 解决了传统单词学习的三大痛点：
 - SD-LoRA微调技术保障角色一致性
 
 ### 🔄 自适应学习系统
-- 基于用户行为和评分动态优化生成内容
+- 基于用户行为和评分动态优化生成内容（2.0推出）
 - 真题库智能匹配（四六级/考研/雅思/托福）
 
 ## 其他功能
@@ -49,10 +49,12 @@ VocabVerse 解决了传统单词学习的三大痛点：
 
 ## 📸 展示
 
-<img src="picture/show.png" alt="功能展示" width="757"/>
+<img src="picture/show.png" alt="功能展示" width="600"/>
 
 
 ## 🛠️ 技术架构
+
+<img src="picture/arc.png" alt="功能展示" width="600"/>
 
 
 ## ⚙️ 安装与配置
@@ -77,7 +79,7 @@ IntelliJ IDEA/Android Studio中编译运行：
 
 在安装虚拟机中运行或在build目录中生成APK在安卓机运行
 
-注：AI 功能需要连接山东大学校园网以获取服务端支持
+**注**：AI 功能需要连接山东大学校园网以获取服务端支持
 
 服务器地址与KEY放在local.properties文件中
 
