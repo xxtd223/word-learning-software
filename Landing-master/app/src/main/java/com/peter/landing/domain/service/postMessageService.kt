@@ -2,6 +2,7 @@ package com.peter.landing.domain.service
 
 import android.util.Log
 import com.peter.landing.domain.model.PromptData
+import com.peter.landing.util.ConfigReader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
@@ -26,7 +27,7 @@ suspend fun postToGenerateEndpoint(positiveText: String): String? = withContext(
 
         Log.d("request是",requestBody.toString())
         val request = Request.Builder()
-            .url("http://10.27.245.63:8001/generate")
+            .url(ConfigReader.getStableDiffusionUrl()+":8001/generate")
             .post(requestBody)
             .addHeader("Content-Type", "application/json")
             .build()

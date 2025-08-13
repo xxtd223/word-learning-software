@@ -1,6 +1,7 @@
 package com.peter.landing.domain.service
 
 import android.util.Log
+import com.peter.landing.util.ConfigReader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit
 
 class DeepSeekService(
     private val apiBase: String = "https://api.deepseek.com",
-    private val apiKey: String = "sk-3cee899196044a4ba3d23d7dbfab90bc",
+    private val apiKey: String = ConfigReader.getDeepSeekApiKey(),
     private val model: String = "deepseek-chat"
 ) {
     private val client = OkHttpClient.Builder()

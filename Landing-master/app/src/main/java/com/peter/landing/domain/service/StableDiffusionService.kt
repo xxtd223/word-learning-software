@@ -1,5 +1,6 @@
 package com.peter.landing.domain.service
 
+import com.peter.landing.util.ConfigReader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -12,7 +13,7 @@ object StableDiffusionService {
 
     // 向 ComfyUI API 发送正面和负面提示词
     suspend fun sendPromptToComfyUI(positivePrompt: String, negativePrompt: String, onResponse: (String) -> Unit) {
-        val url = " http://172.20.10.3:8001/generate"
+        val url = ConfigReader.getStableDiffusionUrl()+":8001/generate"
         val client = OkHttpClient()
 
         val json = JSONObject().apply {

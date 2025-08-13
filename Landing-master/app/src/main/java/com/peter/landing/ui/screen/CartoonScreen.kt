@@ -317,14 +317,7 @@ private fun CartoonContent(
 fun StoryPage(
         viewModel: DeepSeekViewModel // 传入ViewModel
 ) {
-    val gradientBrush = Brush.linearGradient(
-            colors = listOf(
-                    Color(0xFF2196F3).copy(alpha = 0.2f), // 蓝色
-                    Color(0xFF006400).copy(alpha = 0.4f)  // 绿色
-            ),
-            start = Offset(0f, 0f),
-            end = Offset(1000f, 1000f)
-    )
+
     // 绑定UI状态
     val uiState = viewModel.uiState
 
@@ -342,11 +335,11 @@ fun StoryPage(
 
 
     Box(
-            modifier = Modifier
-                    .fillMaxSize()
-                    .background(brush = gradientBrush)
-                    .padding(16.dp),
-            contentAlignment = Alignment.Center
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
     ) {
         Column(
                 modifier = Modifier

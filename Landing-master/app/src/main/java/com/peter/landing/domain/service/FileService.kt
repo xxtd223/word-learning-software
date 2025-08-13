@@ -1,6 +1,7 @@
 package com.peter.landing.domain.service
 
 import android.content.Context
+import com.peter.landing.util.ConfigReader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -15,7 +16,7 @@ object FileService {
         return try {
             // 获取文件列表
             val request = Request.Builder()
-                .url("http://10.27.245.63:8000/")
+                .url(ConfigReader.getStableDiffusionUrl()+":8000/")
                 .build()
 
             val response = withContext(Dispatchers.IO) { client.newCall(request).execute() }
@@ -24,7 +25,7 @@ object FileService {
 
             // 解析最新文件名
             html?.let { parseLatestImage(it) }?.let {
-                "http://10.27.245.63:8000/$it"
+                ConfigReader.getStableDiffusionUrl()+":8000/$it"
             }
         } catch (e: Exception) {
             e.printStackTrace()
