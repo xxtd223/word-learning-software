@@ -1,6 +1,7 @@
 # VocabVerse：AI驱动的沉浸式单词记忆APP 1.0
 
 [![Kotlin 版本](https://img.shields.io/badge/Kotlin-1.8.20-blue.svg)](https://kotlinlang.org)
+[![Gradle 插件](https://img.shields.io/badge/Gradle-8.0.2-green.svg)](https://gradle.org)
 
 <img src="picture/logo.png" alt="VocabVerse 徽标" width="180"/>
 
@@ -60,10 +61,11 @@ VocabVerse 解决了传统单词学习的三大痛点：
 ## ⚙️ 安装与配置
 
 ### 环境要求
-- IntelliJ IDEA 或 Android Studio
-- Android SDK 33
+- IntelliJ IDEA/Android Studio
+- Android SDK 33 或更高
+- JDK 17 或更高
 - 安卓虚拟机
-- DeepSeek API 和 Stable Diffusion API 访问权限（需连接山东大学校园网）
+- DeepSeek API KEY 和 Stable Diffusion API 访问权限（需连接山东大学校园网）
 
 ### 部署
 克隆：
@@ -77,7 +79,7 @@ IntelliJ IDEA/Android Studio中编译运行：
 
 同步Gradle依赖
 
-在安装虚拟机中运行或在build目录中生成APK在安卓机运行
+在安卓虚拟机中运行或在build目录中生成APK在安卓机运行
 
 **注**：AI 功能需要连接山东大学校园网以获取服务端支持
 
