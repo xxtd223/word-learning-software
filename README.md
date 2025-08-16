@@ -48,6 +48,10 @@ VocabVerse 解决了传统单词学习的三大痛点：
 - 每日阅读
 - 主题/换肤
 
+<img src="picture/f1.png" alt="功能展示" width="366"/>
+<img src="picture/f2.png" alt="功能展示" width="366"/>
+<img src="picture/f3.png" alt="功能展示" width="366"/>
+
 ## 📸 展示
 
 <img src="picture/show.png" alt="功能展示" width="600"/>
